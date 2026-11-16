@@ -11,6 +11,8 @@ code/*/output/
 # Quarto
 /_book/
 /.quarto/
+/_quarto.yml        # 由 scripts/gen-quarto-yml.py 从 docs/manifest.yml 生成
+/index.qmd           # 由 landing（docs/preface.md）复制而成，同上
 
 # 系统
 .DS_Store

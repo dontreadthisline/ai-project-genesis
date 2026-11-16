@@ -1,0 +1,54 @@
+# 书籍结构清单 —— 单一事实源（工具无关）
+#
+# 约定：
+#   - 内容一律存放于 docs/**/*.md，front matter 携带 title 与元数据；正文不使用任何渲染器专有语法。
+#   - 本文件描述成书顺序与分部。渲染层（Quarto / VitePress / mdBook ...）从本文件生成各自的目录配置，
+#     生成物（如 _quarto.yml、_book/）不入库。
+#   - 新增章节：在对应 part 的 chapters 中按顺序追加路径即可，所有渲染器同步生效。
+
+book:
+  title: AI Project Genesis
+  subtitle: 实验驱动的 AI 课程：从概率基础到 Agentic RL
+
+landing: docs/preface.md
+
+parts:
+  - title: 总纲
+    chapters:
+      - docs/syllabus.md
+
+  - title: 第一阶段 概率建模与信息论
+    chapters:
+      - docs/stage1-probability/README.md
+      - docs/stage1-probability/lab01-pdf-and-covariance.md
+      - docs/stage1-probability/lab02-joint-and-conditional.md
+      - docs/stage1-probability/lab03-monte-carlo.md
+      - docs/stage1-probability/lab04-entropy-kl.md
+      - docs/stage1-probability/lab05-mle.md
+
+  - title: 第二阶段 深度学习与序列建模
+    chapters:
+      - docs/stage2-deep-learning/README.md
+
+  - title: 第三阶段 生成模型
+    chapters:
+      - docs/stage3-generative-models/README.md
+
+  - title: 第四阶段 强化学习
+    chapters:
+      - docs/stage4-reinforcement-learning/README.md
+
+  - title: 第五阶段 LLM 预训练与后训练
+    chapters:
+      - docs/stage5-llm/README.md
+
+  - title: 第六阶段 Agentic RL
+    chapters:
+      - docs/stage6-agentic-rl/README.md
+
+  # 未来追加：
+  # - title: 附录
+  #   chapters:
+  #     - docs/appendix/symbols.md      数学符号表
+  #     - docs/appendix/dependency.md   概念依赖图
+  #     - docs/appendix/engineering.md  工程约定（uv 项目、metrics.json 契约）

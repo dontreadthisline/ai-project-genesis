@@ -5,20 +5,29 @@
 ## 目录结构
 
 ```
-docs/                    课程讲义
+docs/                    内容层：讲义 + manifest.yml（书籍结构单一事实源）
+├── manifest.yml         分部与章节顺序，渲染层由此生成目录配置
+├── preface.md           前言
 ├── syllabus.md          课程总纲
-└── stage1-probability/  第一阶段讲义（Lab 01-05）
-code/                    实验代码：每个实验一个独立 uv 项目
-├── lab01-pdf-and-covariance/
-├── lab02-joint-and-conditional/
-├── lab03-monte-carlo/
-├── lab04-entropy-kl/
-└── lab05-mle/
+└── stage1..6-*/         六个阶段的讲义（第一阶段含 5 份实验讲义，其余为阶段导览）
+code/                    内容层：实验代码，每个实验一个独立 uv 项目
+assets/mathjax/          渲染层资源：自托管 MathJax
+scripts/                 渲染层：build-book.sh（唯一构建入口）、gen-quarto-yml.py
+_quarto.yml / _book/     生成物，不入库
 ```
 
-## 使用方式
+## 书籍构建
 
-每个实验项目自包含（独立的 pyproject.toml 与 .venv），依赖仅 numpy 与 matplotlib：
+内容与渲染分离：`docs/manifest.yml` 描述书籍结构，渲染器只消费该清单。
+
+```bash
+./scripts/build-book.sh   # manifest -> _quarto.yml -> quarto render -> MathJax 本地化 + 校验
+open _book/index.html     # 本地阅读，断网也可正常渲染公式
+```
+
+换渲染工具（如 VitePress、mdBook）时：在 scripts/ 新增一个 manifest 生成器即可，`docs/` 与 `code/` 零改动。
+
+## 实验环境
 
 ```bash
 cd code/lab01-pdf-and-covariance
