@@ -1,4 +1,8 @@
-# Lab 04：概率分布度量 —— Entropy / Cross Entropy / KL / Brier
+---
+title: "Lab 04：概率分布度量"
+subtitle: "Entropy / Cross Entropy / KL / Brier Score"
+lab: 4
+---
 
 对应大纲实验 4。依赖：NumPy。产出：`experiments/lab04_information_metrics.py`。本实验是所有分类损失（实验 6）、KL 正则（实验 15/30/39）的数学前置。
 

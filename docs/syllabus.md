@@ -1,4 +1,6 @@
-# AI Project Genesis 课程总纲
+---
+title: "课程总纲"
+---
 
 ## 路线总览
 

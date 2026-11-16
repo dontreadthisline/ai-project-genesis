@@ -1,4 +1,7 @@
-# Lab 03：Monte Carlo 估计
+---
+title: "Lab 03：Monte Carlo 估计"
+lab: 3
+---
 
 对应大纲实验 3。依赖：NumPy。产出：`experiments/lab03_monte_carlo.py`。本实验是后续策略梯度（实验 28/30/45）、ELBO 采样估计（实验 15）、reward 期望估计（实验 44）的直接数学前置。
 

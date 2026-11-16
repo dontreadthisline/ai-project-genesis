@@ -1,0 +1,34 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "AI Project Genesis"
+  subtitle: "实验驱动的 AI 课程：从概率基础到 Agentic RL"
+  search: true
+  navbar:
+    right:
+      - icon: github
+        url: https://github.com/
+  chapters:
+    - index.qmd
+    - part: "总纲"
+      chapters:
+        - docs/syllabus.md
+    - part: "第一阶段 概率建模与信息论"
+      chapters:
+        - docs/stage1-probability/README.md
+        - docs/stage1-probability/lab01-pdf-and-covariance.md
+        - docs/stage1-probability/lab02-joint-and-conditional.md
+        - docs/stage1-probability/lab03-monte-carlo.md
+        - docs/stage1-probability/lab04-entropy-kl.md
+        - docs/stage1-probability/lab05-mle.md
+
+format:
+  html:
+    theme: cosmo
+    lang: zh
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    math: katex

@@ -1,4 +1,7 @@
-# Lab 02：联合分布与条件分布
+---
+title: "Lab 02：联合分布与条件分布"
+lab: 2
+---
 
 对应大纲实验 2。依赖：Lab 01 的 `distributions.py`。产出：`experiments/lab02_joint_conditional.py`。
 

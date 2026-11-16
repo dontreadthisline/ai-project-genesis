@@ -1,4 +1,7 @@
-# Lab 01：一维与二维概率分布
+---
+title: "Lab 01：一维与二维概率分布"
+lab: 1
+---
 
 对应大纲实验 1。依赖：NumPy、Matplotlib。产出：`experiments/lab01_1d_2d_gaussian.py`、图表、`metrics.json`。
 

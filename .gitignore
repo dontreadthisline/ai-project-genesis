@@ -8,5 +8,11 @@ __pycache__/
 # 实验产出（图表与 metrics.json 由代码重新生成）
 code/*/output/
 
+# Quarto
+/_book/
+/.quarto/
+
 # 系统
 .DS_Store
+
+**/*.quarto_ipynb

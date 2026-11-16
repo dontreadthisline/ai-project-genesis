@@ -1,0 +1,42 @@
+# 前言 {-}
+
+这是一门以实验为骨架的课程。数学推导服务于实验，知识点服务于实验，最终目标只有一个：独立实现并训练一个 Agentic RL 系统。
+
+## 主线
+
+$$
+\text{Probability}
+\rightarrow
+\text{Deep Learning}
+\rightarrow
+\text{Generative Models}
+\rightarrow
+\text{RL}
+\rightarrow
+\text{LLM}
+\rightarrow
+\text{Agentic RL}
+$$
+
+六条线里有三条主要实验脉络：MNIST（深度学习与生成模型）、Gymnasium（强化学习）、TinyStories（语言模型）。Python 与 MLX 不单独设阶段，贯穿所有项目。
+
+## 如何使用本书
+
+本书与代码仓库是同一个课程的两条轨道，配套使用：
+
+- **讲义（本书）**：每个实验固定结构——理论问题、数学基础（含完整推导）、实现任务（代码接口与自测）、对照实验、预期图表、观测指标、结果分析、验收清单。
+- **代码（`code/`）**：每个实验一个独立的 uv 项目，TODO 骨架加自测红灯。先让自测变绿，再做对照实验，产出图表与 `metrics.json`。
+
+```bash
+cd code/lab01-pdf-and-covariance
+uv sync                 # 安装依赖
+uv run run_lab01.py     # 自测 -> 对照实验 -> output/
+```
+
+## 阅读顺序
+
+第一阶段（概率建模与信息论）是全课程的数学地基：Monte Carlo 估计会在强化学习阶段重新出现（策略梯度），KL 散度会在 VAE、PPO、DPO 中反复出现，最大似然与交叉熵的等价性是所有神经网络训练的理论内核。这些概念锚点在每章末尾的「概念接口预告」中都有标注，建议按顺序阅读，跳读时先看依赖地图（见课程总纲）。
+
+## 当前进度
+
+第一阶段五个实验的讲义与代码骨架已就绪；第二至第六阶段按总纲逐步展开，每完成一个阶段，其讲义会加入本书对应部分。
