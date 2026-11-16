@@ -8,11 +8,11 @@ __pycache__/
 # 实验产出（图表与 metrics.json 由代码重新生成）
 code/*/output/
 
-# Quarto
+# Quarto（均由 scripts/gen-quarto-yml.py 生成，不入库）
 /_book/
 /.quarto/
-/_quarto.yml        # 由 scripts/gen-quarto-yml.py 从 docs/manifest.yml 生成
-/index.qmd           # 由 landing（docs/preface.md）复制而成，同上
+/_quarto.yml
+/index.qmd
 
 # 系统
 .DS_Store
