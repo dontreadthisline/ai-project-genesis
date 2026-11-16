@@ -1,0 +1,12 @@
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# 实验产出（图表与 metrics.json 由代码重新生成）
+code/*/output/
+
+# 系统
+.DS_Store

@@ -1,0 +1,9 @@
+[project]
+name = "lab04-entropy-kl"
+version = "0.1.0"
+description = "实验 4：Entropy / Cross Entropy / KL / Brier Score"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]
