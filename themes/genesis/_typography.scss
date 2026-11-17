@@ -1,5 +1,6 @@
-/* 通用中文长文排版层 —— 无任何框架选择器，任何网站可直接引入复用
-   （本文件被 includes/typography.html 经 include-in-header 引入，晚于主题主样式加载） */
+// 通用中文长文排版层 —— 零 SCSS 特有语法、零框架选择器。
+// 由本模块的 quarto-theme.scss @use 编译进主题；跨站复用时把本文件拷出、
+// 改后缀为 .css 直接引入即可（内容即纯 CSS）。
 
 :root {
   --gen-font-serif: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", serif;

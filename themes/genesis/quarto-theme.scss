@@ -1,7 +1,9 @@
-// Quarto 专属适配层（叠在 litera 上）：
-// - scss:defaults 变量覆盖（须经 Quarto 的 dart-sass 编译）
-// - Quarto 结构选择器（sidebar / main.content 栏宽 / task-list）
-// 通用中文排版已剥离到 assets/typography.css（零框架依赖，可被任意站点复用）。
+// Genesis 主题模块（Quarto 适配层，叠在 litera 上）
+//
+// 模块自包含：quarto-theme.scss（本文件）+ _typography.scss（通用排版，@import 并入编译）
+// + includes/sidebar-toggle.html（阅读模式注入，DOM 耦合 Quarto，故归属本模块）。
+// 使用方（scripts/gen-quarto-yml.py 生成的 _quarto.yml）只引用本模块路径；
+// 换主题 = 新建 themes/<name>/ 同构目录 + 生成器改一个变量。
 
 /*-- scss:defaults --*/
 $font-family-serif: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", serif;
@@ -34,3 +36,7 @@ main.content {
 ul.task-list li {
   margin: 0.3em 0;
 }
+
+// 通用排版层：必须在文件末尾 import —— Quarto 把本文件内联进主题大 SCSS，
+// @import 的输出位置跟随书写位置，置于 rules 之后才能覆盖 litera/Bootstrap 默认。
+@import 'typography';

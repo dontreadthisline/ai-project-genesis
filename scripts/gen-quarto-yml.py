@@ -8,12 +8,17 @@
     内容文件与 manifest 不需要任何改动。
 """
 import sys
+import os
 from pathlib import Path
 
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "docs" / "manifest.yml"
+
+# 主题模块：换样式 = 换指向（环境变量 GENESIS_THEME 可覆盖，目录 themes/<name>/）
+THEME = os.environ.get("GENESIS_THEME", "genesis")
+THEME_DIR = ROOT / "themes" / THEME
 
 manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
 book = manifest["book"]
@@ -55,8 +60,8 @@ quarto = {
     },
     "format": {
         "html": {
-            "theme": ["litera", "assets/quarto-theme.scss"],
-            "include-in-header": ["includes/typography.html", "includes/sidebar-toggle.html"],
+            "theme": ["litera", str(THEME_DIR / "quarto-theme.scss")],
+            "include-in-header": str(THEME_DIR / "includes" / "sidebar-toggle.html"),
             "lang": "zh",
             "toc": True,
             "toc-depth": 3,
@@ -64,6 +69,10 @@ quarto = {
         }
     },
 }
+
+if not THEME_DIR.is_dir():
+    print(f"ERROR: 主题模块不存在: themes/{THEME}", file=sys.stderr)
+    sys.exit(1)
 
 out = ROOT / "_quarto.yml"
 out.write_text(
