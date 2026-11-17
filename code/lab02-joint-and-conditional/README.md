@@ -4,7 +4,7 @@
 
 ## 任务
 
-实现用 MLX（`mx.array`，随机数用 `mx.random.seed(0)` 全局种子）；NumPy 仅作 matplotlib 桥接（画图前 `np.array(mx_arr)`）。
+实现用 MLX（`mx.array`，随机数用 `mx.random.seed(0)` 全局种子）；Matplotlib 对 mx.array 零桥接直接可用，numpy 仅布尔索引取子数组时导入。
 
 1. 把 lab01 完成的三个分布函数复制进 `distributions.py`（文件内已标注）。
 2. 实现新增函数：`gaussian_conditional`（Schur 补）、`gaussian_mixture_sample`、`empirical_conditional`。

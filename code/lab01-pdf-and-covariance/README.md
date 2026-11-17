@@ -4,7 +4,7 @@
 
 ## 任务
 
-实现用 MLX（`mx.array`，随机数用 `mx.random.seed(0)` 全局种子）；NumPy 仅作 matplotlib 桥接（画图前 `np.array(mx_arr)`）。
+实现用 MLX（`mx.array`，随机数用 `mx.random.seed(0)` 全局种子）；Matplotlib 对 mx.array 零桥接直接可用，numpy 仅布尔索引取子数组时导入。
 
 实现 `distributions.py` 中的三个函数（TODO 骨架，公式见讲义 §1.2 / §1.3 / §2），然后完成 `run_lab01.py` 中的对照实验 E1-E6（讲义 §3）。
 

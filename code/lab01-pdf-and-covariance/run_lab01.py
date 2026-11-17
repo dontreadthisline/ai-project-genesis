@@ -11,7 +11,6 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np   # 仅画图桥接：np.array(mx_arr)
 
 import mlx.core as mx
 
@@ -102,8 +101,8 @@ def E4_bin_width(metrics: dict) -> None:
     raise NotImplementedError("TODO(lab01 E4)")
 
 
-def _bivariate_sigma(rho: float) -> np.ndarray:
-    return np.array([[1.0, rho], [rho, 1.0]])
+def _bivariate_sigma(rho: float) -> mx.array:
+    return mx.array([[1.0, rho], [rho, 1.0]])
 
 
 def E5_correlation(metrics: dict) -> None:

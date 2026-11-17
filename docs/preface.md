@@ -39,17 +39,17 @@ $$
 
 ## 实现约定：MLX 优先
 
-全书实验默认用 **MLX** 实现数组计算、模型与训练（`import mlx.core as mx`；神经网络用 `mlx.nn`）。NumPy 不再作为实现选项，仅限以下边界场景使用：
+全书实验默认用 **MLX** 实现数组计算、模型与训练（`import mlx.core as mx`；神经网络用 `mlx.nn`）。NumPy 不再作为实现选项，且实现代码通常不需要导入它：
 
-- **Matplotlib 桥接**：画图前 `np.array(mx_array)` 转换（matplotlib 不认 mlx 数组）；
+- **Matplotlib 画图零桥接**：mlx 实现了 `__array__` 协议，`plt.plot(mx_arr)`、`ax.hist(mx_arr)` 直接可用，无需任何转换；
 - **数据边界**：文件下载与字节解析（如 MNIST idx 格式）、Gymnasium 观测的搬运；
-- **缺失原语的明确标注**：个别统计原语 MLX 暂缺时，讲义会明确标注「NumPy 边界」及原因，不允许默默回退。
+- **缺失原语的明确标注**：个别统计原语 MLX 暂缺时，讲义会明确标注「NumPy 边界」及原因，不允许默默回退。（注：mlx 0.32 无 `to_numpy` 方法；标量取值用 `.item()`，转 Python 列表用 `.tolist()`。）
 
 本环境实测（mlx 0.32）的三个已知局限及标准应对，全书统一遵守：
 
 - **fp64 不支持 GPU**。本阶段需要 fp64 做数值梯度检验与闭式对照，脚本开头统一 `mx.set_default_device(mx.cpu)`；第一阶段全是小规模统计计算，CPU 没有性能损失。GPU 从第二阶段大规模张量运算（全 fp32）开始使用。
 - **`mx.linalg` 四件套（`slogdet / solve / cholesky / eigh`）不支持 GPU**，必须显式传 `stream=mx.cpu`，否则抛错。
-- **布尔索引不支持**（`a[mask]` 报错）。两类替代：求和场景用 `mx.sum(mx.where(mask, vals, 0.0))`；取子数组场景用 NumPy 桥接 `mx.array(np.array(a)[np.array(mask)])`（这是合法的「NumPy 边界」用法）。
+- **布尔索引不支持**（`a[mask]` 报错）。两类替代：求和场景用 `mx.sum(mx.where(mask, vals, 0.0))`；取子数组场景用 NumPy 桥接 `np.array(a)[np.array(mask)]`（这是全书唯一需要导入 numpy 的场景），或纯 Python 列表推导 `[v for v, m in zip(a.tolist(), mask.tolist()) if m]`。
 
 随机数约定：每个实验脚本开头 `mx.random.seed(0)`（全局 PRNG），函数签名不携带随机状态；需要严格函数式复现时改用 `mx.random.key()` / `mx.random.split()`。惰性求值提醒：打印、比较、绘图前需要 `mx.eval()` 强制求值。
 

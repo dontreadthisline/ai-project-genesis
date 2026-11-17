@@ -33,7 +33,7 @@ cd genesis-stage1
 uv add mlx numpy matplotlib
 ```
 
-`mlx` 是实现主力（数组计算与随机采样），`numpy` 仅作 Matplotlib 桥接（`np.array(mx_array)`）与数据边界，`matplotlib` 负责可视化。实现约定详见书的前言（「实现约定：MLX 优先」一节）。
+`mlx` 是实现主力（数组计算与随机采样）；Matplotlib 对 mx.array 零桥接直接可用（mlx 实现了 `__array__` 协议），numpy 仅在极少数边界（布尔索引取子数组）才会导入。实现约定详见书的前言（「实现约定：MLX 优先」一节）。
 
 统一随机数约定：所有实验脚本开头 `mx.random.seed(0)`（全局 PRNG），保证结果可复现；函数签名不携带随机状态。惰性求值：打印、比较、画图前 `mx.eval()`。
 
@@ -73,6 +73,6 @@ uv run run_lab01.py
 ## MLX 与 NumPy 的边界
 
 - 分布密度、采样线性变换、统计量、信息度量：全部 MLX 实现。
-- Matplotlib 画图：`np.array(mx_arr)` 桥接后交给 matplotlib。
-- MLX 暂缺的原语（如 `dirichlet`、`choice`）：讲义在对应位置给出手写替代（往往是更好的练习）。
+- Matplotlib 画图：零桥接，`plt.plot(mx_arr)` 直接可用（mlx 实现了 `__array__` 协议）。
+- MLX 暂缺的原语（如 `dirichlet`、`choice`、`trapezoid`、`cov`）：讲义在对应位置给出手写替代（往往是更好的练习）。
 - 本阶段结束时应当熟悉的 MLX 语义：惰性求值与 `mx.eval`、`dtype`（fp32 默认、fp64 检验）、`mx.linalg`（cholesky/solve/slogdet）、`mx.random`（seed/normal/uniform/bernoulli）。

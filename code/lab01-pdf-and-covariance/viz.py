@@ -1,15 +1,14 @@
 """Lab 01 绘图辅助。图表规格见讲义 §4（预期图表）。
 
-桥接约定：matplotlib 不认 mlx 数组，画图前统一 np.array(mx_arr) 转换。
+桥接约定：matplotlib 直接接受 mx.array（mlx 实现了 `__array__` 协议），无需任何转换；
+标量取值用 .item()，转 Python 列表用 .tolist()。
 """
-import numpy as np
-
 
 def plot_pdf_and_hist(ax, samples, pdf_fn, bins: int = 40, title: str = "") -> None:
     """图 2/图 3 用：样本直方图（density=True）+ 真实 PDF 曲线叠加。
 
-    samples 为 mx.array：先 np.array(samples) 桥接。
-    PDF 曲线的 x 网格取 samples.min()..max() 外扩 10%（mx.linspace 生成后桥接）。
+    samples 为 mx.array，可直接传给 ax.hist（零桥接）。
+    PDF 曲线的 x 网格取 samples.min()..max() 外扩 10%（mx.linspace 生成）。
     """
     raise NotImplementedError("TODO(lab01 图 2/3): ax.hist(..., density=True) + ax.plot")
 

@@ -10,7 +10,6 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np   # 仅画图桥接：np.array(mx_arr)
 
 import mlx.core as mx
 

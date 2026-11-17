@@ -10,7 +10,6 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np   # 仅画图桥接：np.array(mx_arr)
 
 import mlx.core as mx
 
@@ -92,10 +91,12 @@ def E4_map_shrinkage(metrics: dict) -> None:
 
 
 def E5_misspecification(metrics: dict) -> None:
-    """E5：数据改从 t3（rng.standard_t(3, n)*np.sqrt(4/3)，校准方差 4），拟合仍是高斯 MLE。
+    """E5：数据改为污染高斯 90% N(3,4) + 10% N(3,36)（重尾，MLX 直接可实现：
+    对 10% 的样本乘 3 倍噪声），拟合仍是高斯 MLE。混合方差 = 0.9*4 + 0.1*36 = 8.4，
+    预期 sigma2_hat 收敛到 8.4 附近而非 4（KL 投影）。
 
-    对比高斯数据与 t 数据下 sigma2_hat 的抽样分布（讲义图 5）：
-    metrics['E5_misspec'] = {"gaussian_data_mean_s2hat":..., "t_data_mean_s2hat":...}
+    对比干净高斯与污染数据下 sigma2_hat 的抽样分布（讲义图 5）：
+    metrics['E5_misspec'] = {"gaussian_data_mean_s2hat":..., "contaminated_data_mean_s2hat":...}
     """
     raise NotImplementedError("TODO(lab05 E5)")
 
