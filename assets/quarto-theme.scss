@@ -1,5 +1,7 @@
-// 中文教材排版定制（叠加在 litera 主题之上）
-// litera: 衬线标题 + 干净正文，是 Bootswatch 里最接近书籍气质的主题
+// Quarto 专属适配层（叠在 litera 上）：
+// - scss:defaults 变量覆盖（须经 Quarto 的 dart-sass 编译）
+// - Quarto 结构选择器（sidebar / main.content 栏宽 / task-list）
+// 通用中文排版已剥离到 assets/typography.css（零框架依赖，可被任意站点复用）。
 
 /*-- scss:defaults --*/
 $font-family-serif: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", serif;
@@ -12,74 +14,11 @@ $h3-font-size: 1.18rem;
 
 /*-- scss:rules --*/
 
-// 正文：中文长文阅读参数
-body {
-  font-family: $font-family-sans;
-  font-size: 1.02rem;
-  line-height: 1.85;
-  letter-spacing: 0.01em;
-}
-
-// 标题：衬线，层级对比
-h1, h2, h3, h4 {
-  font-family: $font-family-serif;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-h2 {
-  margin-top: 2.2em;
-  padding-bottom: 0.3em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-// 正文主栏宽度：阅读行长控制
+// 正文主栏宽度：阅读行长控制（导航态）
 main.content {
   max-width: 46rem;
   padding-left: 2rem;
   padding-right: 2rem;
-}
-
-// 段落间距（中文段落间空一行感）
-p {
-  margin-bottom: 1.05em;
-}
-
-// 公式块与正文呼吸
-div.math.display, .MathJax_Display, mjx-container[jax="SVG"][display="true"] {
-  margin: 1.1em 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: 2px;
-}
-
-// 行内公式不要撑高行距
-mjx-container[jax="SVG"] {
-  vertical-align: -0.14em;
-}
-
-// 表格：教材风（上下边框 + 细横线）
-table {
-  font-size: 0.94em;
-  border-top: 2px solid rgba(0, 0, 0, 0.75);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.75);
-  th {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.35);
-    font-family: $font-family-sans;
-  }
-  td { border: none; }
-}
-
-// 代码块：紧凑
-pre.sourceCode, div.sourceCode {
-  font-size: 0.88em;
-  line-height: 1.55;
-  border-radius: 4px;
-}
-
-code {
-  font-family: $font-family-monospace;
-  font-size: 0.88em;
 }
 
 // 侧边栏：书目录感（稍窄、层级清晰）

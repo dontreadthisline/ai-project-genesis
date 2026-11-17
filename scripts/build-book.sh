@@ -11,8 +11,9 @@ cd "$(dirname "$0")/.."
 python3 scripts/gen-quarto-yml.py
 quarto render
 
-mkdir -p _book/site_libs/mathjax
+mkdir -p _book/site_libs/mathjax _book/site_libs/typography
 cp assets/mathjax/tex-svg-full.js _book/site_libs/mathjax/
+cp assets/typography.css _book/site_libs/typography/
 
 python3 - <<'PY'
 from pathlib import Path
@@ -25,13 +26,14 @@ for html in book.rglob("*.html"):
     prefix = "../" * depth
     text = html.read_text(encoding="utf-8")
     text = text.replace(cdn_mathjax, f"{prefix}site_libs/mathjax/tex-svg-full.js")
+    text = text.replace("__TYPOGRAPHY_CSS__", f"{prefix}site_libs/typography/typography.css")
     lines = [ln for ln in text.splitlines() if "cdnjs.cloudflare.com/polyfill" not in ln]
     html.write_text("\n".join(lines) + "\n", encoding="utf-8")
 PY
 
-# 校验 1：不允许残留任何外部 CDN 引用
-if grep -rE 'cdn\.jsdelivr\.net|cdnjs\.cloudflare' _book --include='*.html' | grep -q .; then
-    echo "ERROR: 仍有 CDN 引用残留" >&2
+# 校验 1：不允许残留任何外部 CDN 引用与未改写的占位符
+if grep -rE 'cdn\.jsdelivr\.net|cdnjs\.cloudflare|__TYPOGRAPHY_CSS__' _book --include='*.html' | grep -q .; then
+    echo "ERROR: 仍有 CDN 引用或占位符残留" >&2
     exit 1
 fi
 
