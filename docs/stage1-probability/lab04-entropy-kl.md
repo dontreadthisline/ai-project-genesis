@@ -4,7 +4,7 @@ subtitle: "Entropy / Cross Entropy / KL / Brier Score"
 lab: 4
 ---
 
-对应大纲实验 4。依赖：NumPy。产出：`experiments/lab04_information_metrics.py`。本实验是所有分类损失（实验 6）、KL 正则（实验 15/30/39）的数学前置。
+对应大纲实验 4。依赖：MLX。产出：`run_lab04.py`。本实验是所有分类损失（实验 6）、KL 正则（实验 15/30/39）的数学前置。
 
 ## 0. 理论问题
 
@@ -98,36 +98,46 @@ $$
 在 `metrics.py` 中：
 
 ```python
-import numpy as np
+import mlx.core as mx
 
 _EPS = 1e-12
 
-def entropy(p: np.ndarray) -> float:
-    """H(P)，nats。输入为概率向量。约定 0*log0 = 0。"""
+def entropy(p) -> float:
+    """H(P)，nats。输入为概率向量（mx.array）。约定 0*log0 = 0。
+    0*log0 处理：MX 不支持布尔索引，用 mx.where(mask, p*log_p, 0.0) 后求和。"""
     ...
 
-def cross_entropy(p: np.ndarray, q: np.ndarray) -> float:
-    """H(P, Q)。当 P(x)>0 而 Q(x)=0 时应返回 inf（不许用 eps 截断掩盖这个行为，
-    但实现里可用 eps 防止 log(0) 的 NaN——思考两者区别并写进报告）。"""
+def cross_entropy(p, q) -> float:
+    """H(P, Q)。当 P(x)>0 而 Q(x)=0 时应返回 inf（用 mx.isinf 可测；
+    不许用 eps 截断掩盖这个行为，但实现里可用 eps 防止 log(0) 的 NaN——
+    思考两者区别并写进报告）。"""
     ...
 
-def kl_divergence(p: np.ndarray, q: np.ndarray) -> float:
+def kl_divergence(p, q) -> float:
     """D_KL(P||Q)。要求实现方式为 sum(p * (log p - log q)) 并正确处理 p=0 的项。"""
     ...
 
-def brier_score(q: np.ndarray, y: int) -> float:
+def brier_score(q, y: int) -> float:
     """多分类 Brier：sum_k (q_k - 1[k==y])^2。"""
     ...
 ```
 
-自测：
+自测（fp64，恒等式与闭式对照需要高于 fp32 的精度）：
 
 ```python
-import numpy as np
+import math
+import mlx.core as mx
+
+mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
+mx.random.seed(0)
+
+def random_simplex(k, dtype=mx.float64):
+    """随机概率向量。MLX 无 dirichlet：归一化均匀数即可（自测只需任意随机分布）。"""
+    u = mx.random.uniform(shape=(k,)).astype(dtype)
+    return u / u.sum()
 
 # T1: 恒等式 H(P,Q) = H(P) + KL(P||Q) 对随机分布成立
-rng = np.random.default_rng(0)
-p = rng.dirichlet([1]*5); q = rng.dirichlet([1]*5)
+p = random_simplex(5); q = random_simplex(5)
 lhs = cross_entropy(p, q); rhs = entropy(p) + kl_divergence(p, q)
 assert abs(lhs - rhs) < 1e-10
 
@@ -136,18 +146,18 @@ assert kl_divergence(p, p) == 0.0
 assert kl_divergence(p, q) >= 0.0
 
 # T3: 均匀分布熵 = log K
-u = np.ones(5)/5
-assert abs(entropy(u) - np.log(5)) < 1e-12
+u = mx.ones((5,), dtype=mx.float64) / 5
+assert abs(entropy(u) - math.log(5)) < 1e-12
 
 # T4: 确定性分布熵 = 0
-assert entropy(np.array([0.0, 1.0, 0.0])) == 0.0
+assert entropy(mx.array([0.0, 1.0, 0.0], dtype=mx.float64)) == 0.0
 
-# T5: 支撑违规 -> inf
-p_bad = np.array([0.5, 0.5, 0.0]); q_bad = np.array([0.7, 0.0, 0.3])
-assert np.isinf(cross_entropy(p_bad, q_bad))
+# T5: 支撑违规 -> inf（mx.isinf）
+p_bad = mx.array([0.5, 0.5, 0.0]); q_bad = mx.array([0.7, 0.0, 0.3])
+assert mx.isinf(cross_entropy(p_bad, q_bad)).item()
 
 # T6: 手算对照（1.3 的例子）
-P = np.array([0.5, 0.5]); Q = np.array([0.99, 0.01])
+P = mx.array([0.5, 0.5]); Q = mx.array([0.99, 0.01])
 assert abs(kl_divergence(P, Q) - 1.6144) < 5e-3
 assert abs(kl_divergence(Q, P) - 0.6372) < 5e-3
 ```

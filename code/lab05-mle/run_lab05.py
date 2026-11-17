@@ -10,7 +10,9 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np   # 仅画图桥接：np.array(mx_arr)
+
+import mlx.core as mx
 
 from estimators import gaussian_map, gaussian_mle, gaussian_nll
 
@@ -24,24 +26,30 @@ TRUE_MU, TRUE_SIGMA2 = 3.0, 4.0
 
 
 def check_implementation() -> None:
-    rng = np.random.default_rng(0)
+    import math
 
-    # T1: 闭式解确实是 NLL 最小值 —— 网格搜索对照
-    x = rng.normal(1.5, 2.0, size=500)
+    mx.set_default_device(mx.cpu)   # 本阶段：fp64 检验与 linalg 均需 CPU
+    mx.random.seed(0)
+
+    # T1: 闭式解确实是 NLL 最小值 —— 向量化网格搜索对照（惰性求值下比逐点循环快得多）
+    x = 1.5 + 2.0 * mx.random.normal((500,), dtype=mx.float64)   # mean=1.5, var=4
     mu_hat, s2_hat = gaussian_mle(x)
-    mus = np.linspace(1.2, 1.8, 81)
-    s2s = np.linspace(3.4, 4.4, 101)
-    grid = np.array([[gaussian_nll((m, s), x) for s in s2s] for m in mus])
-    i, j = np.unravel_index(grid.argmin(), grid.shape)
-    assert abs(mus[i] - mu_hat) < 0.01 and abs(s2s[j] - s2_hat) < 0.01
+    ms = mx.linspace(1.2, 1.8, 81)[:, None, None]               # (81,1,1)
+    ss = mx.linspace(3.4, 4.4, 101)[None, :, None]              # (1,101,1)
+    xc = x[None, None, :]                                       # (1,1,500)
+    nll = mx.mean(0.5 * (math.log(2 * math.pi) + mx.log(ss) + (xc - ms) ** 2 / ss), axis=2)
+    idx = int(mx.argmin(nll.reshape(-1)).item())
+    i, j = divmod(idx, 101)
+    assert abs(float(ms[i, 0, 0]) - mu_hat) < 0.01 and abs(float(ss[0, j, 0]) - s2_hat) < 0.01
 
-    # T2: 精度对照（NumPy 默认 ddof=0）
-    assert abs(mu_hat - x.mean()) < 1e-12
-    assert abs(s2_hat - x.var()) < 1e-12
+    # T2: 精度对照（ddof=0）
+    assert abs(mu_hat - x.mean().item()) < 1e-12
+    assert abs(s2_hat - x.var().item()) < 1e-12
 
     # T3: MAP 收敛检查：n 大时 MAP -> MLE；强先验时 MAP -> mu0
-    big = rng.normal(5.0, 1.0, size=100_000)
-    assert abs(gaussian_map(big, mu0=0.0, tau2=1.0, sigma2=1.0) - big.mean()) < 1e-3
+    big = 5.0 + 1.0 * mx.random.normal((100_000,))
+    mx.eval(big)
+    assert abs(gaussian_map(big, mu0=0.0, tau2=1.0, sigma2=1.0) - big.mean().item()) < 1e-3
     assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
 
     print("[check] T1-T3 全部通过")

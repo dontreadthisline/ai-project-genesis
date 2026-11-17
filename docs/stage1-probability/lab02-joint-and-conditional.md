@@ -3,7 +3,7 @@ title: "Lab 02：联合分布与条件分布"
 lab: 2
 ---
 
-对应大纲实验 2。依赖：Lab 01 的 `distributions.py`。产出：`experiments/lab02_joint_conditional.py`。
+对应大纲实验 2。依赖：Lab 01 的 `distributions.py`。产出：`run_lab02.py`。
 
 ## 0. 理论问题
 
@@ -93,6 +93,8 @@ $$
 在 `distributions.py` 中补充：
 
 ```python
+import mlx.core as mx
+
 def gaussian_conditional(mu, Sigma, x_obs, obs_idx: int = 0):
     """已知多维高斯 N(mu, Sigma)，观测其中 obs_idx 维为 x_obs，
     返回剩余维度的 (cond_mean, cond_cov)。
@@ -100,38 +102,51 @@ def gaussian_conditional(mu, Sigma, x_obs, obs_idx: int = 0):
         Sigma = [[A, B], [B^T, C]]（A 对应观测维，C 对应剩余维）
         cond_mean = mu_rest + B^T A^{-1} (x_obs - mu_obs)
         cond_cov  = C - B^T A^{-1} B        （Schur 补）
-    禁止 for 循环调 grid；用 np.linalg.solve。"""
+    禁止 for 循环调 grid；用 mx.linalg.solve（stream=mx.cpu，linalg 不支持 GPU）。"""
     ...
 
-def gaussian_mixture_sample(rng, weights, mus, Sigmas, n):
-    """从混合高斯采样：先按 weights 抽成分（rng.choice），再从对应高斯采样。"""
+def gaussian_mixture_sample(weights, mus, Sigmas, n: int):
+    """从混合高斯采样：先按 weights 抽成分，再从对应高斯采样。
+    MLX 无 rng.choice：采样 u ~ mx.random.uniform((n,))，与累积权重
+    （mx.cumsum）比较决定每个样本的成分。"""
+    ...
+
+def empirical_conditional(samples, x0: float, delta: float, obs_idx: int = 0):
+    """经验条件分布（讲义 §1.4）：取窄带 |samples[:,obs_idx] - x0| <= delta 内的样本。
+    MX 不支持布尔索引：取子数组用 NumPy 桥接
+    mask = np.array(mx.abs(...) <= delta)；sub = mx.array(np.array(samples)[mask])。
+    返回 (其余维度样本, 带内样本数)。"""
     ...
 ```
 
-自测：
+自测（fp64；`sample_cov` 复用 Lab 01）：
 
 ```python
-rng = np.random.default_rng(0)
+import mlx.core as mx
+
+mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
+mx.random.seed(0)
 
 # T1: 与 1.2 手推公式对照（rho=0.6, sx=1.5, sy=0.8, x0=1.2）
-mu = np.zeros(2)
+mu = mx.zeros((2,))
 sx, sy, rho = 1.5, 0.8, 0.6
-Sigma = np.array([[sx**2, rho*sx*sy], [rho*sx*sy, sy**2]])
+Sigma = mx.array([[sx**2, rho*sx*sy], [rho*sx*sy, sy**2]], dtype=mx.float64)
 m, S = gaussian_conditional(mu, Sigma, x_obs=1.2, obs_idx=0)
-assert abs(m[0] - rho*sy/sx*1.2) < 1e-12
-assert abs(S[0, 0] - sy**2*(1 - rho**2)) < 1e-12
+assert abs(m[0].item() - rho*sy/sx*1.2) < 1e-12
+assert abs(S[0, 0].item() - sy**2*(1 - rho**2)) < 1e-12
 
 # T2: rho -> 0 时条件分布退化为边缘
-Sigma0 = np.array([[1.0, 0.0], [0.0, 2.0]])
-m0, S0 = gaussian_conditional(np.zeros(2), Sigma0, x_obs=3.0, obs_idx=0)
-assert abs(m0[0]) < 1e-12 and abs(S0[0,0] - 2.0) < 1e-12
+Sigma0 = mx.array([[1.0, 0.0], [0.0, 2.0]], dtype=mx.float64)
+m0, S0 = gaussian_conditional(mx.zeros((2,)), Sigma0, x_obs=3.0, obs_idx=0)
+assert abs(m0[0].item()) < 1e-12 and abs(S0[0,0].item() - 2.0) < 1e-12
 
 # T3: 混合高斯边缘校验（反例 B）：边缘均值 0、方差 1（n=400_000，容差 0.02）
-Sigma_p = np.array([[1.0, 0.9], [0.9, 1.0]])
-Sigma_m = np.array([[1.0, -0.9], [-0.9, 1.0]])
-XY = gaussian_mixture_sample(rng, [0.5, 0.5], [np.zeros(2)]*2, [Sigma_p, Sigma_m], 400_000)
-assert abs(XY[:,0].mean()) < 0.01 and abs(XY[:,0].var() - 1.0) < 0.02
-assert abs(np.cov(XY.T)[0,1]) < 0.02          # 整体协方差近似为零，但结构是 X 形
+Sigma_p = mx.array([[1.0, 0.9], [0.9, 1.0]])
+Sigma_m = mx.array([[1.0, -0.9], [-0.9, 1.0]])
+XY = gaussian_mixture_sample([0.5, 0.5], [mx.zeros((2,))]*2, [Sigma_p, Sigma_m], 400_000)
+mx.eval(XY)
+assert abs(XY[:,0].mean().item()) < 0.01 and abs(XY[:,0].var().item() - 1.0) < 0.02
+assert abs(sample_cov(XY)[0,1].item()) < 0.02   # 整体协方差近似为零，但结构是 X 形
 ```
 
 ## 3. 对照实验设计

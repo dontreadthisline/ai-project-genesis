@@ -3,7 +3,7 @@ title: "Lab 01：一维与二维概率分布"
 lab: 1
 ---
 
-对应大纲实验 1。依赖：NumPy、Matplotlib。产出：`experiments/lab01_1d_2d_gaussian.py`、图表、`metrics.json`。
+对应大纲实验 1。依赖：MLX（实现）、NumPy（仅画图桥接）、Matplotlib。产出：`run_lab01.py`、图表、`metrics.json`。
 
 ## 0. 理论问题
 
@@ -97,50 +97,71 @@ $$
 
 ## 2. 实现任务
 
-创建 `probkit/distributions.py`：
+创建 `distributions.py`：
 
 ```python
-import numpy as np
+import mlx.core as mx
 
-def univariate_gaussian_pdf(x, mu: float, sigma: float) -> np.ndarray:
-    """一维高斯密度。x: array_like。禁止调用 scipy。"""
+def univariate_gaussian_pdf(x, mu: float, sigma: float) -> mx.array:
+    """一维高斯密度。x: mx.array 或标量。禁止调用 scipy。"""
     # TODO: 按公式 1.2 实现
     ...
 
-def multivariate_gaussian_pdf(xs: np.ndarray, mu: np.ndarray, Sigma: np.ndarray) -> np.ndarray:
-    """多维高斯密度。xs: (N, d)，mu: (d,)，Sigma: (d, d)。
-    提示：用 np.linalg.slogdet 计算行列式（数值稳定），用 np.linalg.solve 解线性方程组，
-    禁止直接调用 np.linalg.inv。"""
+def multivariate_gaussian_pdf(xs, mu, Sigma) -> mx.array:
+    """多维高斯密度。xs: (N, d)，mu: (d,)，Sigma: (d, d)，返回 (N,)。
+    提示：用 mx.linalg.slogdet 计算行列式（数值稳定），用 mx.linalg.solve 解线性方程组，
+    禁止直接调用 mx.linalg.inv。注意：linalg 四件套不支持 GPU，
+    必须显式传 stream=mx.cpu（见前言实测局限）。"""
     ...
 
-def sample_multivariate_gaussian(rng, mu, Sigma, n: int) -> np.ndarray:
-    """从 N(mu, Sigma) 采样 n 个点：先采样 z ~ N(0, I)，再线性变换 x = mu + L z，
-    其中 L 是 Sigma 的 Cholesky 分解 Sigma = L L^T。说明为什么这样得到的协方差正好是 Sigma。"""
+def sample_multivariate_gaussian(mu, Sigma, n: int) -> mx.array:
+    """从 N(mu, Sigma) 采样 n 个点：先采样 z ~ N(0, I)（mx.random.normal），
+    再线性变换 x = mu + L z，其中 L 是 Sigma 的 Cholesky 分解
+    （mx.linalg.cholesky(Sigma, stream=mx.cpu)）。
+    说明为什么这样得到的协方差正好是 Sigma。"""
     ...
 ```
 
-自测（实现正确性的判定标准，放进 `experiments/lab01_1d_2d_gaussian.py` 开头）：
+自测（实现正确性的判定标准，放进 `run_lab01.py` 开头；MLX 无 trapezoid/cov，手写本身就是练习）：
 
 ```python
-rng = np.random.default_rng(0)
+import math
+import mlx.core as mx
 
-# T1: 数值积分验证归一化（梯形法则，容差 1e-8）
-x = np.linspace(-12, 12, 200_001)
-assert abs(np.trapezoid(univariate_gaussian_pdf(x, 2.0, 3.0), x) - 1.0) < 1e-8
+mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
+mx.random.seed(0)
+
+def trapezoid(y, x):
+    """梯形积分（MLX 无 np.trapezoid 的对应物，手写）。"""
+    return mx.sum((x[1:] - x[:-1]) * (y[1:] + y[:-1]) / 2.0)
+
+def sample_cov(X):
+    """样本协方差（MLX 无 cov，手写，ddof=1）。"""
+    Xc = X - X.mean(axis=0)
+    return (Xc.T @ Xc) / (X.shape[0] - 1)
+
+# T1: 数值积分验证归一化（fp64，容差 1e-8）
+x = mx.linspace(-12, 12, 200_001, dtype=mx.float64)
+y = univariate_gaussian_pdf(x, 2.0, 3.0)
+assert abs(trapezoid(y, x).item() - 1.0) < 1e-8
 
 # T2: 二维密度在均值处取最大值
-Sigma = np.array([[2.0, 0.6], [0.6, 1.0]])
-pts = rng.normal(size=(5000, 2)) @ np.linalg.cholesky(Sigma) + np.array([1.0, -1.0])
-vals = multivariate_gaussian_pdf(pts, np.array([1.0, -1.0]), Sigma)
-assert multivariate_gaussian_pdf(np.array([[1.0, -1.0]]), np.array([1.0, -1.0]), Sigma)[0] >= vals.max() - 1e-12
+Sigma = mx.array([[2.0, 0.6], [0.6, 1.0]])
+mu2 = mx.array([1.0, -1.0])
+pts = mx.random.normal((5000, 2)) @ mx.linalg.cholesky(Sigma, stream=mx.cpu) + mu2
+vals = multivariate_gaussian_pdf(pts, mu2, Sigma)
+mx.eval(vals)
+assert multivariate_gaussian_pdf(mu2[None, :], mu2, Sigma).item() >= vals.max().item() - 1e-12
 
 # T3: 采样协方差收敛于 Sigma（n=200_000，逐项容差 0.05）
-X = sample_multivariate_gaussian(rng, np.array([1.0, -1.0]), Sigma, 200_000)
-assert np.allclose(X.mean(axis=0), [1.0, -1.0], atol=0.03)
-assert np.allclose(np.cov(X.T), Sigma, atol=0.05)
+X = sample_multivariate_gaussian(mu2, Sigma, 200_000)
+mx.eval(X)
+assert mx.allclose(X.mean(axis=0), mu2, atol=0.03)
+assert mx.allclose(sample_cov(X), Sigma, atol=0.05)
 
 # T4: 与手算对照 —— 标准正态在 0 处密度 = 1/sqrt(2*pi)
-assert abs(univariate_gaussian_pdf(0.0, 0.0, 1.0) - 1/np.sqrt(2*np.pi)) < 1e-12
+assert abs(univariate_gaussian_pdf(mx.array(0.0), 0.0, 1.0).item()
+           - 1 / math.sqrt(2 * math.pi)) < 1e-12
 ```
 
 ## 3. 对照实验设计

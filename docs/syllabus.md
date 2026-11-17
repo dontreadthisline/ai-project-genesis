@@ -168,7 +168,7 @@ $$
 
 | 阶段 | 工程要求 |
 |---|---|
-| 概率实验 | NumPy、MLX Array、Matplotlib、随机采样 |
+| 概率实验 | MLX 数组与随机采样、Matplotlib（桥接）、数值统计 |
 | 深度学习 | Module、自动微分、Optimizer、训练循环 |
 | 生成模型 | Sampling、数值稳定性、计算图与梯度 |
 | 强化学习 | Gymnasium、Rollout、Replay Buffer、环境管理 |

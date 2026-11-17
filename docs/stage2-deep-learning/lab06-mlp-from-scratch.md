@@ -57,16 +57,16 @@ $$
 
 ## 2. 实现任务
 
-结构 $784 \to 256 \to 128 \to 10$，激活 ReLU，输出交叉熵。**不用框架自动微分**：手写 forward/backward（可用 MLX 的 `mx.array` 做张量运算，但不调用 `mx.grad`；纯 NumPy 亦可）。
+结构 $784 \to 256 \to 128 \to 10$，激活 ReLU，输出交叉熵。**用 MLX 实现**（`mx.array` 张量运算），但**不用框架自动微分**：手写 forward/backward，不调用 `mx.grad`。数值梯度检验用 `dtype=mx.float64`（MLX 的 fp64 在 CPU 流水线执行，精度满足 $10^{-6}$ 相对误差）。
 
 ```python
 class Linear:
-    def __init__(self, fan_in, fan_out, rng): ...   # He 初始化 W, 零初始化 b
+    def __init__(self, fan_in, fan_out): ...   # He 初始化 W, 零初始化 b
     def forward(self, x): ...                       # 缓存 x
     def backward(self, grad_out): ...               # 返回 grad_in，累积 self.dW/db
 
 class MLP:
-    def __init__(self, sizes, rng): ...             # 逐层 Linear + ReLU
+    def __init__(self, sizes): ...             # 逐层 Linear + ReLU
     def forward(self, x): ...
     def backward(self, grad): ...                   # 逆序 VJP
     def params_grads(self): ...                     # [(W, b, dW, db), ...]

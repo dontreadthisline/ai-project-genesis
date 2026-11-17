@@ -10,7 +10,9 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np   # 仅画图桥接：np.array(mx_arr)
+
+import mlx.core as mx
 
 from distributions import (
     empirical_conditional,
@@ -26,28 +28,36 @@ FIGURES = OUTPUT / "figures"
 # ---------------------------------------------------------------- 自测（讲义 §2）
 
 
-def check_implementation() -> None:
-    rng = np.random.default_rng(0)
+def sample_cov(X):
+    """样本协方差（复制自 lab01，ddof=1）。"""
+    Xc = X - X.mean(axis=0)
+    return (Xc.T @ Xc) / (X.shape[0] - 1)
 
-    # T1: 与 §1.2 手推公式对照（rho=0.6, sx=1.5, sy=0.8, x0=1.2）
-    mu = np.zeros(2)
+
+def check_implementation() -> None:
+    mx.set_default_device(mx.cpu)   # 本阶段：fp64 检验与 linalg 均需 CPU
+    mx.random.seed(0)
+
+    # T1: 与 §1.2 手推公式对照（rho=0.6, sx=1.5, sy=0.8, x0=1.2；fp64）
+    mu = mx.zeros((2,))
     sx, sy, rho = 1.5, 0.8, 0.6
-    Sigma = np.array([[sx**2, rho * sx * sy], [rho * sx * sy, sy**2]])
+    Sigma = mx.array([[sx**2, rho * sx * sy], [rho * sx * sy, sy**2]], dtype=mx.float64)
     m, S = gaussian_conditional(mu, Sigma, x_obs=1.2, obs_idx=0)
-    assert abs(m[0] - rho * sy / sx * 1.2) < 1e-12
-    assert abs(S[0, 0] - sy**2 * (1 - rho**2)) < 1e-12
+    assert abs(m[0].item() - rho * sy / sx * 1.2) < 1e-12
+    assert abs(S[0, 0].item() - sy**2 * (1 - rho**2)) < 1e-12
 
     # T2: rho -> 0 时条件分布退化为边缘
-    Sigma0 = np.array([[1.0, 0.0], [0.0, 2.0]])
-    m0, S0 = gaussian_conditional(np.zeros(2), Sigma0, x_obs=3.0, obs_idx=0)
-    assert abs(m0[0]) < 1e-12 and abs(S0[0, 0] - 2.0) < 1e-12
+    Sigma0 = mx.array([[1.0, 0.0], [0.0, 2.0]], dtype=mx.float64)
+    m0, S0 = gaussian_conditional(mx.zeros((2,)), Sigma0, x_obs=3.0, obs_idx=0)
+    assert abs(m0[0].item()) < 1e-12 and abs(S0[0, 0].item() - 2.0) < 1e-12
 
     # T3: 混合高斯边缘校验（反例 B）：边缘均值 0、方差 1，整体协方差近似为零
-    Sigma_p = np.array([[1.0, 0.9], [0.9, 1.0]])
-    Sigma_m = np.array([[1.0, -0.9], [-0.9, 1.0]])
-    XY = gaussian_mixture_sample(rng, [0.5, 0.5], [np.zeros(2)] * 2, [Sigma_p, Sigma_m], 400_000)
-    assert abs(XY[:, 0].mean()) < 0.01 and abs(XY[:, 0].var() - 1.0) < 0.02
-    assert abs(np.cov(XY.T)[0, 1]) < 0.02
+    Sigma_p = mx.array([[1.0, 0.9], [0.9, 1.0]])
+    Sigma_m = mx.array([[1.0, -0.9], [-0.9, 1.0]])
+    XY = gaussian_mixture_sample([0.5, 0.5], [mx.zeros((2,))] * 2, [Sigma_p, Sigma_m], 400_000)
+    mx.eval(XY)
+    assert abs(XY[:, 0].mean().item()) < 0.01 and abs(XY[:, 0].var().item() - 1.0) < 0.02
+    assert abs(sample_cov(XY)[0, 1].item()) < 0.02
 
     print("[check] T1-T3 全部通过")
 

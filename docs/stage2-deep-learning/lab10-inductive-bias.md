@@ -37,7 +37,7 @@ $$
 ## 2. 实现任务
 
 ```python
-def make_permutation(rng, n=784): ...        # 固定置换，训练/测试共用
+def make_permutation( n=784): ...        # 固定置换，训练/测试共用
 def permute_dataset(X, perm): ...            # X (N, 28, 28) -> 打乱后 reshape 回
 ```
 

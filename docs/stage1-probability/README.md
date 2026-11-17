@@ -30,15 +30,16 @@ title: "第一阶段：概率建模与信息论基础"
 ```bash
 uv init genesis-stage1
 cd genesis-stage1
-uv add numpy matplotlib
-uv add mlx   # 可选：Apple Silicon 上的数组后端练习
+uv add mlx numpy matplotlib
 ```
 
-统一随机数约定：所有实验使用 `rng = np.random.default_rng(seed)`，默认 `seed = 0`，保证结果可复现。
+`mlx` 是实现主力（数组计算与随机采样），`numpy` 仅作 Matplotlib 桥接（`np.array(mx_array)`）与数据边界，`matplotlib` 负责可视化。实现约定详见书的前言（「实现约定：MLX 优先」一节）。
+
+统一随机数约定：所有实验脚本开头 `mx.random.seed(0)`（全局 PRNG），保证结果可复现；函数签名不携带随机状态。惰性求值：打印、比较、画图前 `mx.eval()`。
 
 ## 代码布局（code/）
 
-每个实验是一个独立的 uv 项目（独立 pyproject.toml 与 .venv），依赖仅 numpy 与 matplotlib：
+每个实验是一个独立的 uv 项目（独立 pyproject.toml 与 .venv），依赖 mlx（实现）、numpy（画图桥接）与 matplotlib：
 
 ```
 code/
@@ -69,6 +70,9 @@ uv run run_lab01.py
 - [ ] MLE、Cross Entropy 和 KL 的联系（能推导 H(P,Q) = H(P) + KL(P‖Q) 与 NLL 均值 = 交叉熵）
 - [ ] 五个实验项目全部自测变绿，run_labXX.py 可独立运行并产出图表与 metrics.json
 
-## MLX 练习（可选）
+## MLX 与 NumPy 的边界
 
-完成 NumPy 版本后，用 `mx.array` 重写 `distributions.py` 与 `metrics.py`（MLX 数组 API 与 NumPy 高度兼容），用 `mx.eval` 触发惰性求值，并与 NumPy 结果逐项对拍（容差 1e-10）。此练习的目的仅是熟悉数组后端切换，本阶段不涉及自动微分。
+- 分布密度、采样线性变换、统计量、信息度量：全部 MLX 实现。
+- Matplotlib 画图：`np.array(mx_arr)` 桥接后交给 matplotlib。
+- MLX 暂缺的原语（如 `dirichlet`、`choice`）：讲义在对应位置给出手写替代（往往是更好的练习）。
+- 本阶段结束时应当熟悉的 MLX 语义：惰性求值与 `mx.eval`、`dtype`（fp32 默认、fp64 检验）、`mx.linalg`（cholesky/solve/slogdet）、`mx.random`（seed/normal/uniform/bernoulli）。

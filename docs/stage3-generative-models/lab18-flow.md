@@ -58,7 +58,7 @@ $s, t$ 是任意网络（不需可逆）：逆 $x_2 = (h_2 - t(h_1)) \odot \exp(
 ```python
 class AffineCoupling:        # 实现 forward / inverse / log_det
 class Flow:                  # 堆叠 coupling，交替 mask 两半
-    def sample(self, n, rng): ...
+    def sample(self, n): ...
     def log_prob(self, x): ...   # 1.1 公式累加 -log|det|
 ```
 

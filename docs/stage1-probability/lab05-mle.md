@@ -3,7 +3,7 @@ title: "Lab 05：最大似然估计"
 lab: 5
 ---
 
-对应大纲实验 5。依赖：Lab 01（高斯密度）、Lab 04（交叉熵视角）。产出：`experiments/lab05_mle.py`。本实验把第一阶段的四条线（采样、期望、信息度量、参数估计）收拢成一个结论：MLE = 最小化经验分布与模型分布的交叉熵 = 最小化 KL。这是通往第二阶段「训练神经网络」的桥梁。
+对应大纲实验 5。依赖：Lab 01（高斯密度）、Lab 04（交叉熵视角）。产出：`run_lab05.py`。本实验把第一阶段的四条线（采样、期望、信息度量、参数估计）收拢成一个结论：MLE = 最小化经验分布与模型分布的交叉熵 = 最小化 KL。这是通往第二阶段「训练神经网络」的桥梁。
 
 ## 0. 理论问题
 
@@ -114,13 +114,13 @@ $$
 在 `estimators.py` 中：
 
 ```python
-import numpy as np
+import mlx.core as mx
 
-def gaussian_nll(theta: tuple[float, float], samples: np.ndarray) -> float:
+def gaussian_nll(theta: tuple[float, float], samples) -> float:
     """负对数似然均值：-mean(log N(x | mu, sigma2))。sigma2 > 0。"""
     ...
 
-def gaussian_mle(samples: np.ndarray) -> tuple[float, float]:
+def gaussian_mle(samples) -> tuple[float, float]:
     """闭式解 (mu_hat, sigma2_hat)，sigma2 用 1/n。"""
     ...
 
@@ -129,26 +129,34 @@ def gaussian_map(samples, mu0: float, tau2: float, sigma2: float) -> float:
     ...
 ```
 
-自测：
+自测（fp64；网格搜索向量化——MLX 惰性求值下，广播一次算完 (M,S) 网格比逐点循环快得多，这本身就是重要的 MLX 实践）：
 
 ```python
-rng = np.random.default_rng(0)
+import math
+import mlx.core as mx
 
-# T1: 闭式解确实是 NLL 最小值 —— 网格搜索对照
-x = rng.normal(1.5, 2.0, size=500)
+mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
+mx.random.seed(0)
+
+# T1: 闭式解确实是 NLL 最小值 —— 向量化网格搜索对照
+x = 1.5 + 2.0 * mx.random.normal((500,), dtype=mx.float64)   # mean=1.5, var=4
 mu_hat, s2_hat = gaussian_mle(x)
-mus = np.linspace(1.2, 1.8, 81); s2s = np.linspace(3.4, 4.4, 101)
-grid = np.array([[gaussian_nll((m, s), x) for s in s2s] for m in mus])
-i, j = np.unravel_index(grid.argmin(), grid.shape)
-assert abs(mus[i] - mu_hat) < 0.01 and abs(s2s[j] - s2_hat) < 0.01
+ms = mx.linspace(1.2, 1.8, 81)[:, None, None]               # (81,1,1)
+ss = mx.linspace(3.4, 4.4, 101)[None, :, None]              # (1,101,1)
+xc = x[None, None, :]                                       # (1,1,500)
+nll = mx.mean(0.5 * (math.log(2*math.pi) + mx.log(ss) + (xc - ms)**2 / ss), axis=2)
+idx = int(mx.argmin(nll.reshape(-1)).item())
+i, j = divmod(idx, 101)
+assert abs(float(ms[i, 0, 0]) - mu_hat) < 0.01 and abs(float(ss[0, j, 0]) - s2_hat) < 0.01
 
-# T2: 精度对照 —— mu_hat == x.mean()，sigma2_hat == x.var()（NumPy 默认 ddof=0）
-assert abs(mu_hat - x.mean()) < 1e-12
-assert abs(s2_hat - x.var()) < 1e-12
+# T2: 精度对照 —— mu_hat == x.mean()，sigma2_hat == x.var()（ddof=0）
+assert abs(mu_hat - x.mean().item()) < 1e-12
+assert abs(s2_hat - x.var().item()) < 1e-12
 
-# T3: MAP 收敛检查：n 大时 MAP -> MLE；先验占优检查：强先验(mu0=0, tau2=1e-6)时 MAP -> 0
-big = rng.normal(5.0, 1.0, size=100_000)
-assert abs(gaussian_map(big, mu0=0.0, tau2=1.0, sigma2=1.0) - big.mean()) < 1e-3
+# T3: MAP 收敛检查：n 大时 MAP -> MLE；强先验(mu0=0, tau2=1e-6)时 MAP -> 0
+big = 5.0 + 1.0 * mx.random.normal((100_000,))
+mx.eval(big)
+assert abs(gaussian_map(big, mu0=0.0, tau2=1.0, sigma2=1.0) - big.mean().item()) < 1e-3
 assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
 ```
 
@@ -160,7 +168,7 @@ assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
 | E2 | 估计量：$\hat\sigma^2_{1/n}$ vs $\hat\sigma^2_{1/(n-1)}$ | 同 E1 | 两者的经验偏差随 $n$ 曲线 |
 | E3 | $n \in \{10, 100, 1000\}$ | 同 E1 | $\hat\mu$ 经验标准差 vs 理论 $\sigma/\sqrt n$ |
 | E4 | 先验强度 $\tau^2 \in \{10^2, 1, 10^{-2}\}$，$n \in \{5, 50, 500\}$ | $\mu_0 = 0$（故意设偏离真值 3） | $\hat\mu_{\mathrm{MAP}}$ 相对 MLE 的收缩量 |
-| E5 | 模型错设：数据改从 $t_3$（自由度 3 的 t 分布，`rng.standard_t(3, n) * np.sqrt(4/3)` 校准到方差 4） | 拟合仍是高斯 MLE | $\hat\sigma^2$ 是否稳定收敛、对离群点的敏感性 |
+| E5 | 模型错设：数据改为污染高斯 90% $\mathcal N(3, 4)$ + 10% $\mathcal N(3, 36)$（重尾，MLX 直接可实现：对 10% 的样本乘 3 倍噪声） | 拟合仍是高斯 MLE | $\hat\sigma^2$ 收敛到何处、对离群点的敏感性 |
 
 ## 4. 预期图表
 
@@ -168,7 +176,7 @@ assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
 - 图 2（E2）：偏差 vs $n$ 曲线（对数横轴）。预期 $1/n$ 版本偏差 $\approx -\sigma^2/n$（$n=5$ 时约 $-0.8$，可从 2000 次均值直接读出），$1/(n-1)$ 版本在 0 附近抖动。
 - 图 3（E3）：$\hat\mu$ 经验标准差与理论线 $\sigma/\sqrt n = 2/\sqrt n$ 重合（对数-对数下斜率 $-1/2$，与 Lab 03 图 1 呼应）。
 - 图 4（E4）：$3 \times 3$ 热力图或折线族：MAP 随 $\tau^2$ 与 $n$ 的收缩行为。预期：强先验 + 小样本时 MAP 明显偏离 MLE 被拉向 0；$n = 500$ 时所有 $\tau^2$ 下 MAP 与 MLE 几乎重合。
-- 图 5（E5）：t 分布数据上 $\hat\sigma^2$ 的抽样分布 vs 高斯数据上的对照。预期前者宽得多且均值偏高（重尾把 MLE 方差拉高），说明 MLE 无偏性只在模型正确设定时成立。
+- 图 5（E5）：污染高斯数据上 $\hat\sigma^2$ 的抽样分布 vs 干净高斯数据上的对照。混合方差 $= 0.9 \times 4 + 0.1 \times 36 = 8.4$，预期 $\hat\sigma^2$ 稳定收敛到 8.4 附近而非 4，分布宽得多——说明 MLE 无偏性只在模型正确设定时成立，错设下它收敛到 KL 投影的参数。
 
 ## 5. 观测指标（metrics.json）
 
@@ -178,7 +186,7 @@ assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
   "E1_sigma2_dist": {"n5": {"mean": ..., "true": 4.0, "bias": ...}, ...},
   "E2_bias_curve": {"n": [5, 10, 30, 100, 1000, 10000], "bias_1_over_n": [...], "bias_1_over_n_minus_1": [...]},
   "E3_sd_vs_theory": {"n10": {"emp": ..., "theo": ...}, ...},
-  "E5_misspec": {"gaussian_data_mean_s2hat": ..., "t_data_mean_s2hat": ...},
+  "E5_misspec": {"gaussian_data_mean_s2hat": ..., "contaminated_data_mean_s2hat": ...},
   "T_all_passed": true
 }
 ```

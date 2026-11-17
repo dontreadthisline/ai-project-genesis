@@ -4,6 +4,8 @@
 
 ## 任务
 
+实现用 MLX（`mx.array`，随机数用 `mx.random.seed(0)` 全局种子）；NumPy 仅作 matplotlib 桥接（画图前 `np.array(mx_arr)`）。
+
 实现 `metrics.py` 中的四个函数，然后完成 `run_lab04.py` 中的对照实验 E1-E5（讲义 §3）。
 
 ## 命令

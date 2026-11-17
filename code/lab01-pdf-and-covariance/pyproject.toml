@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "实验 1：一维与二维概率分布（PDF、直方图、协方差矩阵几何）"
 requires-python = ">=3.11"
 dependencies = [
+    "mlx",
     "numpy>=2.0",
     "matplotlib>=3.8",
 ]

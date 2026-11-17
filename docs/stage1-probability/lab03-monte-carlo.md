@@ -3,7 +3,7 @@ title: "Lab 03：Monte Carlo 估计"
 lab: 3
 ---
 
-对应大纲实验 3。依赖：NumPy。产出：`experiments/lab03_monte_carlo.py`。本实验是后续策略梯度（实验 28/30/45）、ELBO 采样估计（实验 15）、reward 期望估计（实验 44）的直接数学前置。
+对应大纲实验 3。依赖：MLX。产出：`run_lab03.py`。本实验是后续策略梯度（实验 28/30/45）、ELBO 采样估计（实验 15）、reward 期望估计（实验 44）的直接数学前置。
 
 ## 0. 理论问题
 
@@ -78,13 +78,13 @@ $$
 在 `estimators.py` 中：
 
 ```python
-import numpy as np
+import mlx.core as mx
 
-def mc_estimate(f, sampler, n: int, rng):
-    """f: 向量化函数 np.ndarray -> np.ndarray；sampler: callable(n, rng) -> np.ndarray。
+def mc_estimate(f, sampler, n: int):
+    """f: 向量化函数 mx.array -> mx.array；sampler: callable(n) -> mx.array。
     返回 dict(est=float, se=float, n=int)。
-    要求 se 用 1/(n-1) 的样本方差公式。"""
-    xs = sampler(n, rng)
+    要求 se 用 1/(n-1) 的样本方差公式手写（MX 无 cov/ddof 现成接口）。"""
+    xs = sampler(n)
     fs = f(xs)
     # TODO
     ...
@@ -93,27 +93,31 @@ def mc_estimate(f, sampler, n: int, rng):
 自测（解析解已知的对照用例）：
 
 ```python
-rng = np.random.default_rng(0)
-std_normal = lambda n, rng: rng.standard_normal(n)
+import math
+import mlx.core as mx
+
+mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
+mx.random.seed(0)
+std_normal = lambda n: mx.random.normal((n,))
 
 # T1: E[X] = 0, E[X^2] = 1（n = 10^6，2 个标准误差内）
-r1 = mc_estimate(lambda z: z, std_normal, 10**6, rng)
+r1 = mc_estimate(lambda z: z, std_normal, 10**6)
 assert abs(r1["est"] - 0.0) < 2 * r1["se"]
-r2 = mc_estimate(lambda z: z**2, std_normal, 10**6, rng)
+r2 = mc_estimate(lambda z: z**2, std_normal, 10**6)
 assert abs(r2["est"] - 1.0) < 2 * r2["se"]
 
 # T3: E[|X|] = sqrt(2/pi)
-r3 = mc_estimate(lambda z: np.abs(z), std_normal, 10**6, rng)
-assert abs(r3["est"] - np.sqrt(2/np.pi)) < 2 * r3["se"]
+r3 = mc_estimate(lambda z: mx.abs(z), std_normal, 10**6)
+assert abs(r3["est"] - math.sqrt(2/math.pi)) < 2 * r3["se"]
 
 # T4: E[sin X] = 0（奇函数，对称分布）
-r4 = mc_estimate(lambda z: np.sin(z), std_normal, 10**6, rng)
+r4 = mc_estimate(lambda z: mx.sin(z), std_normal, 10**6)
 assert abs(r4["est"]) < 2 * r4["se"]
 
 # T5: pi/4，先验误差检查
-square = lambda n, rng: rng.uniform(-1, 1, size=(n, 2))
-r5 = mc_estimate(lambda P: (P**2).sum(axis=1) <= 1, square, 10**6, rng)
-assert abs(r5["est"] - np.pi/4) < 5e-3
+square = lambda n: mx.random.uniform(-1, 1, shape=(n, 2))
+r5 = mc_estimate(lambda P: (P**2).sum(axis=1) <= 1, square, 10**6)
+assert abs(r5["est"] - math.pi/4) < 5e-3
 ```
 
 ## 3. 对照实验设计

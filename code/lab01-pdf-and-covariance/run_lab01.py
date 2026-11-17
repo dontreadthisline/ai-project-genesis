@@ -4,13 +4,16 @@
 运行：uv run run_lab01.py
 """
 import json
+import math
 from pathlib import Path
 
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np   # 仅画图桥接：np.array(mx_arr)
+
+import mlx.core as mx
 
 from distributions import (
     multivariate_gaussian_pdf,
@@ -26,29 +29,48 @@ FIGURES = OUTPUT / "figures"
 # ---------------------------------------------------------------- 自测（讲义 §2）
 
 
-def check_implementation() -> None:
-    rng = np.random.default_rng(0)
+def trapezoid(y, x):
+    """梯形积分（MLX 无 np.trapezoid 对应物，手写）。"""
+    return mx.sum((x[1:] - x[:-1]) * (y[1:] + y[:-1]) / 2.0)
 
-    # T1: 数值积分验证归一化（梯形法则，容差 1e-8）
-    x = np.linspace(-12, 12, 200_001)
-    assert abs(np.trapezoid(univariate_gaussian_pdf(x, 2.0, 3.0), x) - 1.0) < 1e-8
+
+def sample_cov(X):
+    """样本协方差（MLX 无 cov，手写，ddof=1）。"""
+    Xc = X - X.mean(axis=0)
+    return (Xc.T @ Xc) / (X.shape[0] - 1)
+
+
+def check_implementation() -> None:
+    mx.set_default_device(mx.cpu)   # 本阶段：fp64 检验与 linalg 均需 CPU
+    mx.random.seed(0)
+
+    # T1: 数值积分验证归一化（fp64，容差 1e-8）
+    x = mx.linspace(-12, 12, 200_001, dtype=mx.float64)
+    y = univariate_gaussian_pdf(x, 2.0, 3.0)
+    assert abs(trapezoid(y, x).item() - 1.0) < 1e-8
 
     # T2: 二维密度在均值处取最大值
-    Sigma = np.array([[2.0, 0.6], [0.6, 1.0]])
-    pts = rng.normal(size=(5000, 2)) @ np.linalg.cholesky(Sigma) + np.array([1.0, -1.0])
-    vals = multivariate_gaussian_pdf(pts, np.array([1.0, -1.0]), Sigma)
+    Sigma = mx.array([[2.0, 0.6], [0.6, 1.0]])
+    mu2 = mx.array([1.0, -1.0])
+    pts = mx.random.normal((5000, 2)) @ mx.linalg.cholesky(Sigma, stream=mx.cpu) + mu2
+    vals = multivariate_gaussian_pdf(pts, mu2, Sigma)
+    mx.eval(vals)
     assert (
-        multivariate_gaussian_pdf(np.array([[1.0, -1.0]]), np.array([1.0, -1.0]), Sigma)[0]
-        >= vals.max() - 1e-12
+        multivariate_gaussian_pdf(mu2[None, :], mu2, Sigma).item()
+        >= vals.max().item() - 1e-12
     )
 
     # T3: 采样协方差收敛于 Sigma（n=200_000，逐项容差 0.05）
-    X = sample_multivariate_gaussian(rng, np.array([1.0, -1.0]), Sigma, 200_000)
-    assert np.allclose(X.mean(axis=0), [1.0, -1.0], atol=0.03)
-    assert np.allclose(np.cov(X.T), Sigma, atol=0.05)
+    X = sample_multivariate_gaussian(mu2, Sigma, 200_000)
+    mx.eval(X)
+    assert mx.allclose(X.mean(axis=0), mu2, atol=0.03)
+    assert mx.allclose(sample_cov(X), Sigma, atol=0.05)
 
     # T4: 标准正态在 0 处密度 = 1/sqrt(2*pi)
-    assert abs(univariate_gaussian_pdf(0.0, 0.0, 1.0) - 1 / np.sqrt(2 * np.pi)) < 1e-12
+    assert abs(
+        univariate_gaussian_pdf(mx.array(0.0), 0.0, 1.0).item()
+        - 1 / math.sqrt(2 * math.pi)
+    ) < 1e-12
 
     print("[check] T1-T4 全部通过")
 

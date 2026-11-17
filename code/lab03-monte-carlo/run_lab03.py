@@ -10,40 +10,45 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np   # 仅画图桥接：np.array(mx_arr)
+
+import mlx.core as mx
 
 from estimators import mc_estimate
 
 OUTPUT = Path(__file__).parent / "output"
 FIGURES = OUTPUT / "figures"
 
-STD_NORMAL = lambda n, rng: rng.standard_normal(n)
-UNIT_SQUARE = lambda n, rng: rng.uniform(-1, 1, size=(n, 2))
+STD_NORMAL = lambda n: mx.random.normal((n,))
+UNIT_SQUARE = lambda n: mx.random.uniform(-1, 1, shape=(n, 2))
 
 
 # ---------------------------------------------------------------- 自测（讲义 §2）
 
 
 def check_implementation() -> None:
-    rng = np.random.default_rng(0)
+    import math
+
+    mx.set_default_device(mx.cpu)   # 本阶段：fp64 检验与 linalg 均需 CPU
+    mx.random.seed(0)
 
     # T1: E[X] = 0, E[X^2] = 1（n = 1e6，2 个标准误差内）
-    r1 = mc_estimate(lambda z: z, STD_NORMAL, 10**6, rng)
+    r1 = mc_estimate(lambda z: z, STD_NORMAL, 10**6)
     assert abs(r1["est"] - 0.0) < 2 * r1["se"]
-    r2 = mc_estimate(lambda z: z**2, STD_NORMAL, 10**6, rng)
+    r2 = mc_estimate(lambda z: z**2, STD_NORMAL, 10**6)
     assert abs(r2["est"] - 1.0) < 2 * r2["se"]
 
     # T3: E[|X|] = sqrt(2/pi)
-    r3 = mc_estimate(lambda z: np.abs(z), STD_NORMAL, 10**6, rng)
-    assert abs(r3["est"] - np.sqrt(2 / np.pi)) < 2 * r3["se"]
+    r3 = mc_estimate(lambda z: mx.abs(z), STD_NORMAL, 10**6)
+    assert abs(r3["est"] - math.sqrt(2 / math.pi)) < 2 * r3["se"]
 
     # T4: E[sin X] = 0（奇函数，对称分布）
-    r4 = mc_estimate(lambda z: np.sin(z), STD_NORMAL, 10**6, rng)
+    r4 = mc_estimate(lambda z: mx.sin(z), STD_NORMAL, 10**6)
     assert abs(r4["est"]) < 2 * r4["se"]
 
     # T5: pi/4 估计
-    r5 = mc_estimate(lambda P: (P**2).sum(axis=1) <= 1, UNIT_SQUARE, 10**6, rng)
-    assert abs(r5["est"] - np.pi / 4) < 5e-3
+    r5 = mc_estimate(lambda P: (P**2).sum(axis=1) <= 1, UNIT_SQUARE, 10**6)
+    assert abs(r5["est"] - math.pi / 4) < 5e-3
 
     print("[check] T1-T5 全部通过")
 

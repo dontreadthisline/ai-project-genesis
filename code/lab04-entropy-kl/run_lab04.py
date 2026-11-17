@@ -10,7 +10,9 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np   # 仅画图桥接：np.array(mx_arr)
+
+import mlx.core as mx
 
 from metrics import brier_score, cross_entropy, entropy, kl_divergence
 
@@ -21,12 +23,21 @@ FIGURES = OUTPUT / "figures"
 # ---------------------------------------------------------------- 自测（讲义 §2）
 
 
+def random_simplex(k: int, dtype=mx.float64):
+    """随机概率向量。MLX 无 dirichlet：归一化均匀数即可（自测只需任意随机分布）。"""
+    u = mx.random.uniform(shape=(k,)).astype(dtype)
+    return u / u.sum()
+
+
 def check_implementation() -> None:
-    rng = np.random.default_rng(0)
+    import math
+
+    mx.set_default_device(mx.cpu)   # 本阶段：fp64 检验与 linalg 均需 CPU
+    mx.random.seed(0)
 
     # T1: 恒等式 H(P,Q) = H(P) + KL(P||Q)
-    p = rng.dirichlet([1] * 5)
-    q = rng.dirichlet([1] * 5)
+    p = random_simplex(5)
+    q = random_simplex(5)
     lhs = cross_entropy(p, q)
     rhs = entropy(p) + kl_divergence(p, q)
     assert abs(lhs - rhs) < 1e-10
@@ -36,20 +47,20 @@ def check_implementation() -> None:
     assert kl_divergence(p, q) >= 0.0
 
     # T3: 均匀分布熵 = log K
-    u = np.ones(5) / 5
-    assert abs(entropy(u) - np.log(5)) < 1e-12
+    u = mx.ones((5,), dtype=mx.float64) / 5
+    assert abs(entropy(u) - math.log(5)) < 1e-12
 
     # T4: 确定性分布熵 = 0
-    assert entropy(np.array([0.0, 1.0, 0.0])) == 0.0
+    assert entropy(mx.array([0.0, 1.0, 0.0], dtype=mx.float64)) == 0.0
 
-    # T5: 支撑违规 -> inf
-    p_bad = np.array([0.5, 0.5, 0.0])
-    q_bad = np.array([0.7, 0.0, 0.3])
-    assert np.isinf(cross_entropy(p_bad, q_bad))
+    # T5: 支撑违规 -> inf（mx.isinf）
+    p_bad = mx.array([0.5, 0.5, 0.0])
+    q_bad = mx.array([0.7, 0.0, 0.3])
+    assert mx.isinf(cross_entropy(p_bad, q_bad)).item()
 
     # T6: 手算对照（讲义 §1.3）
-    P = np.array([0.5, 0.5])
-    Q = np.array([0.99, 0.01])
+    P = mx.array([0.5, 0.5])
+    Q = mx.array([0.99, 0.01])
     assert abs(kl_divergence(P, Q) - 1.6144) < 5e-3
     assert abs(kl_divergence(Q, P) - 0.6372) < 5e-3
 

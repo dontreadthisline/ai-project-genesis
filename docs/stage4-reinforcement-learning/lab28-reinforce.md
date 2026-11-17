@@ -49,7 +49,7 @@ $\pi_\theta(a|s) = \mathrm{softmax}(f_\theta(s))$，$\nabla_\theta \log \pi$ 即
 
 ```python
 class PolicyNet: ...                       # 4 -> 128 -> 128 -> 4 logits
-def reinforce(env_fn, episodes, lr, gamma, use_baseline, rng): ...
+def reinforce(env_fn, episodes, lr, gamma, use_baseline): ...
 def policy_grad_loss(logits, actions, returns_or_adv): ...   # -logπ * A 的均值
 ```
 

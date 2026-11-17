@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "实验 2：联合分布与条件分布（Schur 补、混合反例、经验条件估计）"
 requires-python = ">=3.11"
 dependencies = [
+    "mlx",
     "numpy>=2.0",
     "matplotlib>=3.8",
 ]

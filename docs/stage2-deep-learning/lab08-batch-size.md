@@ -55,7 +55,7 @@ $$
 ```python
 def full_batch_grad(model, data): ...            # 全数据集梯度（参考真值）
 def batch_grad(model, data, idx): ...
-def grad_stats(model, data, sizes, n_rep, rng):  # 返回各 batch size 的方差、SNR、cos
+def grad_stats(model, data, sizes, n_rep):  # 返回各 batch size 的方差、SNR、cos
     ...
 ```
 

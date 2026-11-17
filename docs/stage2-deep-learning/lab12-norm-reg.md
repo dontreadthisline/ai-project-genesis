@@ -54,7 +54,7 @@ L2 惩罚 $\frac\lambda2\|\theta\|^2$ 的梯度 $\lambda\theta$ 是持续向原�
 ```python
 class BatchNorm:    # train/eval 模式，running stats
 class LayerNorm:    # 逐样本
-def dropout(x, p, rng): ...   # inverted dropout
+def dropout(x, p): ...   # inverted dropout
 ```
 
 自测：

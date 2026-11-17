@@ -43,7 +43,7 @@ Gymnasium 通过 `env.unwrapped.P[s][a]` 暴露完整转移表：列表 of (prob
 def build_P_R(env):
     """从 env.unwrapped.P 构造 P (S,A,S), R (S,A)，终止态自吸收处理"""
 def expected_reward(R, s, a): ...
-def sample_step(P, s, a, rng): ...    # 按 P 采样下一状态（自实现，不用 env.step）
+def sample_step(P, s, a): ...    # 按 P 采样下一状态（自实现，不用 env.step）
 ```
 
 自测：

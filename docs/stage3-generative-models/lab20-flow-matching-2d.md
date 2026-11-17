@@ -54,8 +54,8 @@ $$
 
 ```python
 class VelocityNet: ...                 # (t, x) -> v，t 用 sinusoidal 嵌入
-def cfm_loss(model, x1, rng): ...      # 1.3 直线路径损失
-def euler_sample(model, n_steps, rng): ...
+def cfm_loss(model, x1): ...      # 1.3 直线路径损失
+def euler_sample(model, n_steps): ...
 ```
 
 自测：

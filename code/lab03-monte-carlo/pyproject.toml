@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "实验 3：Monte Carlo 估计、标准误差、1/sqrt(n) 收敛与稀有事件"
 requires-python = ">=3.11"
 dependencies = [
+    "mlx",
     "numpy>=2.0",
     "matplotlib>=3.8",
 ]

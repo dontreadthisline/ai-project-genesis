@@ -47,8 +47,9 @@ class GPT:
     def __init__(self, vocab, d, n_head, n_layer, block): ...
     def forward(self, idx): ...        # (B, T) -> logits (B, T, V)
     def loss(self, idx, targets): ...  # 交叉熵均值
-    @torch.no_grad 等价物
     def generate(self, idx, max_new, temperature, top_k): ...
+    # MLX 默认不构建梯度图（仅 mx.grad 会），无需 no_grad 等价物；
+# 生成循环内对 logits 先 mx.eval() 再采样，避免惰性堆积
 ```
 
 自测：
