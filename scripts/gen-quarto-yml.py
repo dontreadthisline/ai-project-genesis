@@ -55,7 +55,7 @@ quarto = {
     },
     "format": {
         "html": {
-            "theme": "cosmo",
+            "theme": ["litera", "assets/quarto-theme.scss"],
             "lang": "zh",
             "toc": True,
             "toc-depth": 3,

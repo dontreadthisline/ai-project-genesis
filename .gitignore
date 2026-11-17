@@ -18,3 +18,6 @@ code/*/output/
 .DS_Store
 
 **/*.quarto_ipynb
+
+# VitePress 渲染层（由 scripts/gen-vitepress.py 生成，当前因 Node 25 兼容问题未启用）
+/site-vitepress/
