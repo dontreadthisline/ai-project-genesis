@@ -1,0 +1,71 @@
+<!-- 侧栏/目录收起切换（阅读模式）：注入到每页 <head>
+     点击左上角按钮或按 [ 键：隐藏左侧章节栏与右侧页内目录，正文居中为纯书页。 -->
+<style>
+  #gen-reading-toggle {
+    position: fixed; top: 14px; left: 14px; z-index: 2000;
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.18); background: rgba(255,255,255,.92);
+    box-shadow: 0 1px 4px rgba(0,0,0,.14);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; user-select: none; font-size: 15px; color: #444;
+    transition: opacity .2s; opacity: .55;
+  }
+  #gen-reading-toggle:hover { opacity: 1; }
+  .dark #gen-reading-toggle { background: rgba(30,30,30,.92); color: #ddd; border-color: rgba(255,255,255,.25); }
+
+  /* 阅读模式：两侧导航全部退场；宽容器 + 正文限行：
+     容器 60rem 供表格/公式/代码块舒展，段落与列表限 44rem 保行长 */
+  body.gen-reading #quarto-sidebar { display: none !important; }
+  body.gen-reading #quarto-margin-sidebar { display: none !important; }
+  body.gen-reading #quarto-content {
+    grid-template-columns: 1fr min(60rem, 94vw) 1fr !important;
+  }
+  body.gen-reading #quarto-content > main.content { grid-column: 2 !important; max-width: none; }
+  body.gen-reading #quarto-content > * { grid-column: 2 !important; }
+  body.gen-reading #quarto-sidebar-glass { display: none !important; }
+  body.gen-reading main.content > p,
+  body.gen-reading main.content > ul,
+  body.gen-reading main.content > ol,
+  body.gen-reading main.content > h1,
+  body.gen-reading main.content > h2,
+  body.gen-reading main.content > h3,
+  body.gen-reading main.content > h4,
+  body.gen-reading main.content > blockquote {
+    max-width: 44rem;
+  }
+  body.gen-reading main.content > table { width: 100%; }
+</style>
+
+<script>
+  (function () {
+    var KEY = 'genesis-reading-mode';
+    // 尽早应用记忆状态，避免闪烁
+    if (localStorage.getItem(KEY) === '1') {
+      document.documentElement.classList.add('gen-reading');
+    }
+    function apply(on) {
+      document.body.classList.toggle('gen-reading', on);
+      document.documentElement.classList.toggle('gen-reading', on);
+      localStorage.setItem(KEY, on ? '1' : '0');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      // 同步 <html> 上的类到 <body>（CSS 选择器作用于两者）
+      if (document.documentElement.classList.contains('gen-reading')) {
+        document.body.classList.add('gen-reading');
+      }
+      var btn = document.createElement('div');
+      btn.id = 'gen-reading-toggle';
+      btn.title = '切换阅读模式（隐藏两侧目录）快捷键 [';
+      btn.textContent = '☰';
+      btn.addEventListener('click', function () {
+        apply(!document.body.classList.contains('gen-reading'));
+      });
+      document.body.appendChild(btn);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === '[' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+          apply(!document.body.classList.contains('gen-reading'));
+        }
+      });
+    });
+  })();
+</script>

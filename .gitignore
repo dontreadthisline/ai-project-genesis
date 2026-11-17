@@ -21,3 +21,6 @@ code/*/output/
 
 # VitePress 渲染层（由 scripts/gen-vitepress.py 生成，当前因 Node 25 兼容问题未启用）
 /site-vitepress/
+
+# Quarto 扩展安装目录（由 gen-quarto-yml.py 从 render/themes/ 复制）
+/_extensions/

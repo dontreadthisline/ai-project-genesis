@@ -2,6 +2,7 @@
 // 由本模块的 quarto-theme.scss @use 编译进主题；跨站复用时把本文件拷出、
 // 改后缀为 .css 直接引入即可（内容即纯 CSS）。
 
+/*-- scss:rules --*/
 :root {
   --gen-font-serif: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", serif;
   --gen-font-sans: -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
