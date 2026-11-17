@@ -29,22 +29,62 @@ parts:
   - title: 第二阶段 深度学习与序列建模
     chapters:
       - docs/stage2-deep-learning/README.md
+      - docs/stage2-deep-learning/lab06-mlp-from-scratch.md
+      - docs/stage2-deep-learning/lab07-optimizers.md
+      - docs/stage2-deep-learning/lab08-batch-size.md
+      - docs/stage2-deep-learning/lab09-cnn-vs-mlp.md
+      - docs/stage2-deep-learning/lab10-inductive-bias.md
+      - docs/stage2-deep-learning/lab11-residual.md
+      - docs/stage2-deep-learning/lab12-norm-reg.md
+      - docs/stage2-deep-learning/lab13-rnn-lstm.md
+      - docs/stage2-deep-learning/lab14-attention-transformer.md
 
   - title: 第三阶段 生成模型
     chapters:
       - docs/stage3-generative-models/README.md
+      - docs/stage3-generative-models/lab15-vae.md
+      - docs/stage3-generative-models/lab16-reparameterization.md
+      - docs/stage3-generative-models/lab17-gan.md
+      - docs/stage3-generative-models/lab18-flow.md
+      - docs/stage3-generative-models/lab19-ddpm.md
+      - docs/stage3-generative-models/lab20-flow-matching-2d.md
+      - docs/stage3-generative-models/lab21-flow-matching-mnist.md
+      - docs/stage3-generative-models/lab22-diffusion-vs-fm.md
 
   - title: 第四阶段 强化学习
     chapters:
       - docs/stage4-reinforcement-learning/README.md
+      - docs/stage4-reinforcement-learning/lab23-frozenlake.md
+      - docs/stage4-reinforcement-learning/lab24-dynamic-programming.md
+      - docs/stage4-reinforcement-learning/lab25-sarsa-qlearning.md
+      - docs/stage4-reinforcement-learning/lab26-dqn.md
+      - docs/stage4-reinforcement-learning/lab27-dqn-ablation.md
+      - docs/stage4-reinforcement-learning/lab28-reinforce.md
+      - docs/stage4-reinforcement-learning/lab29-actor-critic.md
+      - docs/stage4-reinforcement-learning/lab30-ppo.md
+      - docs/stage4-reinforcement-learning/lab31-continuous-control.md
 
   - title: 第五阶段 LLM 预训练与后训练
     chapters:
       - docs/stage5-llm/README.md
+      - docs/stage5-llm/lab32-tokenizer.md
+      - docs/stage5-llm/lab33-data-pipeline.md
+      - docs/stage5-llm/lab34-gpt.md
+      - docs/stage5-llm/lab35-pretraining.md
+      - docs/stage5-llm/lab36-inference.md
+      - docs/stage5-llm/lab37-sft.md
+      - docs/stage5-llm/lab38-lora.md
+      - docs/stage5-llm/lab39-dpo.md
+      - docs/stage5-llm/lab40-reward-model.md
+      - docs/stage5-llm/lab41-grpo.md
 
   - title: 第六阶段 Agentic RL
     chapters:
       - docs/stage6-agentic-rl/README.md
+      - docs/stage6-agentic-rl/lab42-agent-loop.md
+      - docs/stage6-agentic-rl/lab43-trajectory.md
+      - docs/stage6-agentic-rl/lab44-reward-design.md
+      - docs/stage6-agentic-rl/lab45-agent-rl.md
 
   # 未来追加：
   # - title: 附录
