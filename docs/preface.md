@@ -41,7 +41,7 @@ $$
 
 全书实验默认用 **MLX** 实现数组计算、模型与训练（`import mlx.core as mx`；神经网络用 `mlx.nn`）。NumPy 不再作为实现选项，且实现代码通常不需要导入它：
 
-- **Matplotlib 画图零桥接**：mlx 实现了 `__array__` 协议，`plt.plot(mx_arr)`、`ax.hist(mx_arr)` 直接可用，无需任何转换；
+- **Matplotlib 画图零桥接**：`mx.array` 同时实现了 Python 序列协议（`__len__`/`__iter__`/`__getitem__`）与 NumPy 的 `__array__` 转换协议，`plt.plot(mx_arr)`、`ax.hist(mx_arr)` 直接可用，无需任何转换（注意：这条路径会触发惰性求值的物化与一次拷贝，仅适合可视化，不适合大数组热路径）；
 - **数据边界**：文件下载与字节解析（如 MNIST idx 格式）、Gymnasium 观测的搬运；
 - **缺失原语的明确标注**：个别统计原语 MLX 暂缺时，讲义会明确标注「NumPy 边界」及原因，不允许默默回退。（注：mlx 0.32 无 `to_numpy` 方法；标量取值用 `.item()`，转 Python 列表用 `.tolist()`。）
 
