@@ -86,9 +86,7 @@ parts:
       - docs/stage6-agentic-rl/lab44-reward-design.md
       - docs/stage6-agentic-rl/lab45-agent-rl.md
 
-  # 未来追加：
-  # - title: 附录
-  #   chapters:
-  #     - docs/appendix/symbols.md      数学符号表
-  #     - docs/appendix/dependency.md   概念依赖图
-  #     - docs/appendix/engineering.md  工程约定（uv 项目、metrics.json 契约）
+  - title: 附录
+    chapters:
+      - docs/appendix/symbols.md      # 附录 A：数学符号表
+      - docs/appendix/dependency.md   # 附录 B：概念依赖表

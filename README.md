@@ -29,6 +29,8 @@ open _book/index.html     # 本地阅读，断网也可正常渲染公式
 
 ## 实验环境
 
+讲义（docs/）已全部完成；实验代码骨架（code/）第一阶段就绪，第二至第六阶段待建——每个实验的讲义§「实现任务」即为其代码骨架的规约。
+
 ```bash
 cd code/lab01-pdf-and-covariance
 uv sync                 # 安装依赖

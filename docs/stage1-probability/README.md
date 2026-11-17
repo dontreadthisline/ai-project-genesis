@@ -73,6 +73,13 @@ uv run run_lab01.py
 ## MLX 与 NumPy 的边界
 
 - 分布密度、采样线性变换、统计量、信息度量：全部 MLX 实现。
-- Matplotlib 画图：零桥接，`plt.plot(mx_arr)` 直接可用（mlx 实现了 `__array__` 协议）。
+- Matplotlib 画图：零桥接，`plt.plot(mx_arr)` 直接可用（mx.array 同时实现了序列协议与 numpy 的 `__array__` 转换协议；这条路径会触发惰性求值的物化与一次拷贝，仅适合可视化）。
 - MLX 暂缺的原语（如 `dirichlet`、`choice`、`trapezoid`、`cov`）：讲义在对应位置给出手写替代（往往是更好的练习）。
-- 本阶段结束时应当熟悉的 MLX 语义：惰性求值与 `mx.eval`、`dtype`（fp32 默认、fp64 检验）、`mx.linalg`（cholesky/solve/slogdet）、`mx.random`（seed/normal/uniform/bernoulli）。
+
+本环境实测（mlx 0.32）的三个已知局限及标准应对，全书统一遵守：
+
+- **fp64 不支持 GPU**。本阶段需要 fp64 做数值检验与闭式对照，脚本开头统一 `mx.set_default_device(mx.cpu)`；第一阶段全是小规模统计计算，CPU 没有性能损失。GPU 从第二阶段大规模张量运算（全 fp32）开始使用。
+- **`mx.linalg` 四件套（`slogdet / solve / cholesky / eigh`）不支持 GPU**，必须显式传 `stream=mx.cpu`，否则抛错。
+- **布尔索引不支持**（`a[mask]` 报错）。两类替代：求和场景用 `mx.sum(mx.where(mask, vals, 0.0))`；取子数组场景用 NumPy 桥接 `np.array(a)[np.array(mask)]`，或纯 Python 列表推导 `[v for v, m in zip(a.tolist(), mask.tolist()) if m]`。
+
+本阶段结束时应当熟悉的 MLX 语义：惰性求值与 `mx.eval`、`dtype`（fp32 默认、fp64 检验）、`mx.linalg`（cholesky/solve/slogdet）、`mx.random`（seed/normal/uniform）。
