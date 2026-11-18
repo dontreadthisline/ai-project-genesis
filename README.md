@@ -11,7 +11,7 @@ docs/                    内容层：讲义 + manifest.yml（书籍结构单一�
 ├── syllabus.md          课程总纲
 └── stage1..6-*/         六个阶段的讲义（第一阶段含 5 份实验讲义，其余为阶段导览）
 code/                    内容层：实验代码，每个实验一个独立 uv 项目
-render/                    渲染层（唯一入口 build-book.sh）
+book_render/                    渲染层（唯一入口 build-book.sh）
 ├── themes/               主题 = 标准 Quarto 扩展，自包含可独立发布
 │   ├── genesis-book/     litera 底座 + 无衬线正文 + 阅读模式
 │   └── paper-book/       journal 底座 + 衬线正文（纸书观感）
@@ -25,12 +25,12 @@ _quarto.yml / _book/ / _extensions/   生成物，不入库
 内容与渲染分离：`docs/manifest.yml` 描述书籍结构，渲染器只消费该清单。
 
 ```bash
-./render/scripts/build-book.sh                    # 默认 genesis-book 主题
-GENESIS_THEME=paper-book ./render/scripts/build-book.sh   # 换主题
+./book_render/scripts/build-book.sh                    # 默认 genesis-book 主题
+GENESIS_THEME=paper-book ./book_render/scripts/build-book.sh   # 换主题
 open _book/index.html     # 本地阅读，断网也可正常渲染公式
 ```
 
-换渲染工具（如 VitePress、mdBook）时：在 render/scripts/ 新增一个 manifest 生成器即可，`docs/` 与 `code/` 零改动。主题是标准 Quarto 扩展：外部项目 `quarto add <主题仓库>` 后 `format: <主题名>-html` 即用，不绑定本仓库。
+换渲染工具（如 VitePress、mdBook）时：在 book_render/scripts/ 新增一个 manifest 生成器即可，`docs/` 与 `code/` 零改动。主题是标准 Quarto 扩展：外部项目 `quarto add <主题仓库>` 后 `format: <主题名>-html` 即用，不绑定本仓库。
 
 ## 实验环境
 

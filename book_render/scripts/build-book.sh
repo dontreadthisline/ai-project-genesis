@@ -2,19 +2,19 @@
 # 构建书籍（渲染层唯一入口）：
 #   1. docs/manifest.yml -> _quarto.yml + 主题扩展安装到 _extensions/（gen-quarto-yml.py）
 #   2. quarto render -> _book/
-#   3. MathJax 本地化：CDN 引用替换为自托管 render/vendor/mathjax-tex-svg-full.js
+#   3. MathJax 本地化：CDN 引用替换为自托管 book_render/vendor/mathjax-tex-svg-full.js
 #      （SVG 输出，无字体文件依赖），并移除 ES6 polyfill，断网/无代理环境公式仍可渲染
 #   4. 校验：无外部 CDN 残留、无未重写的 .md 链接
 #
-# 换主题：GENESIS_THEME=paper-book ./render/scripts/build-book.sh
+# 换主题：GENESIS_THEME=paper-book ./book_render/scripts/build-book.sh
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-python3 render/scripts/gen-quarto-yml.py
+python3 book_render/scripts/gen-quarto-yml.py
 quarto render
 
 mkdir -p _book/site_libs/mathjax
-cp render/vendor/mathjax-tex-svg-full.js _book/site_libs/mathjax/
+cp book_render/vendor/mathjax-tex-svg-full.js _book/site_libs/mathjax/
 
 python3 - <<'PY'
 from pathlib import Path

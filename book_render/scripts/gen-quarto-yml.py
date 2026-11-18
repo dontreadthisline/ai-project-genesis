@@ -3,7 +3,7 @@
 
 内容与渲染分离的约定：
   - docs/manifest.yml 是书籍结构的单一事实源；
-  - 主题是标准 Quarto 扩展（render/themes/<name>/），本项目安装到 _extensions/ 使用，
+  - 主题是标准 Quarto 扩展（book_render/themes/<name>/），本项目安装到 _extensions/ 使用，
     外部 Quarto 项目可直接 `quarto add <发布的主题仓库>` 使用同一份主题；
   - 换主题：环境变量 GENESIS_THEME=<name>（默认 genesis-book）。
 """
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 MANIFEST = ROOT / "docs" / "manifest.yml"
 
 THEME = os.environ.get("GENESIS_THEME", "genesis-book")
-THEME_DIR = ROOT / "render" / "themes" / THEME
+THEME_DIR = ROOT / "book_render" / "themes" / THEME
 EXT_DIR = ROOT / "_extensions" / THEME
 
 manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
@@ -43,7 +43,7 @@ if missing:
 
 # 校验并安装主题扩展（Quarto 约定：项目 _extensions/ 目录）
 if not (THEME_DIR / "_extension.yml").is_file():
-    print(f"ERROR: 主题扩展不完整: render/themes/{THEME}（缺 _extension.yml）", file=sys.stderr)
+    print(f"ERROR: 主题扩展不完整: book_render/themes/{THEME}（缺 _extension.yml）", file=sys.stderr)
     sys.exit(1)
 if EXT_DIR.exists():
     shutil.rmtree(EXT_DIR)
