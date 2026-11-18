@@ -14,7 +14,7 @@ python3 book_render/scripts/gen-quarto-yml.py
 quarto render
 
 mkdir -p _book/site_libs/mathjax
-cp book_render/vendor/mathjax-tex-svg-full.js _book/site_libs/mathjax/
+cp book_render/vendor/mathjax-tex-svg-full.js _book/site_libs/mathjax/tex-svg-full.js
 
 python3 - <<'PY'
 from pathlib import Path
@@ -43,4 +43,26 @@ if grep -rE 'href="[^"]*\.md"' _book --include='*.html' | grep -q .; then
     exit 1
 fi
 
-echo "OK: 渲染完成，MathJax 已本地化，无外部依赖，无死链"
+# 校验 3：本地资源引用必须真实存在（防文件名错位导致的静默 404）
+python3 - <<'PY'
+import re, sys
+from pathlib import Path
+book = Path("_book")
+missing = set()
+for html in book.rglob("*.html"):
+    depth = len(html.relative_to(book).parts) - 1
+    for m in re.finditer(r'(?:src|href)="([^"#?]*site_libs/[^"#?]+)"', html.read_text(encoding="utf-8")):
+        ref = m.group(1)
+        if ref.startswith(("http", "//")):
+            continue
+        target = (html.parent / ref).resolve()
+        if not target.exists():
+            missing.add(f"{html.relative_to(book)} -> {ref}")
+if missing:
+    print("ERROR: 本地资源引用 404:", file=sys.stderr)
+    for m in sorted(missing):
+        print(f"  {m}", file=sys.stderr)
+    sys.exit(1)
+PY
+
+echo "OK: 渲染完成，MathJax 已本地化，无外部依赖，无死链，无本地 404"
