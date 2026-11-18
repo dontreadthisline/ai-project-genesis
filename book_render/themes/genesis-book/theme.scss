@@ -26,8 +26,9 @@ main.content {
 // 桌面导航态：接管页面 grid 为标准三栏 —— 目录面板贴左缘、右 TOC 贴右缘、
 // 正文居中保 46rem 行长（两侧无死白，剩余空间作与正文列的呼吸 gap）
 @media (min-width: 992px) {
+  :root { --gen-col: 250px; }   // 三栏列宽单一来源：把手与阅读态退场位移均取此值
   #quarto-content {
-    grid-template-columns: 250px minmax(0, 1fr) 250px !important;
+    grid-template-columns: var(--gen-col) minmax(0, 1fr) var(--gen-col) !important;
   }
   #quarto-sidebar {
     grid-column: 1 !important;

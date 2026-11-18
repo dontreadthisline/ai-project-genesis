@@ -3,11 +3,11 @@
      阅读态：把手贴视口左缘；隐藏两侧目录，正文居中为纯书页
      交互：点击把手或按 [ 切换；localStorage 记忆；带滑动过渡 -->
 <style>
-  :root { --gen-handle-left: 310px; --gen-sidebar-w: 290px; }
+  /* 把手/退场位移所用的目录列宽变量定义在各主题 theme.scss 的三栏 grid 处（单一来源） */
 
   #gen-drawer-handle {
     position: fixed; top: 50%; transform: translateY(-50%);
-    left: var(--gen-handle-left);
+    left: var(--gen-col, 250px);   // 与主题三栏 grid 的目录列宽同源，无 JS 测量
     width: 16px; height: 64px;
     border: none; border-radius: 0 8px 8px 0;
     background: rgba(0, 0, 0, 0.05);
@@ -31,7 +31,7 @@
      右导航复用 Quarto 原生 margin-sidebar（含 scroll-spy 高亮），重安置到留白区 */
   body.gen-reading #gen-drawer-handle { left: 0; border-radius: 0 8px 8px 0; }
   body.gen-reading #quarto-sidebar {
-    margin-left: calc(-1 * var(--gen-sidebar-w)); opacity: 0; pointer-events: none;
+    margin-left: calc(-1 * var(--gen-col, 250px)); opacity: 0; pointer-events: none;
   }
   body.gen-reading #quarto-content {
     grid-template-columns: 2.5rem minmax(0, 58rem) clamp(12rem, 14vw, 15rem) 2.5rem !important;
@@ -85,15 +85,6 @@
       document.documentElement.classList.toggle('gen-reading', on);
       localStorage.setItem(KEY, on ? '1' : '0');
     }
-    function syncHandle() {
-      var sb = document.getElementById('quarto-sidebar');
-      var root = document.documentElement;
-      if (sb && window.innerWidth >= 992) {
-        var right = sb.getBoundingClientRect().right;
-        root.style.setProperty('--gen-handle-left', right + 'px');
-        root.style.setProperty('--gen-sidebar-w', (right + 2) + 'px');
-      }
-    }
     document.addEventListener('DOMContentLoaded', function () {
       if (document.documentElement.classList.contains('gen-reading')) {
         document.body.classList.add('gen-reading');
@@ -103,18 +94,13 @@
       handle.type = 'button';
       handle.title = '切换阅读模式（隐藏两侧目录）快捷键 [';
       handle.setAttribute('aria-label', '切换阅读模式');
-      handle.textContent = '\u2039';   // ‹ 展开态提示「向左收起」；阅读态由 CSS 位置表达「点我展开」
       handle.addEventListener('click', function () {
         var on = !document.body.classList.contains('gen-reading');
         apply(on);
-        // 阅读态下把手贴左缘（left:0），展开态回贴侧栏右缘
         handle.textContent = on ? '\u203A' : '\u2039';
       });
       document.body.appendChild(handle);
-      // 初始箭头与记忆状态一致
       handle.textContent = document.body.classList.contains('gen-reading') ? '\u203A' : '\u2039';
-      syncHandle();
-      window.addEventListener('resize', syncHandle);
       document.addEventListener('keydown', function (e) {
         if (e.key === '[' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
           handle.click();
