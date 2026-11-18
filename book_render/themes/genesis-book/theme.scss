@@ -23,17 +23,23 @@ main.content {
   padding-right: 2rem;
 }
 
-// 侧边栏：贴住视口左缘并铺满左区（吃掉 Quarto 默认 70px inset 空白，
-// 目录右缘与正文关系不变：宽 250+70=320，内容 padding 左移 70 保持原位）
+// 侧边栏：贴住视口左缘铺满左区（吃掉 Quarto 默认 70px inset），并给面板实体视觉
+// （底座默认背景纯白与页面无差异，贴边不可见；浅灰底 + 右边框才真正「占据左侧」）
 #quarto-sidebar {
   margin-left: -70px;
   width: 320px;
   padding-left: 70px;
+  background-color: #f6f7f8;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
   font-size: 0.92em;
   .sidebar-item-section > .sidebar-item-container .sidebar-item-text {
     font-family: $font-family-serif;
     font-weight: 600;
   }
+}
+.dark #quarto-sidebar {
+  background-color: #191b1e;
+  border-right-color: rgba(255, 255, 255, 0.09);
 }
 // 窄屏 overlay 模式回归默认（避免负 margin 把抽屉推出屏）
 @media (max-width: 991.98px) {

@@ -33,16 +33,22 @@ main.content {
   padding-right: 2rem;
 }
 
-// 目录贴左缘铺满左区（journal 底座 inset 同为 70px，实测）
+// 目录贴左缘铺满左区（journal 底座 inset 同为 70px，实测），面板实体视觉（纸色底）
 #quarto-sidebar {
   margin-left: -70px;
   width: 320px;
   padding-left: 70px;
+  background-color: #f7f5f0;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
   font-size: 0.9em;
   .sidebar-item-section > .sidebar-item-container .sidebar-item-text {
     font-family: $font-family-serif;
     font-weight: 600;
   }
+}
+.dark #quarto-sidebar {
+  background-color: #1a1917;
+  border-right-color: rgba(255, 255, 255, 0.09);
 }
 @media (max-width: 991.98px) {
   #quarto-sidebar { margin-left: 0; width: auto; padding-left: 0; }
