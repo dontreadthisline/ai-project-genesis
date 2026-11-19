@@ -30,7 +30,17 @@ GENESIS_THEME=paper-book ./book_render/scripts/build-book.sh   # 换主题
 open _book/index.html     # 本地阅读，断网也可正常渲染公式
 ```
 
-换渲染工具（如 VitePress、mdBook）时：在 book_render/scripts/ 新增一个 manifest 生成器即可，`docs/` 与 `code/` 零改动。主题是标准 Quarto 扩展：外部项目 `quarto add <主题仓库>` 后 `format: <主题名>-html` 即用，不绑定本仓库。
+换渲染工具（如 VitePress、mdBook）时：在 book_render/scripts/ 新增一个 manifest 生成器即可，`docs/` 与 `code/` 零改动。
+
+主题已独立发布：https://github.com/dontreadthisline/quarto-book-themes
+外部项目 `quarto add dontreadthisline/quarto-book-themes` 后 `format: genesis-book-html`（或 `paper-book-html`）即用。
+主题同步流程：本仓库 `book_render/themes/` 为单一事实源，GitHub zip 安装要求 `_extensions/<org>/<name>/` 布局，同步并推送：
+
+    rsync -a --delete --exclude '.DS_Store' book_render/themes/genesis-book \
+        ~/my_proj/quarto-book-themes/_extensions/dontreadthisline/genesis-book
+    rsync -a --delete --exclude '.DS_Store' book_render/themes/paper-book \
+        ~/my_proj/quarto-book-themes/_extensions/dontreadthisline/paper-book
+    cd ~/my_proj/quarto-book-themes && git add -A && git commit -m '...' && git push
 
 ## 实验环境
 
