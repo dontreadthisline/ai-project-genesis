@@ -45,9 +45,16 @@ if missing:
 if not (THEME_DIR / "_extension.yml").is_file():
     print(f"ERROR: 主题扩展不完整: book_render/themes/{THEME}（缺 _extension.yml）", file=sys.stderr)
     sys.exit(1)
-if EXT_DIR.exists():
+# 若已通过 quarto add 安装（org 结构 _extensions/<org>/<name>/）则跳过本地复制，
+# 优先使用线上安装版（发布闭环验证路径）
+installed = any((ROOT / "_extensions").glob(f"*/{THEME}"))
+if installed:
+    print(f"theme {THEME}: 使用 quarto add 安装的版本")
+elif EXT_DIR.exists():
     shutil.rmtree(EXT_DIR)
-shutil.copytree(THEME_DIR, EXT_DIR)
+    shutil.copytree(THEME_DIR, EXT_DIR)
+else:
+    shutil.copytree(THEME_DIR, EXT_DIR)
 
 # Quarto book 硬性要求 home page 必须是 index.*：
 # 从 manifest 的 landing 复制出 index.qmd（每次构建重新生成，属渲染层产物）
