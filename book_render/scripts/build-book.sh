@@ -15,6 +15,11 @@ quarto render
 
 mkdir -p _book/site_libs/mathjax
 cp book_render/vendor/mathjax-tex-svg-full.js _book/site_libs/mathjax/tex-svg-full.js
+# 项目级 resources/（如主题手绘原语的字体与脚本）复制进站点根
+if [ -d resources ]; then
+  rm -rf _book/resources
+  cp -r resources _book/resources
+fi
 
 python3 - <<'PY'
 from pathlib import Path
@@ -27,6 +32,8 @@ for html in book.rglob("*.html"):
     prefix = "../" * depth
     text = html.read_text(encoding="utf-8")
     text = text.replace(cdn_mathjax, f"{prefix}site_libs/mathjax/tex-svg-full.js")
+    # 项目 resources 引用按页面深度改写（同 MathJax 的相对路径问题）
+    text = text.replace('="resources/', f"=\"{prefix}resources/")
     lines = [ln for ln in text.splitlines() if "cdnjs.cloudflare.com/polyfill" not in ln]
     html.write_text("\n".join(lines) + "\n", encoding="utf-8")
 PY
