@@ -48,6 +48,17 @@ $T^*$ 同样是 $\gamma$-压缩。策略迭代 = 交替「求 $v^\pi$（内层�
 
 ## 2. 实现任务
 
+<div class="theorem algorithm">
+<div class="theorem-title">算法 24.1（值迭代）</div>
+
+1. **输入**：转移核 $P$、奖励 $R$、折扣 $\gamma$、容差 $\epsilon$；初始化 $v \leftarrow 0$。
+2. **repeat**　对每个状态 $s$ 更新：
+   $$v(s) \leftarrow \max_a \sum_{s'} P(s'\mid s,a)\left[ r + \gamma\, v(s') \right]$$
+3. **until**　$\|v_{k+1} - v_k\|_\infty \le \epsilon(1-\gamma)/\gamma$（停机后 $\|v - v^*\|_\infty \le \epsilon$）。
+4. **输出**：贪心策略 $\pi(s) \leftarrow \arg\max_a \sum_{s'} P(s'\mid s,a)[r + \gamma v(s')]$。
+
+</div>
+
 ```python
 def policy_evaluation(P, R, pi, gamma, eps=1e-8): ...
 def policy_improvement(P, R, v, gamma): ...

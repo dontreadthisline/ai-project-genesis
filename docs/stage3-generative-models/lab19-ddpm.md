@@ -63,6 +63,23 @@ $$
 
 ## 2. 实现任务
 
+<div class="theorem algorithm">
+<div class="theorem-title">算法 19.1（DDPM 训练与采样）</div>
+
+**训练**：
+
+1. **repeat**　采样 $x_0 \sim p_{data}$，$t \sim \mathrm{U}\{1, \dots, T\}$，$\epsilon \sim \mathcal N(0, I)$；
+2. 一步前向 $x_t = \sqrt{\bar\alpha_t}\, x_0 + \sqrt{1 - \bar\alpha_t}\, \epsilon$；
+3. 梯度步 $\nabla_\theta \| \epsilon - \epsilon_\theta(x_t, t) \|^2$。
+
+**采样**：
+
+1. $x_T \sim \mathcal N(0, I)$；
+2. **for** $t = T, \dots, 1$ **：**
+   $$x_{t-1} = \tfrac{1}{\sqrt{\alpha_t}}\Big( x_t - \tfrac{\beta_t}{\sqrt{1 - \bar\alpha_t}}\, \epsilon_\theta(x_t, t) \Big) + \sigma_t z, \quad z \sim \mathcal N(0, I)$$
+
+</div>
+
 ```python
 class Diffusion:
     def betas_schedule(T): ...          # 线性或余弦

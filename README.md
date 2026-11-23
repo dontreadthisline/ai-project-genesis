@@ -42,6 +42,11 @@ open _book/index.html     # 本地阅读，断网也可正常渲染公式
         ~/my_proj/quarto-book-themes/_extensions/dontreadthisline/paper-book
     cd ~/my_proj/quarto-book-themes && git add -A && git commit -m '...' && git push
 
+## 图表规范（indigo-atlas 手绘体系）
+
+- 每张图独立成一个单独的 HTML 页面（sketch.js 作为绘图语言），正文以链接/嵌入方式引用，不在正文中拼绘图代码。
+- 图中出现的公式与文字一律用 LaTeX 单独渲染（MathJax），**永远不用 unicode 拼接**（不手写下标字符、不用全角上下标模拟公式）。
+
 ## 实验环境
 
 讲义（docs/）已全部完成；实验代码骨架（code/）第一阶段就绪，第二至第六阶段待建——每个实验的讲义§「实现任务」即为其代码骨架的规约。

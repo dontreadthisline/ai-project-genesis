@@ -54,6 +54,19 @@ $$
 
 ## 2. 实现任务
 
+<div class="theorem algorithm">
+<div class="theorem-title">算法 30.1（PPO）</div>
+
+1. **for** 迭代 $= 1, 2, \dots$ **：**
+   1. 用 $\pi_{old}$ 采集 batch $\{(s_t, a_t, r_t)\}$，记录 $\log\pi_{old}(a_t \mid s_t)$。
+   2. 计算 GAE 优势 $\hat A_t = \sum_{l \ge 0} (\gamma\lambda)^l \delta_{t+l+1}$ 与回报目标 $\hat R_t$。
+   3. **for** epoch $= 1, \dots, K$ **：**
+      - 比值 $\rho_t(\theta) = \pi_\theta(a_t \mid s_t) / \pi_{old}(a_t \mid s_t)$；
+      - 若 $\mathrm{KL}(\pi_\theta \| \pi_{old}) > 1.5\, \mathrm{KL}_{target}$：**break**（信任域早停）；
+      - 梯度步：$\nabla_\theta\left[ J^{CLIP} - c_v (V_\phi - \hat R)^2 + c_e \mathcal H(\pi_\theta) \right]$。
+
+</div>
+
 ```python
 class ActorCritic: ...                    # Lab 29 复用
 def gae(rewards, values, dones, gamma, lam): ...

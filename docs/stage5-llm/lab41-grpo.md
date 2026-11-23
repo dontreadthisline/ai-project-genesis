@@ -53,6 +53,18 @@ KL 参考从 $\pi_{old}$ 换成 $\pi_{ref}$：约束对象是「别离 SFT 太�
 
 ## 2. 实现任务
 
+<div class="theorem algorithm">
+<div class="theorem-title">算法 41.1（GRPO）</div>
+
+1. **for** prompt $x \sim \mathcal D$ **：**
+   1. 采样组 $\{y_1, \dots, y_G\} \sim \pi_\theta(\cdot \mid x)$，逐 token 记录 $\log\pi_{old}$。
+   2. 可验证判分 $r_i = R(x, y_i) \in \{0, 1\}$。
+   3. 组内归一化优势 $\hat A_i = \dfrac{r_i - \mathrm{mean}(r)}{\mathrm{std}(r) + \epsilon}$；全对/全错组 $\hat A \equiv 0$，弃用。
+   4. **for** epoch **：** 逐 token 比值 $\rho$，梯度步
+      $$\nabla_\theta \left[ \frac{1}{|y|} \sum_t \min\!\big(\rho_t \hat A,\ \mathrm{clip}(\rho_t, 1 \pm \epsilon)\, \hat A\big) - \beta\, \mathrm{KL}(\pi_\theta \| \pi_{ref}) \right]$$
+
+</div>
+
 ```python
 def make_arith_task(): ...             # 题目 + 可验证判分器
 def group_rollout(model, prompts, G, cfg): ...   # 批采样 G 个回答 + logprob_old

@@ -38,6 +38,19 @@ $\theta^-$ 是目标网络参数（滞后副本），$\mathcal D$ 是 replay 分
 
 ## 2. 实现任务
 
+<div class="theorem algorithm">
+<div class="theorem-title">算法 26.1（DQN 训练循环）</div>
+
+1. **初始化**：在线网络 $Q_\theta$；目标网络 $\theta^- \leftarrow \theta$；空回放缓冲 $\mathcal D$。
+2. **for** $t = 1, \dots, N$ **：**
+   1. $\epsilon$-greedy 采样 $a_t$，执行得 $(s_t, a_t, r_t, s_{t+1}, d_t)$，存入 $\mathcal D$。
+   2. 从 $\mathcal D$ 均匀采样 minibatch $B$。
+   3. 构造目标 $y = r + \gamma (1 - d)\max_{a'} Q_{\theta^-}(s', a')$。
+   4. Huber 损失 $L(\theta) = \mathbb E_B\left[ \delta_\rho\!\left(y - Q_\theta(s, a)\right) \right]$，梯度步更新 $\theta$。
+   5. 每 $C$ 步同步 $\theta^- \leftarrow \theta$。
+
+</div>
+
 ```python
 class QNet: ...                        # 4 -> 128 -> 128 -> 4
 class ReplayBuffer: ...                # 环形缓冲：push / sample(batch)
