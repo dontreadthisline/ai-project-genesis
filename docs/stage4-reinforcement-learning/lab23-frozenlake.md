@@ -45,39 +45,8 @@ Gymnasium 通过 `env.unwrapped.P[s][a]` 暴露完整转移表：列表 of (prob
 - `expected_reward` — 按 P 采样下一状态（自实现，不用 env.step）
 - `sample_step` — 按 P 采样下一状态（自实现，不用 env.step）
 
-- 接口骨架：[`../../code/lab23-frozenlake/skeleton.py`](../../code/lab23-frozenlake/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab23-frozenlake/selftest.py`](../../code/lab23-frozenlake/selftest.py)
+- 接口骨架：[`../../code/lab23-frozenlake/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab23-frozenlake/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab23-frozenlake/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab23-frozenlake/selftest.py)
 - 实验入口：`cd code/lab23-frozenlake && uv sync && uv run run_lab23.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | slippery True / False | — | 转移矩阵的结构差异、成功概率上界 |
-| E2 | $\gamma \in \{0.5, 0.9, 0.99\}$ | 固定随机策略 | 随机游走的期望回报 |
-| E3 | 随机策略 Monte Carlo 回报 vs 解析期望 | — | Lab 03 估计器复用的正确性 |
-| E4 | 随机策略下访问状态分布（100 回合） | — | 洞/目标的到达频率 |
-
-## 4. 预期图表
-
-- 图 1：网格图标注状态编号、洞、目标、每状态的转移箭头（按最大概率方向）。
-- 图 2：E2 三种 $\gamma$ 的期望回报（解析 = 线性方程组的解或矩阵幂迭代）。
-- 图 3：E3 收敛：MC 估计 vs 解析值，误差 $\propto 1/\sqrt n$（Lab 03 复检）。
-- 图 4：E4 热力图：访问频率集中在中部路径，slippery 下更分散。
-
-## 5. 观测指标
-
-`P_rowsum_max_err`、`random_policy_return_by_gamma`、`mc_vs_analytic`。
-
-## 6. 结果分析
-
-1. slippery 下「最优策略」还能保证成功吗？期望成功率的上界受什么约束？
-2. E2 中 $\gamma$ 小时为什么期望回报骤降（成功奖励在 5+ 步之外）？
-3. E3 的 MC-解析对照把 Lab 03 的哪些结论直接搬过来了？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；P/R 张量构建正确
-- [ ] 能把任意 Gymnasium 玩具环境手工翻译成 MDP 五元组
-- [ ] 能解释 slippery 对策略设计的影响

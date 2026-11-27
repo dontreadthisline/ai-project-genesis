@@ -63,39 +63,8 @@ $$
 - `LSTM` — 1.2 六个方程
 - `bptt_grad_norm` — 返回 ∂L/∂h_0 的范数
 
-- 接口骨架：[`../../code/lab13-rnn-lstm/skeleton.py`](../../code/lab13-rnn-lstm/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab13-rnn-lstm/selftest.py`](../../code/lab13-rnn-lstm/selftest.py)
+- 接口骨架：[`../../code/lab13-rnn-lstm/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab13-rnn-lstm/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab13-rnn-lstm/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab13-rnn-lstm/selftest.py)
 - 实验入口：`cd code/lab13-rnn-lstm && uv sync && uv run run_lab13.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | $T \in \{20, 50, 100, 200\}$ × RNN/LSTM | 隐藏维对齐参数量 | 加法任务 MSE |
-| E2 | $T$ 扫描下 $\|\partial L/\partial h_0\|$ | — | 对数图斜率 |
-| E3 | LSTM 遗忘门偏置 $\{0, 1, 2\}$ | — | 长序列收敛 |
-| E4 | 有无梯度裁剪（RNN，T=100） | — | 训练稳定性（loss 尖峰） |
-
-## 4. 预期图表
-
-- 图 1：MSE vs T：RNN 在 T 增大时停在随机水平平台（≈预测均值 0 的方差），LSTM 保持低误差到 T=100+。
-- 图 2：对数-对数图：RNN 梯度范数斜率显著为负（指数消失），LSTM 接近 0。
-- 图 3：E3：遗忘门偏置 +1（初始 f≈0.73）优于 0；偏置过大（f≈0.88 起步）短期任务略慢。
-- 图 4：无裁剪 RNN 的 loss 曲线出现发散尖峰；裁剪后平滑。
-
-## 5. 观测指标
-
-`mse_by_T`、`grad_norm_by_T`、`best_mse_rnn_vs_lstm`。
-
-## 6. 结果分析
-
-1. 用 1.1 的连乘界估算 RNN 在 $\rho(W_h)=0.5$、$T=100$ 时的梯度量级，与图 2 对照。
-2. LSTM 在哪个 $T$ 之后也开始失败？失败模式与 RNN 相同吗？
-3. 为什么说 LSTM 是「缓解」：写出它仍会梯度消失的一条具体路径（$f_t$ 被学习为小值时）。
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板写出 BPTT 连乘式与 LSTM 细胞状态梯度
-- [ ] 复现 RNN/LSTM 在加法任务上的 T-性能曲线分化
-- [ ] 能解释遗忘门偏置初始化为正的经验做法

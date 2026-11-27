@@ -69,40 +69,8 @@ $$
 - `AdamW` — AdamW
 - `cosine_schedule` — cosine_schedule
 
-- 接口骨架：[`../../code/lab07-optimizers/skeleton.py`](../../code/lab07-optimizers/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab07-optimizers/selftest.py`](../../code/lab07-optimizers/selftest.py)
+- 接口骨架：[`../../code/lab07-optimizers/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab07-optimizers/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab07-optimizers/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab07-optimizers/selftest.py)
 - 实验入口：`cd code/lab07-optimizers && uv sync && uv run run_lab07.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 优化器：SGD / Momentum / Adam / AdamW | 同一初始化与调度 | loss 曲线、test acc |
-| E2 | 学习率 $\{0.1, 0.01, 0.001\} \times$ 优化器 | — | 发散/震荡/过慢分类 |
-| E3 | 调度：恒定 / cosine / cosine+warmup | Adam，lr_max 相同 | 最终 test acc |
-| E4 | 有无 weight decay（AdamW） | 长训练 50 epoch | train/val gap |
-
-## 4. 预期图表
-
-- 图 1：四条 loss 曲线（对数 y 轴）。Adam 族早期下降最快；调好 lr 的 Momentum 最终精度相当。
-- 图 2：E2 的 $4\times3$ 小图矩阵（发散标红）：SGD 容忍大 lr，Adam 小 lr 更稳。
-- 图 3：梯度范数与参数范数随 epoch 变化（AdamW 的参数范数缓慢下降 = 衰减生效）。
-- 图 4：E3 三条曲线，warmup+cosine 最好（差距小但一致）。
-
-## 5. 观测指标
-
-`best_test_acc_by_optimizer`、`epochs_to_97pct`、`final_param_norm`、`train_val_gap`。
-
-## 6. 结果分析
-
-1. 用 1.1 的展开式解释图 1 中 Momentum 曲线的震荡幅度小于 SGD。
-2. E2 中 Adam 在 lr=0.1 时发生什么？（自适应步长 ~lr，对 MNIST-MLP 过大。）
-3. E4 中 weight decay 对 train/val gap 的影响是否显著？与 Lab 05 的 MAP 收缩预测一致吗？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板推导 Adam 偏差修正因子 $1/(1-\beta^t)$
-- [ ] 能解释 Momentum 的方向累积与 Adam 的逐参数步长两种机制的差别
-- [ ] 能说出 AdamW 与 Adam+L2 在数学上的差别及后果
-- [ ] 至少一组配置 test acc $\geq 98\%$

@@ -39,40 +39,8 @@ Prefill（处理 prompt）：全部位置并行，compute-bound（大矩阵乘�
 - `generate_cached` — generate_cached
 - `generate_naive` — generate_naive
 
-- 接口骨架：[`../../code/lab36-inference/skeleton.py`](../../code/lab36-inference/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab36-inference/selftest.py`](../../code/lab36-inference/selftest.py)
+- 接口骨架：[`../../code/lab36-inference/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab36-inference/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab36-inference/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab36-inference/selftest.py)
 - 实验入口：`cd code/lab36-inference && uv sync && uv run run_lab36.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 有无 KV cache | prompt 长度 $\{32, 128, 512\}$ | 每 token 延迟、加速比 |
-| E2 | T $\in \{0.3, 0.7, 1.0, 1.5\}$ | top 关闭 | 生成多样性（distinct-n）vs 质量 |
-| E3 | top-k / top-p 组合扫描 | — | 重复率 vs 多样性 |
-| E4 | cache 内存 vs 上下文长度 | — | $2LTd$ 公式实测 |
-| E5 | prefill vs decode 吞吐 | — | tokens/s 差距（量级） |
-
-## 4. 预期图表
-
-- 图 1：每 token 延迟 vs 生成位置：naive 随位置线性恶化（重算 $T^2$），cache 近乎平坦。加速比在 512 长度下达一个量级。
-- 图 2：E2 的样本矩阵（T 扫描 × 同 prompt）：低温保守重复、高温混乱。
-- 图 3：重复率-diversity 散点（各采样配置），标出 Pareto 前沿配置。
-- 图 4：E5 吞吐柱状图（对数轴）：decode 的 tokens/s 比 prefill 低一到两个量级。
-
-## 5. 观测指标
-
-`latency_curve_cache_vs_naive`、`speedup_by_len`、`cache_mem_formula_check`、`diversity_by_T`。
-
-## 6. 结果分析
-
-1. 用 1.2 推导：prompt=512、生成 100 token，naive 与 cache 的注意力 FLOPs 比是多少？
-2. E3 中 top-p 比 top-k 优势的场景？（分布形态随上下文变化时自适应。）
-3. E5 的 memory-bound 现象对部署意味着什么？（batch 化、投机解码等方向的动机，只需定性。）
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；cache 与 naive 数值一致 + 加速实测
-- [ ] 能推导温度重缩放后的分布形式与 cache 的复杂度
-- [ ] 能解释 prefill/decode 的不对称

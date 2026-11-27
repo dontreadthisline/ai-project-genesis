@@ -58,39 +58,8 @@ $$
 - `d_loss` — BCE with logits
 - `g_loss` — g_loss
 
-- 接口骨架：[`../../code/lab17-gan/skeleton.py`](../../code/lab17-gan/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab17-gan/selftest.py`](../../code/lab17-gan/selftest.py)
+- 接口骨架：[`../../code/lab17-gan/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab17-gan/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab17-gan/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab17-gan/selftest.py)
 - 实验入口：`cd code/lab17-gan && uv sync && uv run run_lab17.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | D/G 更新比 $\{1:1, 5:1\}$ | — | D 准确率轨迹、样本质量 |
-| E2 | G/D 学习率错配（G 慢 10 倍等） | — | 崩溃模式 |
-| E3 | 训练阶段快照（1/5/20/50 epoch） | — | 样本演化、mode collapse 出现 |
-| E4 | 固定噪声种子可视化同一批 z 的输出漂移 | — | collapse 的直接观测 |
-
-## 4. 预期图表
-
-- 图 1：D/G loss 双曲线：任何一条 loss 趋 0 都意味着失衡（D 完胜或 G 骗过一切），理想区间是围绕某个非零值的拉锯。
-- 图 2：D 准确率曲线：健康训练在 60%-90% 震荡；趋 100% 说明 D 太强。
-- 图 3：四阶段样本网格：从噪声块到数字形态；记录 collapse 时同类数字铺满网格。
-- 图 4：E4 同 z 漂移：collapse 模型下不同 z 映射到几乎相同输出。
-
-## 5. 观测指标
-
-`d_acc_curve`、`g_loss_curve`、`sample_grids`、`mode_count`（用简单聚类或类别分类器估计生成多样性）。
-
-## 6. 结果分析
-
-1. 用 1.3 说明「训练成功时 JS 最小」，再解释为什么实践中 loss 数值并不对应 JS（非饱和替换、有限样本）。
-2. E1 中 5:1 的深 D 训练是否带来更好样本？D 过强的证据是什么？
-3. 与 Lab 15 对照：VAE 的潜空间有先验结构约束、GAN 无显式密度——两者的失败模式（模糊 vs collapse）与这一点有何对应？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板推导 $D^*$ 与 $C(G) = -\log4 + 2\,\mathrm{JS}$
-- [ ] 能从 loss/acc 曲线诊断训练失衡
-- [ ] 观测到至少一次 mode collapse 并给出解释

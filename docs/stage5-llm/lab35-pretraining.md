@@ -43,39 +43,8 @@ Warmup + cosine（Lab 07 §1.4）。梯度累积：分 micro-batch 前向反传�
 - `evaluate_ppl` — evaluate_ppl
 - `generate_samples` — generate_samples
 
-- 接口骨架：[`../../code/lab35-pretraining/skeleton.py`](../../code/lab35-pretraining/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab35-pretraining/selftest.py`](../../code/lab35-pretraining/selftest.py)
+- 接口骨架：[`../../code/lab35-pretraining/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab35-pretraining/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab35-pretraining/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab35-pretraining/selftest.py)
 - 实验入口：`cd code/lab35-pretraining && uv sync && uv run run_lab35.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 训练进程（step 快照） | — | train/val PPL 双曲线、样本质量演化 |
-| E2 | $d \in \{128, 256, 512\}$ | 数据/步数同 | val PPL、过拟合点 |
-| E3 | block $\{64, 128, 256\}$ | — | val PPL、长生成连贯性 |
-| E4 | lr 调度：恒定 vs cosine | — | 最终 PPL（连 Lab 07） |
-
-## 4. 预期图表
-
-- 图 1：train/val loss 双曲线 + 按快照的生成样本（早期乱码 → 词法正确 → 短句通顺）。
-- 图 2：E2 三模型 val PPL：512 在小数据上后期反超差（过拟合）或持平。
-- 图 3：E3 的 PPL 对比 + 256 block 的长文本生成更连贯。
-- 图 4：E4 双曲线：cosine 后期下降更稳。
-
-## 5. 观测指标
-
-`val_ppl_curve`、`best_val_ppl`、`samples_by_step`、`ppl_by_config`。
-
-## 6. 结果分析
-
-1. 你的 val PPL 降到多少？PPL $= 15$ 意味着什么（用 1.1 解释）？
-2. E2 中 512 维模型何时开始过拟合？与数据量（token 数）的关系？
-3. 生成样本中出现的「重复循环」是什么阶段的典型病？（自回归分布的局部陷阱；与 greedy 解码相关，连 Lab 36。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；完整训练循环（调度、累积、checkpoint、评估）独立实现
-- [ ] val PPL 明显低于 $e^{\ln V}$ 基线并趋于平稳（TinyStories 小模型典型 $5\sim10$）
-- [ ] 生成样本达到「语法通顺的短故事」水平

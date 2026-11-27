@@ -47,39 +47,8 @@ $$
 - `bpe_decode` — bpe_decode
 - `char_encode` — char_encode
 
-- 接口骨架：[`../../code/lab32-tokenizer/skeleton.py`](../../code/lab32-tokenizer/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab32-tokenizer/selftest.py`](../../code/lab32-tokenizer/selftest.py)
+- 接口骨架：[`../../code/lab32-tokenizer/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab32-tokenizer/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab32-tokenizer/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab32-tokenizer/selftest.py)
 - 实验入口：`cd code/lab32-tokenizer && uv sync && uv run run_lab32.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 级别：字符 / 词 / BPE | 同语料 | token 数、词表、OOV 率 |
-| E2 | BPE $|V| \in \{256, 512, 1k, 4k\}$ | — | 压缩率曲线（边际递减） |
-| E3 | 未知词处理：BPE vs 词级 | 持出文本 | OOV 率、切分粒度 |
-| E4 | 合并表可视化：前 20 个合并 | — | 语言学单位涌现（the/ing/空格+词） |
-
-## 4. 预期图表
-
-- 图 1：压缩率 vs $|V|$：快速上升后饱和（边际合并越来越稀有）。
-- 图 2：E1 三方案的同一句话切分对照（着色块）。
-- 图 3：token 长度分布：字符级全 1，BPE 呈长尾（常见词整块、罕见词碎片）。
-- 图 4：E4 的合并序列表：早期合并是高频词片段/空格模式。
-
-## 5. 观测指标
-
-`compression_by_vocab`、`oov_rate_word_vs_bpe`、`top_merges`。
-
-## 6. 结果分析
-
-1. 图 1 饱和点的 $|V|$ 附近发生了什么？（高频对耗尽，开始合并低频对，收益骤降。）
-2. 词表从 1k 到 4k，embedding 参数（$d=256$）增加多少？序列变短节省的计算能否补偿？（数量级估算。）
-3. 为什么 LLM 词表里的中文 token 更「碎片化」？（训练语料的合并频率分布。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；BPE 训练与编码全自实现
-- [ ] 能解释压缩率-词表-序列长度三方权衡
-- [ ] 往返恒等性测试是分词器的底线测试，说明理由

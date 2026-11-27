@@ -58,39 +58,8 @@ $$
 - `cfm_loss` — 1.3 直线路径损失
 - `euler_sample` — euler_sample
 
-- 接口骨架：[`../../code/lab20-flow-matching-2d/skeleton.py`](../../code/lab20-flow-matching-2d/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab20-flow-matching-2d/selftest.py`](../../code/lab20-flow-matching-2d/selftest.py)
+- 接口骨架：[`../../code/lab20-flow-matching-2d/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab20-flow-matching-2d/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab20-flow-matching-2d/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab20-flow-matching-2d/selftest.py)
 - 实验入口：`cd code/lab20-flow-matching-2d && uv sync && uv run run_lab20.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 训练前后 $v_\theta$ 的流线可视化（网格箭头图） | — | 场的弯曲结构 |
-| E2 | 积分步数 $\{1, 2, 5, 20, 100\}$ | 训练后模型 | 目标分布匹配误差 |
-| E3 | 概率路径中间时刻 $t \in \{0.25, 0.5, 0.75\}$ 的采样点云 | — | 噪声到数据的连续变形 |
-| E4 | 与 Lab 18 flow 对照：同目标、同预算的匹配质量与采样成本 | — | NFE-质量曲线 |
-
-## 4. 预期图表
-
-- 图 1：速度场箭头图叠加目标密度：噪声区域箭头指向数据高密度区、数据区箭头近零。
-- 图 2：步数-误差曲线：1 步（线性近似）明显差，5-20 步接近收敛。
-- 图 3：三时刻点云：标准正态 → 半月形过渡 → 双月/双峰。
-- 图 4：E4 对照：FM 少步采样即可用，coupling flow 是一步精确变换（结构先验更强 vs 学习更自由）。
-
-## 5. 观测指标
-
-`w2_by_step`、`w2_final`、`field_snapshot`。
-
-## 6. 结果分析
-
-1. 用 1.2 的边缘化解释速度场在两簇之间的区域为何指向两簇的加权平均方向。
-2. E2 的收敛步数说明学到的 ODE 轨迹是接近直线还是强弯曲？（Rectified Flow 的 reflow 迭代能让轨迹更直，此处只观察。）
-3. 对照 DDPM：FM 的损失形式更简单（无 $\bar\alpha$ 系数、无噪声调度），代价是什么？（无精确似然——概率路径不保证可逆闭式。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能写出连续性方程与 CFM 损失的推导骨架
-- [ ] 能解释条件场边缘化得到边际场的逻辑
-- [ ] 速度场可视化与采样点云支持「ODE 传输」的解释

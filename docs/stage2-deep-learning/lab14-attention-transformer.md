@@ -63,40 +63,8 @@ $$
 - `Block` — 1.4 pre-norm
 - `MiniTransformer` — emb + pos + L*Block + ln_f + head
 
-- 接口骨架：[`../../code/lab14-attention-transformer/skeleton.py`](../../code/lab14-attention-transformer/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab14-attention-transformer/selftest.py`](../../code/lab14-attention-transformer/selftest.py)
+- 接口骨架：[`../../code/lab14-attention-transformer/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab14-attention-transformer/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab14-attention-transformer/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab14-attention-transformer/selftest.py)
 - 实验入口：`cd code/lab14-attention-transformer && uv sync && uv run run_lab14.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | RNN/LSTM vs Transformer（参数量对齐） | 同语料同预算 | loss、生成质量 |
-| E2 | 层数 $\{1, 2, 4, 8\}$ | — | loss 与有效上下文利用 |
-| E3 | 无位置编码 / 正弦 / 可学习 | — | loss 与生成中的顺序结构 |
-| E4 | 训练时上下文长度 16 vs 128 | — | 推理时外推长度行为的差异 |
-
-## 4. 预期图表
-
-- 图 1：两模型 loss 曲线：Transformer 收敛更快（并行训练 + 直接访问长程依赖）。
-- 图 2：层数-loss：4 层后收益递减（小语料上限）。
-- 图 3：E3 生成样本对比：无位置编码的生成在局部合理但全局乱序（字符 n-gram 统计正确但词序破坏）。
-- 图 4：注意力可视化（任一层任一头）：可见对角线 + 若干头呈均匀/局部模式。
-
-## 5. 观测指标
-
-`final_val_loss`、`gen_samples`、`params_count`、`attn_entropy_by_head`。
-
-## 6. 结果分析
-
-1. 用 1.1 的方差论证解释缩放因子的必要性；实验观察不除 $\sqrt{d}$ 时训练有何变化（可加做）。
-2. E1 中 Transformer 的优势来源是哪两点？各自对应 1.x 的哪个机制？
-3. E4 中短上下文模型在长生成时退化为什么？（分布外位置编码；自回归误差累积。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板写出缩放点积注意力与 pre-norm Block
-- [ ] 能推导 $q\cdot k$ 的方差并解释缩放
-- [ ] 能说明因果掩码与自回归分解的对应
-- [ ] 生成样本通顺度显著优于随机基线（人工评估 + loss 曲线）

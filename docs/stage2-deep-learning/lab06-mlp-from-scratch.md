@@ -65,47 +65,14 @@ $$
 - `MLP` — 逐层 Linear + ReLU
 - `softmax_cross_entropy` — 数值稳定：logits 减最大值。返回 (loss, dlogits)。dlogits 用 1.2 的闭式解。
 
-- 接口骨架：[`../../code/lab06-mlp-from-scratch/skeleton.py`](../../code/lab06-mlp-from-scratch/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab06-mlp-from-scratch/selftest.py`](../../code/lab06-mlp-from-scratch/selftest.py)
+- 接口骨架：[`../../code/lab06-mlp-from-scratch/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab06-mlp-from-scratch/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab06-mlp-from-scratch/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab06-mlp-from-scratch/selftest.py)
 - 实验入口：`cd code/lab06-mlp-from-scratch && uv sync && uv run run_lab06.py`
 
 实现清单（签名与 TODO 见骨架源码）：
 
-
-
-- 接口骨架：[`../../code/lab06-mlp-from-scratch/skeleton.py`](../../code/lab06-mlp-from-scratch/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab06-mlp-from-scratch/selftest.py`](../../code/lab06-mlp-from-scratch/selftest.py)
+- 接口骨架：[`../../code/lab06-mlp-from-scratch/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab06-mlp-from-scratch/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab06-mlp-from-scratch/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab06-mlp-from-scratch/selftest.py)
 - 实验入口：`cd code/lab06-mlp-from-scratch && uv sync && uv run run_lab06.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 手写梯度 vs 数值梯度 | — | 相对误差分布 |
-| E2 | 初始化：He / 全零 / 标准差 1.0 高斯 | 其余固定 | 训练 loss 是否下降 |
-| E3 | 隐藏层：无 / 1 层 / 2 层 | 参数量近似对齐 | 测试准确率、收敛速度 |
-| E4 | 训练前 / 中 / 后各层梯度范数与激活方差 | — | 是否存在消失或爆炸层 |
-
-## 4. 预期图表
-
-- 图 1：训练/验证 loss 与 accuracy 曲线（约 10 epoch，测试准确率 97%-98%）。
-- 图 2：E2 四条 loss 曲线：全零初始化完全不动（对称性无法打破），大方差高斯发散或震荡，He 正常下降。
-- 图 3：逐层梯度范数柱状图（反向第 1 层梯度最小但与首层同数量级）。
-
-## 5. 观测指标
-
-`final_test_acc`、`per_layer_grad_norm`、`per_layer_activation_var`、`E2_final_loss_by_init`。
-
-## 6. 结果分析
-
-1. E2 中全零初始化为何不动？（提示：梯度对第二层为零，对称性。）
-2. 观察 loss 从随机预测的 $\ln 10 \approx 2.303$ 起步，第一个 epoch 内快速下降到多少？这一段主要由哪几层的学习贡献？
-3. 用 1.2 的闭式解解释：为什么 CE 训练早期的梯度规模与「预测错误程度」成正比。
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过，未使用框架自动微分
-- [ ] 能白板推导 softmax-CE 梯度 $p - \mathbf 1_y$ 与 VJP 公式
-- [ ] 能解释 He 初始化方差的来源与 ReLU 的关系
-- [ ] MNIST 测试准确率 $\geq 97\%$

@@ -55,39 +55,8 @@ meta 含：逐步 token 序列与对数概率（Lab 45 的 ratio 计算需要 $\
 - `dump_jsonl` — JSONL 落盘
 - `classify_failure` — 1.3 分类树
 
-- 接口骨架：[`../../code/lab43-trajectory/skeleton.py`](../../code/lab43-trajectory/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab43-trajectory/selftest.py`](../../code/lab43-trajectory/selftest.py)
+- 接口骨架：[`../../code/lab43-trajectory/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab43-trajectory/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab43-trajectory/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab43-trajectory/selftest.py)
 - 实验入口：`cd code/lab43-trajectory && uv sync && uv run run_lab43.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | SFT 模型 × 200 任务 | — | 全指标面板 + 失败分类分布 |
-| E2 | 温度 $\{0.0, 0.7, 1.0\}$ | — | 成功率-多样性权衡 |
-| E3 | 上下文长度接近窗口边界 | — | 截断率突增的相变点 |
-| E4 | 同任务多次 rollout 的成功率方差 | — | 策略随机性的影响（Lab 41 组思想的伏笔） |
-
-## 4. 预期图表
-
-- 图 1：失败分类饼图 + 各类的典型轨迹摘录。
-- 图 2：E2 温度扫描：成功率峰值在中间温度（0 容易陷局部、1 噪声大）。
-- 图 3：步骤数直方图（成功 vs 截断任务的双峰）。
-- 图 4：E4 的组内成功率分布（同任务 8 次 rollouts 的方差——部分任务的策略处于「有时对有时错」的学习带，Lab 45 的可优化空间）。
-
-## 5. 观测指标
-
-`full_panel`（1.2 全部）、`failure_taxonomy`、`group_variance`、`per_task_success`。
-
-## 6. 结果分析
-
-1. E4 中「学习带」任务（0 < 成功率 < 1）占比多少？它们是 RL 的最佳训练素材（组内有对比信号）——与 Lab 41 的信号率分析对照。
-2. 图 2 的最优温度如何随任务难度变化？
-3. 协议型失败占比高说明什么？应该修 SFT 数据还是修环境？（成本收益讨论。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；轨迹自包含可重放
-- [ ] 失败分类树落地为代码并可复现统计
-- [ ] 全部指标带置信区间报告（Lab 03 规范的延续）

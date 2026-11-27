@@ -60,39 +60,8 @@ $s, t$ 是任意网络（不需可逆）：逆 $x_2 = (h_2 - t(h_1)) \odot \exp(
 - `AffineCoupling` — 实现 forward / inverse / log_det
 - `Flow` — 堆叠 coupling，交替 mask 两半
 
-- 接口骨架：[`../../code/lab18-flow/skeleton.py`](../../code/lab18-flow/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab18-flow/selftest.py`](../../code/lab18-flow/selftest.py)
+- 接口骨架：[`../../code/lab18-flow/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab18-flow/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab18-flow/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab18-flow/selftest.py)
 - 实验入口：`cd code/lab18-flow && uv sync && uv run run_lab18.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 层数 $\{2, 4, 8\}$ | — | 负对数似然、双峰再现质量 |
-| E2 | 训练前后 $z$-空间（数据经 $f^{-1}$）的形态 | — | 从混合高斯到标准正态的变形 |
-| E3 | 逐步可视化：$f$ 的中间层把 $z$ 空间逐步弯折 | — | 密度传输动画帧 |
-| E4 | 采样数 $\{100, 10^4\}$ 的直方图 vs 真实密度 | — | 密度估计与采样的一致性 |
-
-## 4. 预期图表
-
-- 图 1：三联图：$z$ 空间标准正态点云 / 训练后 $f(z)$ 点云 / 真实目标密度等高线。
-- 图 2：数据经 $f^{-1}$ 回映射：训练前是分离双峰（在 z 空间仍是混合），训练后近似标准正则圆云。
-- 图 3：负对数似然曲线收敛。
-- 图 4：中间层形态：每层轻微弯折、总体组成大变形。
-
-## 5. 观测指标
-
-`final_nll`、`inv_consistency_err`、`density_integral`。
-
-## 6. 结果分析
-
-1. 用 1.1 的质量守恒解释：为什么变换在两峰之间的低谷区域必须有强压缩？
-2. E1 中 2 层为何不足以拟合双峰（每层是剪切+缩放，需要多少弯折才能拆分质量）？
-3. 对比 VAE：同为「$z$ 到 $x$ 的生成映射」，为什么 flow 能给精确似然而 VAE 只有 ELBO？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板推导变量替换公式与耦合层行列式
-- [ ] 能解释三角 Jacobian 的 $O(d)$ 行列式为何是 flow 可扩展的关键
-- [ ] 双峰目标被成功再现（可视化 + NLL 收敛）

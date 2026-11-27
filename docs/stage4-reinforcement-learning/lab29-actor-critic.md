@@ -51,39 +51,8 @@ Actor 用 $-\log\pi \cdot \delta.\text{detach}()$，critic 用 $\delta^2$。两�
 - `ActorCritic` — 共享 trunk：策略头 logits + 价值头标量
 - `a2c_train` — on-policy：采集 n_step 回合批，一次更新
 
-- 接口骨架：[`../../code/lab29-actor-critic/skeleton.py`](../../code/lab29-actor-critic/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab29-actor-critic/selftest.py`](../../code/lab29-actor-critic/selftest.py)
+- 接口骨架：[`../../code/lab29-actor-critic/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab29-actor-critic/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab29-actor-critic/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab29-actor-critic/selftest.py)
 - 实验入口：`cd code/lab29-actor-critic && uv sync && uv run run_lab29.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | REINFORCE($G_t$-baseline) vs A2C(δ) | 同种子组 | 收敛速度、稳定性 |
-| E2 | critic lr / actor lr $\in \{0.1×, 1×, 10×\}$ | — | 两头各自的收敛 |
-| E3 | n-step 回传 $n \in \{1, 5, 20\}$ | — | 偏差-方差（连 Lab 25 的 TD/MC 光谱） |
-| E4 | 共享 trunk vs 分离网络 | — | 样本效率与干扰 |
-
-## 4. 预期图表
-
-- 图 1：两条回报曲线：A2C 早期更快（低方差优势信号），长程与调好的 REINFORCE 相当。
-- 图 2：E3 的 $n$ 光谱：n=1 最稳但略慢，n=20 接近 MC 的方差。
-- 图 3：V 学习曲线：critic 损失与回报同步收敛。
-- 图 4：E2 失衡示例：actor lr 过大时策略震荡、critic 跟不上（V 损失发散）。
-
-## 5. 观测指标
-
-`return_curves`、`critic_loss_curve`、`v_vs_mc`、`curves_by_nstep`。
-
-## 6. 结果分析
-
-1. T4 的 V-MC 一致性误差有多大？来源（函数近似 + 非平稳策略）？
-2. E2 的失衡模式说明联合优化的什么本质困难？
-3. on-policy 的 A2C 用完即丢数据——与 Lab 26 replay 的对比引出什么改进方向？（重要性采样，Lab 30。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能推导 $\mathbb E[\delta] = A$ 并写出两头损失
-- [ ] 复现 A2C 相对 REINFORCE 的稳定性优势
-- [ ] 能叙述策略方法改进链：REINFORCE → baseline → AC → GAE/（PPO）

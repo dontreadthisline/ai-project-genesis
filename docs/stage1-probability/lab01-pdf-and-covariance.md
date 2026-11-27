@@ -7,7 +7,7 @@ lab: 1
 
 ## 0. 理论问题
 
-本讲围绕三个问题展开，正文按此地图推进，§6 回收答案：
+本讲围绕三个问题展开，正文按此地图推进：
 
 1. **密度与样本的关系**——直方图凭什么能估计 PDF？为什么密度值可以大于 1？（→ §1.1、§1.2、§1.4）
 2. **参数的几何意义**——均值和方差在高斯曲线上长什么样？（→ §1.2）
@@ -108,7 +108,7 @@ $$
 
 ## 2. 实现任务
 
-结构 $784 \to 256 \to 128 \to 10$。
+三个函数对应 §1 的三块数学：密度（§1.1-1.2）、矩阵几何（§1.3）、采样（§1.5）。
 
 实现清单（签名与 TODO 见骨架源码）：
 
@@ -116,49 +116,10 @@ $$
 - `multivariate_gaussian_pdf` — 多维高斯密度。xs: (N, d)，mu: (d,)，Sigma: (d, d)，返回 (N,)。
 - `sample_multivariate_gaussian` — 从 N(mu, Sigma) 采样 n 个点（线性变换法，推导见 §1.5），
 
-- 模块源码：[`code/lab01-pdf-and-covariance/`](../../code/lab01-pdf-and-covariance/)
+- 模块源码：[`code/lab01-pdf-and-covariance/`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab01-pdf-and-covariance/)
 - 自测断言（红灯标准）：`run_lab01.py` 的 `check_implementation()`
 - 实验入口：`cd code/lab01-pdf-and-covariance && uv run run_lab01.py`
 
-## 3. 对照实验设计
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | $\mu \in \{-2, 0, 3\}$ | $\sigma = 1$ | 密度曲线位置 |
-| E2 | $\sigma \in \{0.2, 1, 5\}$ | $\mu = 0$ | 峰高、宽度、密度峰值数值 |
-| E3 | 样本量 $n \in \{100, 10^3, 10^4, 10^5\}$ | 同一分布 | 直方图与 PDF 曲线的最大偏差 |
-| E4 | bin 数 $\in \{5, 20, 50, 200\}$，$n = 10^4$ | 同一样本 | 直方图形态（过平滑 / 抖动） |
-| E5 | $\rho \in \{-0.9, -0.5, 0, 0.5, 0.9\}$，$\sigma_x = \sigma_y = 1$ | 均值 0 | 等密度椭圆朝向、样本云形态 |
-| E6 | $\Sigma = \mathrm{diag}(9, 1)$ 与 $\mathrm{diag}(1, 9)$ 与旋转 45 度版本 | $\rho$ 换算 | 椭圆长短轴比、倾角 |
-
-## 4. 预期图表
-
-- 图 E1-E2：一维 PDF 曲线族（参照**图 1** 的形态）。
-- 图 E3-E4：直方图 + PDF 叠加（参照**图 4**：小 $n$ 波动、大 $n$ 贴合）。
-- 图 E5-E6：样本散点 + 等密度椭圆两层（参照**图 2**）。
-
-## 5. 观测指标
-
-- `E3_max_hist_pdf_deviation.n100`（及 n1e3/n1e4/n1e5）
-- `E5_ellipse_axis_ratio.rho_-0.9`（及 rho_0 / rho_0.9）
-- `E5_sample_cov.rho_0.9`
-- `T_all_passed`
-
-## 6. 结果分析（回扣 §0 的问题）
-
-1.（问题 1）E2 中 $\sigma = 0.2$ 的峰值约为 $2.0$，密度远大于 1——用 §1.1 的 $p(x)\,dx$ 解释为什么这不违反概率公理。
-2.（问题 1）E3 直方图偏差随 $n$ 如何缩放？与 Lab 03 将建立的 $1/\sqrt n$ 对照。
-3.（问题 3）E5 只看边缘直方图（投影到单轴）时五种 $\rho$ 无差别——边缘分布丢失了什么信息？（引出 Lab 02）
-4.（问题 3）用 §1.5 的推导解释 Cholesky 采样为什么协方差恰为 $\Sigma$，并用 T3 的采样数据实证收敛速率。
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过，实现未调用 `scipy`
-- [ ] 能白板写出二维高斯密度公式，并解释每个成分（行列式、二次型）的几何来源
-- [ ] 给定任意 $2\times 2$ 正定 $\Sigma$，能先手算预测椭圆长轴方向和轴比，再看图验证
-- [ ] 能解释 `density=True` 的直方图纵轴含义与 bin 宽的偏差-方差两难
-- [ ] metrics.json 完整落盘
-
-## 8. 进一步实验（选做）
+## 3. 进一步实验（选做）
 
 验证仿射变换下的高斯性质：$X \sim \mathcal N(\mu, \Sigma) \Rightarrow AX + b \sim \mathcal N(A\mu + b, A\Sigma A^T)$（$A$ 取旋转矩阵）。这一性质是 Lab 18（Normalizing Flow）与 Lab 20（Flow Matching）的数学前置。

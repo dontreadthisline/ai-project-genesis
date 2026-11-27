@@ -50,40 +50,8 @@ $$
 - `SACActor` — 高斯 + tanh 压缩（log_prob 的 tanh 修正项）
 - `sac_step` — sac_step
 
-- 接口骨架：[`../../code/lab31-continuous-control/skeleton.py`](../../code/lab31-continuous-control/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab31-continuous-control/selftest.py`](../../code/lab31-continuous-control/selftest.py)
+- 接口骨架：[`../../code/lab31-continuous-control/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab31-continuous-control/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab31-continuous-control/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab31-continuous-control/selftest.py)
 - 实验入口：`cd code/lab31-continuous-control && uv sync && uv run run_lab31.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | DDPG / TD3 / SAC | 同种子组 | 回报曲线、稳定性（多 seed 方差带） |
-| E2 | α $\in \{0.05, 0.2, 0.5\}$（SAC） | — | 策略熵 vs 回报的权衡 |
-| E3 | 去掉 TD3 三修复的单项 | — | 各自的病征 |
-| E4 | 确定性（DDPG）vs 随机（SAC）的探索轨迹可视化 | — | 相空间覆盖 |
-
-## 4. 预期图表
-
-- 图 1：三算法多 seed 回归带：DDPG 方差大且部分 seed 失败；SAC 最稳。
-- 图 2：E2 熵-回报双轴：α 大熵高回报略降（能量花在探索）。
-- 图 3：E3 消融：去双 Q → Q 值上飘；去延迟 → actor 追逐噪声 critic；去平滑 → 动作高频抖动。
-- 图 4：摆的相空间 (θ, θ̇) 轨迹：SAC 覆盖广（熵驱动），DDPG 收敛后窄轨道。
-
-## 5. 观测指标
-
-`return_bands`（5 seeds）、`policy_entropy`、`q_gap`（Q 均值 - 回报均值）。
-
-## 6. 结果分析
-
-1. E1 中 DDPG 的失败 seed 的 Q 曲线什么样？（值估计发散 → 策略奔向虚高区。）
-2. E2 的最优 α 随训练阶段变化吗？（探索需求递减 → 自动 α 的动机。）
-3. 为什么 SAC 的随机策略在 LLM 阶段不直接使用，但它的熵思想出现在 GRPO 的熵正则中？（离散 token 的分布策略本身就是随机策略。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能推导确定性策略梯度与 tanh 修正的 log_prob
-- [ ] 完成 DDPG→TD3→SAC 的阶梯实验并解释每步修复
-- [ ] Pendulum 回报：SAC $\geq -160$（5 seed 均值）
-- [ ] 阶段验收汇总：tabular Q / DQN / REINFORCE / PPO / SAC 全部独立实现过

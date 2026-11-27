@@ -36,39 +36,8 @@ $v_\theta(x, t)$ 必须对 $t$ 条件化：不同时刻的最优速度不同（�
 - `cfm_loss` — 同 Lab 20，域换成图像
 - `sample` — 欧拉积分 + 最后一步 clamp 到 [-1,1]
 
-- 接口骨架：[`../../code/lab21-flow-matching-mnist/skeleton.py`](../../code/lab21-flow-matching-mnist/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab21-flow-matching-mnist/selftest.py`](../../code/lab21-flow-matching-mnist/selftest.py)
+- 接口骨架：[`../../code/lab21-flow-matching-mnist/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab21-flow-matching-mnist/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab21-flow-matching-mnist/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab21-flow-matching-mnist/selftest.py)
 - 实验入口：`cd code/lab21-flow-matching-mnist && uv sync && uv run run_lab21.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 积分步数 $\{4, 8, 16, 64\}$ | 训练后模型 | 样本网格、像素统计偏差 |
-| E2 | 调度：均匀步 vs 两端加密步（t 采样 $\beta$ 分布） | — | loss 收敛 |
-| E3 | 训练步数 $\{5k, 20k, 50k\}$ | — | 少步采样的鲁棒性 |
-| E4 | 采样轨迹可视化：固定 $x_0$，逐步去噪快照 | — | 直线 vs 弯曲轨迹 |
-
-## 4. 预期图表
-
-- 图 1：$4\times4$ 样本网格 × 四种步数：8 步已可辨数字，64 步细节干净。
-- 图 2：NFE-质量曲线（像素 MSE 对参考高步数样本）。
-- 图 3：E4 轨迹快照：图像内容在中段已成形（直线路径特性），末端细化。
-- 图 4：E2 loss 对比：两端加密略优（边界时刻的场更难学）。
-
-## 5. 观测指标
-
-`mse_vs_steps`、`final_loss`、`sample_grids`。
-
-## 6. 结果分析
-
-1. E1 的拐点步数是多少？与 Lab 20 二维实验的拐点比较，说明维度与场复杂度的影响。
-2. E4 中轨迹「中段成形」对应边际场的什么性质？DDPM 的去噪轨迹有同样特征吗（回看 Lab 19 图 3）？
-3. 若把欧拉法换成 Heun（二阶），同样质量下 NFE 能降多少？（选做。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过
-- [ ] 16 步内生成可辨认数字
-- [ ] 能解释 NFE-质量前沿及时间条件化的必要性

@@ -53,39 +53,8 @@ $\pi_\theta(a|s) = \mathrm{softmax}(f_\theta(s))$，$\nabla_\theta \log \pi$ 即
 - `reinforce` — -logπ * A 的均值
 - `policy_grad_loss` — -logπ * A 的均值
 
-- 接口骨架：[`../../code/lab28-reinforce/skeleton.py`](../../code/lab28-reinforce/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab28-reinforce/selftest.py`](../../code/lab28-reinforce/selftest.py)
+- 接口骨架：[`../../code/lab28-reinforce/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab28-reinforce/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab28-reinforce/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab28-reinforce/selftest.py)
 - 实验入口：`cd code/lab28-reinforce && uv sync && uv run run_lab28.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 无 baseline / 常数 baseline / 批内标准化 | 同种子组 | 回报曲线、梯度方差 |
-| E2 | 学习率 $\{0.001, 0.01, 0.1\}$ | — | 崩溃/稳定/过慢 |
-| E3 | $\gamma \in \{0.95, 0.99, 1.0\}$ | — | 学到的偏好与方差 |
-| E4 | 每 episode 更新 vs 批 10 回合更新 | — | 梯度噪声（连 Lab 03/08） |
-
-## 4. 预期图表
-
-- 图 1：E1 三条回报曲线：无 baseline 收敛最慢且震荡大（CartPole 回报恒正，未中心化）；批标准化最优。
-- 图 2：梯度范数的分布直方图随 baseline 变化（宽度收窄一个量级）。
-- 图 3：E2 学习率敏感性：REINFORCE 的对步长的高敏感（与 Lab 07 呼应）。
-- 图 4：训练中策略熵曲线：从 ln4 ≈ 1.39 降到 0.3 以下。
-
-## 5. 观测指标
-
-`return_curves`、`grad_var_by_baseline`、`final_policy_entropy`。
-
-## 6. 结果分析
-
-1. 用 1.2 的推导说明「为什么 CartPole 这类恒正回报环境特别需要 baseline」。
-2. E4 中批更新相当于 Lab 08 的哪个结论？（batch 梯度方差 $\propto 1/b$。）
-3. 对比 Lab 26：策略梯度直接优化 $J$、无需 max/自举，代价是什么？（方差高、样本效率低——Lab 29/30 的改进方向。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板完成策略梯度定理与 baseline 无偏性的推导
-- [ ] 复现 baseline 的方差缩减效果
-- [ ] 能说清策略方法与值方法的取舍及后续演进路线（AC → PPO）

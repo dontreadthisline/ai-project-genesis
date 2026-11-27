@@ -56,39 +56,8 @@ $$
 - `sf_grad` — (f(z) - b) * (z-mu)/sigma^2 对 mu 的均值；b 为可选 baseline（默认 0）
 - `pathwise_grad` — eps ~ N(0,1), z = mu + sigma*eps, 数值梯度 df/dz (中心差分) * 1
 
-- 接口骨架：[`../../code/lab16-reparameterization/skeleton.py`](../../code/lab16-reparameterization/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab16-reparameterization/selftest.py`](../../code/lab16-reparameterization/selftest.py)
+- 接口骨架：[`../../code/lab16-reparameterization/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab16-reparameterization/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab16-reparameterization/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab16-reparameterization/selftest.py)
 - 实验入口：`cd code/lab16-reparameterization && uv sync && uv run run_lab16.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 估计方法 × n $\{1, 10, 10^3\}$ | f=sin，固定 $(\mu,\sigma)$ | 估计量分布直方图、方差 |
-| E2 | baseline $b \in \{0, \mathbb E[f]\text{ 的粗估}\}$ | sf 方法 | 方差缩减比例 |
-| E3 | $f$ 的幅度缩放 $\{1\times, 10\times\}$ | — | sf 方差 ∝ f²，pathwise 不变 |
-| E4 | 在 Lab 15 的 VAE 上换用 sf 估计 | — | 训练可行性对照（预期发散或极慢） |
-
-## 4. 预期图表
-
-- 图 1：六联直方图（方法 × n）：sf 的分布宽且重尾；pathwise 集中在真值附近。
-- 图 2：方差比柱状图：典型比值 $10^1 \sim 10^2$。
-- 图 3：E3 双对数：sf 方差随 f 幅度平方增长，pathwise 不变——两种估计的「尺度敏感度」本质差异。
-- 图 4：E4 loss 曲线：sf-VAE 无法收敛到可比质量。
-
-## 5. 观测指标
-
-`var_ratio_by_n`、`var_ratio_by_scale`、`baseline_reduction`。
-
-## 6. 结果分析
-
-1. 用 1.1 的两个公式解释 E3 中尺度敏感度差异的来源。
-2. VAE 的重构项 $f = \log p(x|z)$ 是一个「大数值网络输出」，这对 E4 的结论意味着什么？
-3. 离散潜变量（如类别采样）为什么必须用 score function？（gumbel-softmax 是近似 pathwise 的折中，此处只需说明方向。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板推导两种估计的恒等式
-- [ ] 能定量说明方差差异数量级及来源
-- [ ] 理解 Lab 28（REINFORCE）必须走 score function 路线、Lab 15（VAE）走 pathwise 的原因

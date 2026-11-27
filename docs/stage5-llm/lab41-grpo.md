@@ -72,41 +72,8 @@ KL 参考从 $\pi_{old}$ 换成 $\pi_{ref}$：约束对象是「别离 SFT 太�
 - `grpo_advantage` — 1.1 归一化
 - `grpo_loss` — token 级 clip 目标 + KL(ref)
 
-- 接口骨架：[`../../code/lab41-grpo/skeleton.py`](../../code/lab41-grpo/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab41-grpo/selftest.py`](../../code/lab41-grpo/selftest.py)
+- 接口骨架：[`../../code/lab41-grpo/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab41-grpo/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab41-grpo/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab41-grpo/selftest.py)
 - 实验入口：`cd code/lab41-grpo && uv sync && uv run run_lab41.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | GRPO vs 简化 PPO（带 critic） | 同预算 | 准确率曲线、参数/内存 |
-| E2 | $G \in \{4, 8, 16\}$ | — | 训练效率（每样本更新的信号量） |
-| E3 | $\beta \in \{0, 0.01, 0.1\}$ | — | 准确率 vs 退化（重复/乱码）形态 |
-| E4 | 任务难度带扫描（1 位加法 vs 2 位乘法） | — | 组内信号率与学习速度 |
-| E5 | 训练中组内奖励分布演化 | — | 全错带 → 学习带 → 全对带 |
-
-## 4. 预期图表
-
-- 图 1：E1 双曲线：GRPO 无 critic 但准确率相当、内存更小。
-- 图 2：E2 的「每 prompt 采样数 vs 学习速度」曲线（G=16 慢起步后反超）。
-- 图 3：E3 的 β=0 群体：奖励升但生成质量退化（乱码骗过判分器或复读）——KL 正则价值的直接证据。
-- 图 4：E5 的堆叠条形图：训练早期大部分组无信号（全错），随训练「学习带」占比先升后降（任务被攻克）。
-
-## 5. 观测指标
-
-`acc_curve`、`kl_to_ref`、`signal_ratio`（有梯度组占比）、`clip_fraction`、`group_reward_dist`。
-
-## 6. 结果分析
-
-1. E5 的信号率曲线如何刻画「隐式课程」？与教学数据排序（curriculum learning）的异同？
-2. E3 中 β=0 的退化形态与 reward hacking（Lab 44）有什么联系？
-3. 组归一化 vs GAE：各自引入的偏差来源？（组均值噪声 vs critic 逼近误差。）
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；token 级 ratio、组优势、KL 项全部正确实现
-- [ ] 复现「学习带」演化与 β 的制衡
-- [ ] 算术任务准确率显著超越 SFT 基线
-- [ ] 阶段验收：小型 LLM 的预训练→推理→SFT→LoRA→DPO→RM→GRPO 全链路走通

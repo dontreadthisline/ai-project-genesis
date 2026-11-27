@@ -57,40 +57,8 @@ L2 惩罚 $\frac\lambda2\|\theta\|^2$ 的梯度 $\lambda\theta$ 是持续向原�
 - `LayerNorm` — 逐样本
 - `dropout` — inverted dropout
 
-- 接口骨架：[`../../code/lab12-norm-reg/skeleton.py`](../../code/lab12-norm-reg/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab12-norm-reg/selftest.py`](../../code/lab12-norm-reg/selftest.py)
+- 接口骨架：[`../../code/lab12-norm-reg/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab12-norm-reg/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab12-norm-reg/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab12-norm-reg/selftest.py)
 - 实验入口：`cd code/lab12-norm-reg && uv sync && uv run run_lab12.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | norm：无 / BN / LN（CNN 上） | 训练 30 epoch | 收敛速度、train/val gap |
-| E2 | dropout $p \in \{0, 0.3, 0.5\}$ | 有 BN | train/val gap、test acc |
-| E3 | weight decay $\lambda \in \{0, 10^{-4}, 10^{-2}\}$ | AdamW | 参数范数、泛化 |
-| E4 | 组合消融：BN only / BN+drop / BN+wd / 全部 | — | test acc 与 gap |
-
-## 4. 预期图表
-
-- 图 1：E1 三条 loss 曲线：BN 收敛最快；LN 在 CNN 上也有帮助但略逊（图像特征维统计稳定时 BN 的跨样本信息更有用）。
-- 图 2：E2 train/val 双曲线：$p$ 越大 train acc 越低、gap 越小——正则化的可视化。
-- 图 3：E3 参数范数随 epoch：decay 越大范数越小且趋于平稳。
-- 图 4：E4 柱状图 + gap 标注：MNIST 上正则收益有限（任务简单），如实报告。
-
-## 5. 观测指标
-
-`acc_by_norm`、`gap_by_dropout`、`param_norm_by_wd`、`acc_by_combo`。
-
-## 6. 结果分析
-
-1. E1 中 BN 加速的机制是什么？（内部协变量偏移的解释已被挑战，更可信的是损失曲面平滑化/有效 lr 增大。写出你的观察支持哪种。）
-2. E2 中 MNIST 上 dropout 的收益是否显著？什么任务规模下你会预期更大收益？
-3. T2 的 train/eval 差异在什么场景会变成真实 bug？（batch=1 微调、分布式训练统计不同步。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能写出 BN/LN 的公式并说明归一化轴的差别
-- [ ] 能解释 inverted dropout 的期望不变性与集成视角
-- [ ] 能用 MAP 视角（Lab 05）解释 weight decay
-- [ ] 完成组合消融并如实报告 MNIST 上正则收益有限这一事实

@@ -48,39 +48,8 @@ Agent 只见观测不见环境内部状态（如数据表全貌）：这是 POMD
 - `ToolEnv` — 返回任务 prompt
 - `agent_loop` — 拼接 -> 解码动作段 -> env.step -> 拼 observation -> 循环
 
-- 接口骨架：[`../../code/lab42-agent-loop/skeleton.py`](../../code/lab42-agent-loop/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab42-agent-loop/selftest.py`](../../code/lab42-agent-loop/selftest.py)
+- 接口骨架：[`../../code/lab42-agent-loop/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab42-agent-loop/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab42-agent-loop/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab42-agent-loop/selftest.py)
 - 实验入口：`cd code/lab42-agent-loop && uv sync && uv run run_lab42.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | prompt 中工具文档：完整/缺失/错误 | SFT 前 | 动作合法率、成功率 |
-| E2 | $T_{max} \in \{3, 8, 20\}$ | — | 截断率、成功率的边际 |
-| E3 | 观测格式：结构化标记 vs 裸文本 | — | 模型利用观测的能力 |
-| E4 | 任务难度：单步 / 两步 / 三步 | — | 成功率衰减（组合误差） |
-
-## 4. 预期图表
-
-- 图 1：一个完整轨迹的逐 token 展示（THOUGHT/ACTION/OBSERVATION 着色）。
-- 图 2：E1 三种文档水平的动作合法率柱状。
-- 图 3：E4 成功率 vs 步骤数（指数衰减拟合，每步成功率 $p$ 的组合）。
-- 图 4：E2 的截断-成功率权衡曲线。
-
-## 5. 观测指标
-
-`task_success_rate`、`action_validity`、`avg_steps`、`truncation_rate`、`tool_call_freq`。
-
-## 6. 结果分析
-
-1. E4 的衰减率隐含的单步成功率是多少？$0.9^3 \approx 0.73$——多步任务是 Lab 45 要用 RL 修复的核心瓶颈。
-2. E3 中结构化观测为什么更有效？（边界清晰 = 上下文分布更可预测。）
-3. 本实验的策略是冻结的 SFT 模型——它失败在哪里（不会规划/不会纠错），RL 阶段能修复哪一部分？
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；三个工具 + 终止动作 + 全响应鲁棒性
-- [ ] 能画出一个完整交互的状态-动作-观测序列图
-- [ ] 明确本阶段产物（env + 协议 + 判分器）将原封不动进入 Lab 45

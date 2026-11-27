@@ -74,40 +74,8 @@ $$
 - `ppo_loss` — 采集 batch -> PPO epoch 多轮更新
 - `ppo_train` — 采集 batch -> PPO epoch 多轮更新
 
-- 接口骨架：[`../../code/lab30-ppo/skeleton.py`](../../code/lab30-ppo/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab30-ppo/selftest.py`](../../code/lab30-ppo/selftest.py)
+- 接口骨架：[`../../code/lab30-ppo/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab30-ppo/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab30-ppo/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab30-ppo/selftest.py)
 - 实验入口：`cd code/lab30-ppo && uv sync && uv run run_lab30.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | PPO vs A2C vs REINFORCE | 同种子组 | 稳定性、样本效率 |
-| E2 | $\epsilon \in \{0.05, 0.2, 0.5\}$ | — | ratio 分布、策略 KL 曲线 |
-| E3 | $\lambda \in \{0, 0.5, 0.95, 1\}$ | — | 收敛稳定性 |
-| E4 | PPO epoch 数 $\{1, 4, 10, 20\}$ | — | 复用过度：KL 爆炸与性能回退 |
-| E5 | 去掉 entropy 项 | — | 过早坍缩的形态 |
-
-## 4. 预期图表
-
-- 图 1：三算法回报曲线：PPO 的曲线平滑且无 REINFORCE 的间歇性下探。
-- 图 2：E2 中 ratio 直方图随 epoch 演化：ε=0.05 的分布在 1±0.05 处削顶堆积。
-- 图 3：E3 的 λ 光谱稳定性排序。
-- 图 4：E4 的 KL 曲线：epoch 过大时 KL 超限、回报回退（信任域破坏的可视化）。
-
-## 5. 观测指标
-
-`return_curves`、`ratio_hist`、`approx_kl_curve`、`clip_fraction`。
-
-## 6. 结果分析
-
-1. clip_fraction（被截断的样本比例）健康区间是多少？过高/过低各说明什么？
-2. E4 找到本设置下的最大可用 epoch——它与 ε 的关系符合信任域直觉吗？
-3. 为什么 PPO 在 LLM 后训练（Lab 41/45）成为默认选择而非 Q-Learning？（策略约束 + token 级重要性比值的可行性。）
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；能白板推导重要性比、clipped 目标的分段语义、GAE 加权和
-- [ ] 完成 λ 与 epoch 的两项消融并解释曲线
-- [ ] CartPole eval 回报 $\geq 475$ 且曲线无塌陷

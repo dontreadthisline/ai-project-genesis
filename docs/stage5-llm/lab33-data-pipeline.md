@@ -53,39 +53,8 @@ $$
 - `pack_sequences` — 拼接 + doc_mask
 - `masked_ce_loss` — 1.3 公式
 
-- 接口骨架：[`../../code/lab33-data-pipeline/skeleton.py`](../../code/lab33-data-pipeline/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab33-data-pipeline/selftest.py`](../../code/lab33-data-pipeline/selftest.py)
+- 接口骨架：[`../../code/lab33-data-pipeline/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab33-data-pipeline/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab33-data-pipeline/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab33-data-pipeline/selftest.py)
 - 实验入口：`cd code/lab33-data-pipeline && uv sync && uv run run_lab33.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 有无 causal mask（小模型几步训练） | — | loss 差异（无掩码时 loss 异常低 = 泄漏） |
-| E2 | pad 计损 vs 不计损 | 变长批 | 训练动态、生成是否吐 pad |
-| E3 | packing vs 不打包 | 同数据 | 有效 token 比例、吞吐 |
-| E4 | block_size $\{64, 256\}$ | — | 样本数与上下文依赖的权衡 |
-
-## 4. 预期图表
-
-- 图 1：E1 双 loss 曲线：泄漏版迅速降到不可能的低值（把「答案」移进上下文）。
-- 图 2：padding 浪费率 vs 批内长度分布（直方图叠加）。
-- 图 3：E3 的吞吐对比柱状图。
-- 图 4：一个 packed block 的可视化（文档边界、掩码热图）。
-
-## 5. 观测指标
-
-`effective_token_ratio`、`leak_test_delta`（应≈0）、`pad_waste`。
-
-## 6. 结果分析
-
-1. T3 的独立性测试为什么是「管线正确性」的最强测试？（它是信息论层面的验证，与实现细节无关。）
-2. E4 中小 block 丢失了什么学习能力？对 TinyStories 这种短文本影响多大？
-3. 计算：block=256、$d=256$ 时一条样本的前向 FLOPs（Lab 34 的参数量公式将复用）。
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；shift/pad/pack/mask 四件套全自实现
-- [ ] 能用因果分解公式解释 shift 的必然性
-- [ ] 理解泄漏测试与文档边界掩码这两个最常见 bug 源

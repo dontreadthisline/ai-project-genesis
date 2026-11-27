@@ -50,40 +50,8 @@ Cliff Walking：4x12 网格，底行起点左端、目标右端、中间 10 格�
 - `sarsa` — sarsa
 - `q_learning` — q_learning
 
-- 接口骨架：[`../../code/lab25-sarsa-qlearning/skeleton.py`](../../code/lab25-sarsa-qlearning/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab25-sarsa-qlearning/selftest.py`](../../code/lab25-sarsa-qlearning/selftest.py)
+- 接口骨架：[`../../code/lab25-sarsa-qlearning/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab25-sarsa-qlearning/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab25-sarsa-qlearning/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab25-sarsa-qlearning/selftest.py)
 - 实验入口：`cd code/lab25-sarsa-qlearning && uv sync && uv run run_lab25.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 算法 × 训练期回报曲线 | Cliff | 分化出现时机 |
-| E2 | 学得策略的可视化路径 | — | 贴崖 vs 绕行 |
-| E3 | ε 衰减速度 $\{快, 中, 慢\}$ | — | 最终回报、稳定性 |
-| E4 | $\alpha \in \{0.05, 0.5\}$ | — | 收敛稳定性（大 α 震荡） |
-| E5 | FrozenLake slippery 上两算法 | — | 成功率对照 |
-
-## 4. 预期图表
-
-- 图 1：两算法回报曲线（滑动平均）：Q-Learning 训练期更低（探索时掉崖）、渐近 SARSA 的执行回报也更稳。
-- 图 2：两策略网格路径图：Q 最短贴崖、SARSA 上绕一格。
-- 图 3：ε 衰减过快：回报卡在次优（探索不足）；过慢：渐近回报低（一直探索）。
-- 图 4：α 大小的 loss/回报震荡形态。
-
-## 5. 观测指标
-
-`train_return_curve`、`final_policy_path`、`final_avg_return`、`sarsa_vs_q_return`。
-
-## 6. 结果分析
-
-1. 用 1.2 的两个更新目标解释图 1/2 的分化——哪个词概括 SARSA 学到的对象？（「当前策略的值」含探索风险。）
-2. 图 3 的最优 ε 调度如何与「回合数、状态数」相关？
-3. off-policy 有什么好处？（Q-Learning 能用任意行为策略的数据学最优策略——这是 Lab 26 Replay Buffer 的前提。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板写出两种更新并说明 on/off-policy 的本质差别
-- [ ] 复现 Cliff Walking 分化
-- [ ] 能解释 TD 与 MC 的偏差-方差对照（连回 Lab 03）

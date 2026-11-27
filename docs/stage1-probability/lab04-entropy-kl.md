@@ -104,66 +104,12 @@ $$
 - `kl_divergence` — D_KL(P||Q)。要求实现方式为 sum(p * (log p - log q)) 并正确处理 p=0 的项。
 - `brier_score` — 多分类 Brier：sum_k (q_k - 1[k==y])^2。
 
-- 模块源码：[`code/lab04-entropy-kl/`](../../code/lab04-entropy-kl/)
+- 模块源码：[`code/lab04-entropy-kl/`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab04-entropy-kl/)
 - 自测断言（红灯标准）：`run_lab04.py` 的 `check_implementation()`
 - 实验入口：`cd code/lab04-entropy-kl && uv run run_lab04.py`
 
 
-## 3. 对照实验设计
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 二分类 $Q = (t, 1-t)$，$t$ 扫过 $[0.001, 0.999]$ | $P = (0.7, 0.3)$ 固定 | $H(P, Q)$、$D_{\mathrm{KL}}(P\|Q)$、$H(P)$ 三条曲线 |
-| E2 | $(P, Q)$ 交换方向 | 同一批分布 | $D_{\mathrm{KL}}(P\|Q)$ vs $D_{\mathrm{KL}}(Q\|P)$ 散点图（偏离对角线程度） |
-| E3 | 真实概率 $p = 0.7$ 的二项样本，预测 $q$ 扫过 $[0.01, 0.99]$ | 每个格点用 $10^5$ 个 MC 样本 | CE 与 Brier 的期望损失曲线、最小值位置 |
-| E4 | 模型对真类概率 $q_y \in \{1, 0.9, 0.5, 0.1, 0.01, 10^{-6}\}$ | — | CE 与 Brier 损失数值、比值 |
-| E5 | 连续高斯对：$(\mu_1,\sigma_1)$ 固定 $(0,1)$，$(\mu_2, \sigma_2)$ 网格 | 格点离散化 $\Delta = 0.01$ | 离散 KL 热力图 vs 1.5 闭式解 |
-
-## 4. 预期图表
-
-- 图 1（E1）：$t$ 横轴，三条曲线：$H(P,Q)$ 与 $D_{\mathrm{KL}}(P\|Q)$ 都在 $t = 0.7$ 处取最小；$H(P,Q)$ 的最小值恰好落在水平线 $H(P) \approx 0.611$ 上（恒等式的可视化：CE 曲线 = KL 曲线整体抬升 $H(P)$）。
-- 图 2（E2）：散点图 20 个随机分布对，$D_{\mathrm{KL}}(P\|Q)$ vs $D_{\mathrm{KL}}(Q\|P)$，对角线参考。所有点离对角线明显偏离，两轴量级不同。
-- 图 3（E3）：两条期望损失曲线，均在 $q = 0.7$ 处取最小；CE 曲线在两端（$q \to 0$）急剧翘起，Brier 曲线是温和的抛物线。
-- 图 4（E4）：柱状图对比，最后一组 $q_y = 10^{-6}$：CE $\approx 13.8$，Brier $\approx 1$。
-- 图 5（E5）：二维热力图，闭式解的等高线叠加在离散数值上，应重合。
-
-## 5. 观测指标
-
-以下指标在实验运行后写入 `output/metrics.json`（键名与 §3 对照实验表的因变量对应；写入逻辑见 `run_lab04.py`）：
-
-- `E1_min_positions.H_PQ_argmin_t`
-- `E1_min_positions.KL_argmin_t`
-- `E1_min_positions.H_P_at_min`
-- `E2_asymmetry.max_abs_diff`
-- `E2_asymmetry.mean_forward`
-- `E2_asymmetry.mean_backward`
-- `E3_proper_check.CE_argmin_q`
-- `E3_proper_check.Brier_argmin_q`
-- `E4_table.qy_1.CE`
-- `E4_table.qy_1.Brier`
-- `E4_table.qy_1e-6.CE`
-- `E4_table.qy_1e-6.Brier`
-- `E5_gaussian_kl_max_rel_err`
-- `T_all_passed`
-
-
-## 6. 结果分析
-
-1. E1 中 $H(P, Q)$ 的最小值为什么恰好等于 $H(P)$？用恒等式解释，并说明这句话等价于「交叉熵不可能低于熵」。
-2. E2 中找出一对分布使得前向远大于反向，和另一对相反。分别对应 $Q$ 的什么形态（少给/多给质量）？
-3. E3 两条曲线都最小在真实概率处（proper），那 CE 的优势到底在哪？结合 E4 的数值表回答：训练早期模型常输出接近 one-hot 的错误预测，两种损失此时的梯度表现差多少倍？
-4. 期望 CE 曲线（E3）与图 1 的 $H(P,Q)$ 曲线是什么关系？（应认出它们是同一条曲线的两种视角：期望 NLL = 交叉熵。）
-5. E5 中离散近似误差主要来自哪里？格点 $\Delta$ 从 0.01 加密到 0.001，误差如何变化？
-
-## 7. 验收清单
-
-- [ ] T1-T6 全部通过
-- [ ] 能白板推导 $H(P,Q) = H(P) + D_{\mathrm{KL}}(P\|Q)$ 和 KL 非负（Jensen 路线）
-- [ ] 能口头解释前向/反向 KL 的 mode-covering / mode-seeking 差异，并各举一个后续课程的用例（VAE / RLHF）
-- [ ] 能解释「训练集平均 NLL = 模型与经验分布的交叉熵」这一句话的每个成分
-- [ ] E1、E3 的最小值位置与理论值吻合（误差小于一个格点步长）
-
-## 8. 概念接口预告
+## 3. 概念接口预告
 
 - 实验 6（MNIST 分类）：loss 曲线 = 本实验的 CE，逐 batch 的 NLL 均值可直接对照。
 - 实验 15（VAE）：KL 项 = $D_{\mathrm{KL}}(q(z|x) \| p(z))$，两个高斯的闭式解即 1.5。

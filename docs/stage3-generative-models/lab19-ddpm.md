@@ -85,39 +85,8 @@ $$
 - `Diffusion` — 线性或余弦
 - `EpsNet` — 简化 UNet：conv + 时间嵌入（sinusoidal）
 
-- 接口骨架：[`../../code/lab19-ddpm/skeleton.py`](../../code/lab19-ddpm/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab19-ddpm/selftest.py`](../../code/lab19-ddpm/selftest.py)
+- 接口骨架：[`../../code/lab19-ddpm/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab19-ddpm/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab19-ddpm/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab19-ddpm/selftest.py)
 - 实验入口：`cd code/lab19-ddpm && uv sync && uv run run_lab19.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 加噪可视化：$t \in \{0, 50, 150, 300\}$ | 固定 x0 | 噪声淹没信号的进程 |
-| E2 | 调度：线性 vs 余弦 | 同预算 | loss、样本质量 |
-| E3 | 去噪可视化：采样链中 $x_{300} \to x_0$ 快照 | — | 结构涌现顺序 |
-| E4 | $\epsilon$-预测 vs $x_0$-预测参数化 | — | 训练稳定性（小 t 大 t 的损失权重差异） |
-
-## 4. 预期图表
-
-- 图 1：加噪八联图：数字逐渐被噪声吞没，$t=T$ 时纯噪声。
-- 图 2：E2 两条 loss 曲线 + 样本对比（余弦调度末端更细腻）。
-- 图 3：反向去噪八联图：先全局布局后局部细节。
-- 图 4：E4 双曲线：x0 预测在大 $t$ 损失大（要凭空猜结构）、eps 预测各 $t$ 更均匀——这正是 simple loss 选择 eps 的原因。
-
-## 5. 观测指标
-
-`final_loss`、`sample_grid`、`abar_curve`、`loss_by_t`（按 t 分桶的损失）。
-
-## 6. 结果分析
-
-1. 用 1.1 的归纳论证解释「任意 t 直跳采样」为什么对训练至关重要（否则每步都要走链）。
-2. `loss_by_t` 呈现什么形状？小 t（噪声少，预测准）与大 t（几乎纯噪声）的损失各说明什么？
-3. 图 3 的「先整体后细节」与 $\bar\alpha_t$ 的衰减节奏如何对应？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板推导边缘闭式解（归纳步骤）与 $\mu_\theta$ 公式
-- [ ] 能解释 eps 参数化与 simple loss 的动机
-- [ ] 生成样本可辨认数字（FID 不作要求）

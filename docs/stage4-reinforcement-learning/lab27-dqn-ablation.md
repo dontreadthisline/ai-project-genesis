@@ -49,39 +49,8 @@ $$
 - `ddqn_target` — 1.2
 - `DuelingQNet` — 共享 trunk + V head + A head
 
-- 接口骨架：[`../../code/lab27-dqn-ablation/skeleton.py`](../../code/lab27-dqn-ablation/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab27-dqn-ablation/selftest.py`](../../code/lab27-dqn-ablation/selftest.py)
+- 接口骨架：[`../../code/lab27-dqn-ablation/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab27-dqn-ablation/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab27-dqn-ablation/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab27-dqn-ablation/selftest.py)
 - 实验入口：`cd code/lab27-dqn-ablation && uv sync && uv run run_lab27.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | DQN vs Double DQN（CartPole） | 同种子组 | Q 估计 vs 实际回报的偏差 |
-| E2 | 随机网络的高估测量：$\mathbb E[\max_a Q]$ vs $\mathbb E[Q]$ | — | 偏差直接观测 |
-| E3 | Dueling vs 普通（CartPole） | — | 收敛速度（动作少时差距小） |
-| E4 | 偏差量与训练稳定性的相关（散点） | 全部 run | 高估 ↔ 坍塌 |
-
-## 4. 预期图表
-
-- 图 1：T1 的 E[max] vs k 曲线（叠加理论近似 $\sqrt{2\ln k}\,\sigma$）。
-- 图 2：训练全程的 $\bar Q(s, a^*)$ 与实际回报均值双线：DQN 的 Q 线系统性高于回报线，Double 版两者贴合。
-- 图 3：E3 两条学习曲线。
-- 图 4：E4 散点 + 拟合：高估幅度大的 run 更早坍塌。
-
-## 5. 观测指标
-
-`q_overestimation`（Q 均值 - 回报均值）、`max_bias_by_k`、`return_curves`。
-
-## 6. 结果分析
-
-1. 图 2 的偏差差值多大？与 T1 的理论量级一致吗？
-2. 为什么 Double 不需要额外网络参数也能减偏？（只用现有两网络的分工变化。）
-3. Dueling 在 4 动作 CartPole 上优势是否可见？预测什么环境会放大它的优势？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板推导 max 偏差并解释 Double 的解耦逻辑
-- [ ] 复现 Q 高估曲线与 Double 的修复
-- [ ] 能说明 Dueling 的适用条件

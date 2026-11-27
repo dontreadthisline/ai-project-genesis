@@ -58,39 +58,8 @@ $\theta^-$ 是目标网络参数（滞后副本），$\mathcal D$ 是 replay 分
 - `dqn_train` — ε 衰减、目标网络同步、梯度步
 - `eval_policy` — eval_policy
 
-- 接口骨架：[`../../code/lab26-dqn/skeleton.py`](../../code/lab26-dqn/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab26-dqn/selftest.py`](../../code/lab26-dqn/selftest.py)
+- 接口骨架：[`../../code/lab26-dqn/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab26-dqn/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab26-dqn/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab26-dqn/selftest.py)
 - 实验入口：`cd code/lab26-dqn && uv sync && uv run run_lab26.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 组件逐步加入：裸 Q 网络 / +replay / +target / 全量 | — | 训练稳定性、最终回报 |
-| E2 | buffer 容量 $\{1k, 50k\}$ | — | 样本新鲜度 vs 稳定性 |
-| E3 | 目标网络更新频率 $\{1, 100, 1000\}$（含 1 = 无滞后） | — | 震荡与收敛速度 |
-| E4 | ε 衰减速度 | — | 早期探索充分性 |
-
-## 4. 预期图表
-
-- 图 1：E1 四条回报曲线：裸网络剧烈震荡且常坍塌到 0（Pole 掉落 = 回报 9）；全量版本稳定升到 300+。
-- 图 2：训练中 TD 误差（Huber 前的 |err|）分布演化：初期宽、后期集中于小值但保留长尾。
-- 图 3：E3 三条曲线：更新太频繁震荡、太慢收敛慢。
-- 图 4：E1 对应的 Q 值范数曲线：不稳定版本的 Q 范数发散性跳动。
-
-## 5. 观测指标
-
-`return_curve_by_ablation`、`final_eval_return`、`td_err_stats`、`q_norm_curve`。
-
-## 6. 结果分析
-
-1. 用 1.2 的两个机制分别解释 E1 中两步改进各消除了什么现象？
-2. E4 中 Q 估计系统性高于实际回报多少？这是 max 偏差（1.3）的证据，Lab 27 正面处理。
-3. replay 的 off-policy 性质使 DQN 可以用 ε-greedy 早期的高噪声数据学贪心目标——这与 Lab 25 的哪个结论呼应？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能写出 DQN 损失并解释两个组件的必要性
-- [ ] 复现 E1 消融的稳定性阶梯
-- [ ] CartPile eval 回报 $\geq 475$（Gymnasium 满分 500 的 95%）

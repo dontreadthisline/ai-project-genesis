@@ -55,47 +55,11 @@ rollout 必须用当前（或上一轮）策略采样；轨迹数据用后即弃
 - `evaluate` — 7.独立评估（真实成功率）
 - `train_loop` — 以上循环 + KL 监控 + hack 监控 + checkpoint
 
-- 接口骨架：[`../../code/lab45-agent-rl/skeleton.py`](../../code/lab45-agent-rl/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab45-agent-rl/selftest.py`](../../code/lab45-agent-rl/selftest.py)
+- 接口骨架：[`../../code/lab45-agent-rl/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab45-agent-rl/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab45-agent-rl/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab45-agent-rl/selftest.py)
 - 实验入口：`cd code/lab45-agent-rl && uv sync && uv run run_lab45.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 训练前 vs 后 | 同任务集 | 成功率/合法率/步数/截断率全面板 |
-| E2 | GRPO vs 简化轨迹 PPO（带 critic） | 同预算 | 样本效率、内存 |
-| E3 | $G \in \{4, 8, 16\}$ | — | 学习速度 vs 采样成本 |
-| E4 | $\beta$（KL）扫描 | — | 成功率 vs 退化形态（连 Lab 41 E3） |
-| E5 | 失败分类树：训练前后各类占比 | — | RL 修复了哪一支 |
-| E6 | 持出任务集（未见过的题目变体） | — | 泛化 vs 记忆 |
-
-## 4. 预期图表
-
-- 图 1：训练曲线全家福：真实成功率、代理奖励、KL、clip fraction、熵随迭代。
-- 图 2：E1 的雷达图（五指标前后对比）。
-- 图 3：E5 的分类树占比迁移：截断型与循环型占比大幅下降、协议型几乎不动。
-- 图 4：E6 持出集对照：成功率提升的保留比例（泛化系数）。
-- 图 5：训练前后同一任务的轨迹对照（定性证据：从空转到有效工具链）。
-
-## 5. 观测指标
-
-`success_before_after`、`failure_taxonomy_shift`、`kl_curve`、`generalization_ratio`、`steps_efficiency`。
-
-## 6. 结果分析
-
-1. E5 中 RL 修复最彻底与最顽固的失败类型各是什么？与「轨迹级信用分配」的粗糙性有什么对应？
-2. E6 的泛化系数多少？结合训练任务多样性分析。
-3. 组基线 vs critic（E2）：多步场景下两者的方差-偏差表现与 Lab 41 的单步结论一致吗？
-
-## 7. 验收清单（综合项目验收）
-
-- [ ] T1-T5 通过；七步闭环全部自实现，on-policy 数据流正确
-- [ ] 真实成功率相对 SFT 基线提升 $\geq 15$ 个百分点（构造任务族）
-- [ ] 训练过程可分析：KL、clip、熵、失败迁移四组证据齐全
-- [ ] 能完整叙述：概率建模（组统计/轨迹分布）→ 策略梯度（token 级 GRPO）→ 奖励设计（可验证+防 hack）→ 语言模型（SFT 起点）在本项目中各自的贡献——课程主线的终点检验
-
-## 8. 课程终点
+## 3. 课程终点
 
 至此六阶段闭环：从 Lab 01 的高斯密度到本实验的多步工具交互 RL，全部数学与工程链条贯通。选修方向（Model-based RL、World Model、Planning、Multi-Agent）以当前能力为起点，按需展开。

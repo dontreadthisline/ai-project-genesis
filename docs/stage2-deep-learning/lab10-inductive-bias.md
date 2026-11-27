@@ -41,40 +41,8 @@ $$
 - `make_permutation` — 固定置换，训练/测试共用
 - `permute_dataset` — X (N, 28, 28) -> 打乱后 reshape 回
 
-- 接口骨架：[`../../code/lab10-inductive-bias/skeleton.py`](../../code/lab10-inductive-bias/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab10-inductive-bias/selftest.py`](../../code/lab10-inductive-bias/selftest.py)
+- 接口骨架：[`../../code/lab10-inductive-bias/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab10-inductive-bias/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab10-inductive-bias/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab10-inductive-bias/selftest.py)
 - 实验入口：`cd code/lab10-inductive-bias && uv sync && uv run run_lab10.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 数据：原图 vs 打乱图 | 模型固定 | MLP/CNN 各自 acc 变化 |
-| E2 | 训练样本 $\{500, 5000, 60000\}$ × 打乱与否 | — | 差距随 n 的变化 |
-| E3 | kernel $\{3, 5\}$、深度 2/4（打乱图上） | 参数对齐 | 打乱后结构是否仍有害 |
-| E4 | 按行块打乱（保留行内顺序） | 完全打乱对照 | 局部性破坏程度与性能的梯度 |
-
-## 4. 预期图表
-
-- 图 1：$2\times2$ 网格（模型 × 数据）的样本可视化：打乱后的图像人眼不可识别。
-- 图 2：acc 柱状对比：MLP 原图/打乱基本持平；CNN 显著下降（如 99% → 90% 以下）。
-- 图 3：样本量扫描折线：打乱数据上差距在小样本更大。
-- 图 4：打乱强度梯度（原图 → 行内打乱 → 行间打乱 → 全打乱）下 CNN acc 的单调下降。
-
-## 5. 观测指标
-
-`acc_grid`（模型×数据）、`gap_by_ntrain`、`acc_by_shuffle_level`。
-
-## 6. 结果分析
-
-1. 用 1.1 的重参数化论证解释「MLP 几乎不受影响」。为什么实际上仍有小幅下降？（优化难度、初始化尺度与空间相关的匹配。）
-2. E2 中数据增大能否让 CNN 在打乱图上追平 MLP？这对应 1.2 中哪一项误差的消失？
-3. E4 的梯度说明 CNN 依赖的是「绝对局部性」还是「像素间统计相关」？
-
-## 7. 验收清单
-
-- [ ] T1-T3 通过
-- [ ] 能写出 MLP 的置换重参数化论证
-- [ ] 能用偏置-方差分解叙述归纳偏置与数据量的关系
-- [ ] 完成打乱强度梯度实验并给出单调性结论

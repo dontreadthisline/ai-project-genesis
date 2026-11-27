@@ -49,39 +49,8 @@ $$
 - `rm_train` — 判别 AUC
 - `rm_auc` — 判别 AUC
 
-- 接口骨架：[`../../code/lab40-reward-model/skeleton.py`](../../code/lab40-reward-model/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab40-reward-model/selftest.py`](../../code/lab40-reward-model/selftest.py)
+- 接口骨架：[`../../code/lab40-reward-model/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab40-reward-model/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab40-reward-model/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab40-reward-model/selftest.py)
 - 实验入口：`cd code/lab40-reward-model && uv sync && uv run run_lab40.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 训练对数量 $\{200, 1k, 5k\}$ | — | 判别 AUC 曲线 |
-| E2 | 留出错误类型（训练只见算错，测试含格式错） | — | 泛化 AUC 掉幅 |
-| E3 | RM 打分 vs 真值 | — | 散点 + AUC |
-| E4 | 长度偏倚检验：好答案加长/坏答案加长 | — | RM 分数漂移（表面特征依赖） |
-
-## 4. 预期图表
-
-- 图 1：AUC vs 训练对数（数据量的边际收益）。
-- 图 2：E2 泛化掉幅柱状（过拟合错误类型）。
-- 图 3：E3 散点（RM 分数 vs 对错真值，类间分离）。
-- 图 4：E4 分数漂移：同一回答 pad 加长后分数系统性变化 = 长度偏倚的证据。
-
-## 5. 观测指标
-
-`rm_auc_heldout`、`generalization_gap`、`length_bias`。
-
-## 6. 结果分析
-
-1. E4 的长度偏倚多大？它如何在后续 RL（用 RM 当奖励）中被策略利用？（连 Lab 44 的 reward hacking。）
-2. RM 与 DPO 隐式奖励（Lab 39 E3 的散点）的一致性如何？
-3. 什么任务必须用 RM、什么任务应该用可验证奖励？给出判断准则。
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；BT 损失与难样本加权特性理解到位
-- [ ] held-out AUC > 0.85 且完成泛化/偏倚两项体检
-- [ ] 能叙述 RM 在 RLHF 流水线中的位置与风险

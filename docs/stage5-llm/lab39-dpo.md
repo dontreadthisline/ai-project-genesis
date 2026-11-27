@@ -72,39 +72,8 @@ $\log\frac{\pi}{\pi_{ref}}$ 的期望正是 $-D_{KL}(\pi \| \pi_{ref})$ 的被�
 - `get_logps` — 逐 token logprob 求和（mask）
 - `dpo_train` — dpo_train
 
-- 接口骨架：[`../../code/lab39-dpo/skeleton.py`](../../code/lab39-dpo/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab39-dpo/selftest.py`](../../code/lab39-dpo/selftest.py)
+- 接口骨架：[`../../code/lab39-dpo/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab39-dpo/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab39-dpo/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab39-dpo/selftest.py)
 - 实验入口：`cd code/lab39-dpo && uv sync && uv run run_lab39.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | $\beta \in \{0.05, 0.1, 0.5, 1.0\}$ | 同数据 | 偏好准确率、与 ref 的 KL |
-| E2 | 训练前后的生成分布 | — | 正确率提升 + 退化形态 |
-| E3 | 隐式奖励 vs 真实正确性 | — | 相关性（散点） |
-| E4 | DPO vs SFT-only 对照 | — | 任务准确率、回复风格 |
-
-## 4. 预期图表
-
-- 图 1：E1 的偏好准确率与 KL 双轴：β 小准确率高但 KL 大（偏离 ref 越远）。
-- 图 2：训练前后的隐式奖励分布：$r̂_w$ 右移、$r̂_l$ 左移、可分性增强。
-- 图 3：E3 散点：隐式奖励与「是否正确」的相关（构造任务上应显著）。
-- 图 4：E4 样例对照：DPO 后错误答案频率下降、格式更稳。
-
-## 5. 观测指标
-
-`dpo_loss_curve`、`preference_acc`、`kl_to_ref`、`task_acc_before_after`。
-
-## 6. 结果分析
-
-1. E1 中 KL 随 β 的变化验证了 1.3 的哪个论断？
-2. DPO 训练的是「差」——它能否保证 $y_w$ 的绝对质量？（否：压低 $y_l$ 同样减小损失。观察是否有「双降」样本。）
-3. 为什么 DPO 需要 SFT 起点而非基座？（$\pi_{ref}$ 决定可行域；基座不会按指令作答，偏好对不可比。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能写出 DPO 损失与隐式奖励的反解推导
-- [ ] 能解释 β 与 KL 的制衡及选择逻辑
-- [ ] 构造任务上偏好准确率 > 85% 且任务正确率提升

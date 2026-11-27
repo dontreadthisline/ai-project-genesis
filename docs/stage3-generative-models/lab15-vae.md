@@ -61,39 +61,8 @@ encoder：$784 \to 256 \to (\mu, \log\sigma^2)$ 各 2 维；decoder：$2 \to 256
 - `reparameterize` — 返回 (loss, recon_term, kl_term)
 - `vae_loss` — 返回 (loss, recon_term, kl_term)
 
-- 接口骨架：[`../../code/lab15-vae/skeleton.py`](../../code/lab15-vae/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab15-vae/selftest.py`](../../code/lab15-vae/selftest.py)
+- 接口骨架：[`../../code/lab15-vae/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab15-vae/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab15-vae/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab15-vae/selftest.py)
 - 实验入口：`cd code/lab15-vae && uv sync && uv run run_lab15.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | $\beta \in \{0.1, 0.5, 1, 4\}$ | 训练 20 epoch | 潜空间图、重构 MSE、KL 值 |
-| E2 | epoch 扫描 | — | 重构/KL 两项的此消彼长 |
-| E3 | 潜变量插值（网格 $[-3,3]^2$ 解码） | 训练后模型 | 数字形态的连续过渡 |
-| E4 | 潜维 $\{2, 8, 32\}$ | — | 重构质量与 KL/样本组织的差异 |
-
-## 4. 预期图表
-
-- 图 1：二维潜空间散点按数字类别着色：$\beta=1$ 时簇按数字分离且大致填满标准正态区域；$\beta$ 小则远离先验（KL 大、簇散乱），$\beta$ 大则向原点塌缩（KL → 0、重构糊）。
-- 图 2：重构/KL 双轴曲线：训练初期 KL 先被压低，重构随后上升。
-- 图 3：$20\times20$ 解码网格：一维方向渐变（笔画粗细/数字类别），簇间过渡带模糊。
-- 图 4：E4 重构对比：潜维增大重构更清晰，但 2 维已足以保留主要流形结构。
-
-## 5. 观测指标
-
-`recon_mse`、`kl_by_beta`、`latent_means_norm`、`interp_grid`。
-
-## 6. 结果分析
-
-1. E1 中 KL 值随 $\beta$ 的变化曲线说明两项在争夺什么容量？
-2. 图 3 的过渡带为什么模糊？（先验区域 $p(z)$ 中间地带解码器未见足够数据。）
-3. 用 1.2 的紧度公式解释：训练好后 $q_\phi(z|x)$ 是否接近真实后验？（观察二维后验椭圆是否单峰紧凑。）
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能白板完成 ELBO 的 Jensen 推导与 KL 闭式解
-- [ ] 能解释重构-KL 的权衡与 $\beta$ 的作用
-- [ ] 潜空间图呈现按类分离的连续结构

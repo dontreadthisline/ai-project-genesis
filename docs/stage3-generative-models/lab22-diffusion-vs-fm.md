@@ -50,39 +50,8 @@ DDPM 反向是马尔可夫链（祖先采样，每步加噪），其确定性版
 - `FM` — Lab 20/21 精简版
 - `train_compare` — train_compare
 
-- 接口骨架：[`../../code/lab22-diffusion-vs-fm/skeleton.py`](../../code/lab22-diffusion-vs-fm/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab22-diffusion-vs-fm/selftest.py`](../../code/lab22-diffusion-vs-fm/selftest.py)
+- 接口骨架：[`../../code/lab22-diffusion-vs-fm/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab22-diffusion-vs-fm/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab22-diffusion-vs-fm/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab22-diffusion-vs-fm/selftest.py)
 - 实验入口：`cd code/lab22-diffusion-vs-fm && uv sync && uv run run_lab22.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 方法 × 训练预算 $\{10k, 40k\}$ 步 | 同骨干 | loss、样本质量 |
-| E2 | 方法 × NFE $\{2, 8, 32, 128\}$ | 训练后 | 质量-NFE 曲线 |
-| E3 | DDPM（祖先）vs DDPM（DDIM）vs FM | 同 NFE | 随机性来源与质量 |
-| E4 | 统一参数化重训：eps 参数化的 FM 目标 | — | 理论换算在实践中的差异 |
-
-## 4. 预期图表
-
-- 图 1：loss 曲线（注意两损失量级不同，分轴或归一化）。
-- 图 2：质量-NFE 双曲线：FM 在少步区（NFE ≤ 8）通常占优；高 NFE 两端趋同。
-- 图 3：E3 三列样本：祖先采样的多样性 vs ODE 确定性轨迹。
-- 图 4：E4 对照：同一理论目标的两种参数化训练曲线差异（数值稳定性）。
-
-## 5. 观测指标
-
-`quality_vs_nfe`（两方法）、`final_losses`、`sample_grids`。
-
-## 6. 结果分析
-
-1. 用 1.1 的统一插值框架解释「两方法本质是同一族的不同调度」。
-2. E2 的少步区间差异来自什么？（路径/调度的曲率；DDIM 是一阶积分直线路径的近似。）
-3. 需要似然（密度估计、压缩）选谁？需要少步生成选谁？说明理由。
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；能写出统一插值 $a(t)x_1 + b(t)x_0$ 下两种目标的换算
-- [ ] 完成 NFE-质量双曲线并解释交叉点
-- [ ] 阶段验收汇总：能独立解释 VAE/GAN/Flow/DDPM/FM 五种范式的核心机制与取舍

@@ -46,39 +46,8 @@ $$
 - `compute_reward` — 故意设计有漏洞的两种奖励
 - `make_hackable_rewards` — 故意设计有漏洞的两种奖励
 
-- 接口骨架：[`../../code/lab44-reward-design/skeleton.py`](../../code/lab44-reward-design/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab44-reward-design/selftest.py`](../../code/lab44-reward-design/selftest.py)
+- 接口骨架：[`../../code/lab44-reward-design/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab44-reward-design/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab44-reward-design/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab44-reward-design/selftest.py)
 - 实验入口：`cd code/lab44-reward-design && uv sync && uv run run_lab44.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 权重组合 $\{(1,0,0), (1, 0.1, 0.01), (0.5, 0.5, 0)\}$ | SFT 策略 | 平均奖励、真实成功率 |
-| E2 | 有漏洞奖励 + 优化器（简化：贪心搜索或几步 GRPO） | — | hack 行为的出现 |
-| E3 | $w_c \in \{0, 0.01, 0.1\}$ | — | 平均步数 vs 成功率 |
-| E4 | outcome 稀疏度：单步/三步任务 | — | 组内有信号比例（连 Lab 41 §1.3） |
-
-## 4. 预期图表
-
-- 图 1：E1 的代理奖励 vs 真实成功率散点（不同权重配置）：两者解耦的证据。
-- 图 2：E2 的奖励曲线双线：代理奖励上升、真实成功率水平——hack 的标准图式。
-- 图 3：E3 的步数-成功率 Pareto 前沿（$w_c$ 扫描）。
-- 图 4：E4 的信号率 vs 任务步数（稀疏化的定量刻画）。
-
-## 5. 观测指标
-
-`proxy_vs_true`、`avg_steps_by_wcost`、`signal_rate_by_depth`、`hack_cases`。
-
-## 6. 结果分析
-
-1. E1/E2 中你观察到哪种 hack？它利用的差集（$R$ 高 $R^*$ 低的具体路径）是什么？
-2. E3 的最优 $w_c$ 如何确定？强成本惩罚的失败形态（跳步乱答）出现了吗？
-3. 论证：为什么本课程最终项目用「纯 outcome + 可验证判分 + KL 正则」而非 process 奖励？
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；两类 hack 均被构造性复现
-- [ ] 能给出 reward hacking 的结构性定义（代理-真实目标差集）
-- [ ] 完成权重-步数-成功率的三维权衡分析

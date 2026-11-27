@@ -42,39 +42,8 @@ $$
 - `apply_lora` — 替换 q/k/v/o 投影
 - `merge_lora` — W += BA 合并（推理零开销）
 
-- 接口骨架：[`../../code/lab38-lora/skeleton.py`](../../code/lab38-lora/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab38-lora/selftest.py`](../../code/lab38-lora/selftest.py)
+- 接口骨架：[`../../code/lab38-lora/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab38-lora/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab38-lora/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab38-lora/selftest.py)
 - 实验入口：`cd code/lab38-lora && uv sync && uv run run_lab38.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | Full SFT vs LoRA $r \in \{2, 8, 32\}$ | 同任务同步数 | 任务准确率、可训练参数量 |
-| E2 | LoRA 挂载位置：attn only / FFN only / 全部 | — | 准确率 |
-| E3 | 训练吞吐与内存：full vs LoRA | — | tokens/s、峰值内存 |
-| E4 | checkpoint 大小与切换 | — | 保存体积、多任务切换开销 |
-
-## 4. 预期图表
-
-- 图 1：准确率 vs 可训练参数量（对数 x 轴）：r=8 已接近 full 的 95%+ 效果。
-- 图 2：E2 柱状图：attn 投影挂载收益最大（行为适配集中在注意力）。
-- 图 3：E3 内存柱状：优化器状态的节省主导（full 的 ~3 倍参数内存 vs LoRA）。
-- 图 4：E4 的多任务 LoRA 池示意（一个基座 + N 个 6% 适配器）。
-
-## 5. 观测指标
-
-`acc_vs_trainable_params`、`memory_peak`、`ckpt_size`、`throughput`。
-
-## 6. 结果分析
-
-1. E1 中 r 的饱和点在哪？与任务复杂度（三种指令任务的差异）有什么关系？
-2. E3 中吞吐 LoRA 略低于 full 的原因？（额外的 A/B 前向。）
-3. LoRA 与 Lab 11 残差在「低秩修正 + 零初始化」上的同构性，说明这种「冻结主干 + 小容量修正」设计的普适性——再举一个课程中出现过的例子（Lab 38 之外）。
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过；LoRA 前向/合并/冻结语义正确
-- [ ] 完成 full vs LoRA 的准确率-参数-内存三维对照
-- [ ] r=8 达到 full SFT 准确率的 95%（构造任务上）

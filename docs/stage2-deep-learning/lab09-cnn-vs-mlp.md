@@ -58,39 +58,8 @@ LeNet 风格：`conv5x5(s=2) 1→6 → tanh → avgpool2 → conv5x5(s=1) 6→16
 - `Pool2d` — 非重叠 max/avg，无参数
 - `Flatten` — Flatten
 
-- 接口骨架：[`../../code/lab09-cnn-vs-mlp/skeleton.py`](../../code/lab09-cnn-vs-mlp/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab09-cnn-vs-mlp/selftest.py`](../../code/lab09-cnn-vs-mlp/selftest.py)
+- 接口骨架：[`../../code/lab09-cnn-vs-mlp/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab09-cnn-vs-mlp/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab09-cnn-vs-mlp/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab09-cnn-vs-mlp/selftest.py)
 - 实验入口：`cd code/lab09-cnn-vs-mlp && uv sync && uv run run_lab09.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | MLP vs CNN | 参数量对齐（±20%） | test acc、每 epoch 时间 |
-| E2 | 训练样本数 $\{100, 1000, 10000, 60000\}$ | 两种模型 | 小样本下 acc 差距 |
-| E3 | 输入平移 2 像素（测试集） | 训练不变 | 两者 acc 下降幅度 |
-| E4 | kernel $\{3, 5, 7\}$、深度 2/3/4 | 参数量近似对齐 | acc 与感受野关系 |
-
-## 4. 预期图表
-
-- 图 1：两模型 acc 曲线：CNN 收敛更快、终精度更高（约 99% vs 98%）。
-- 图 2：样本量-精度曲线（对数 x 轴）：100 样本时 CNN 仍可达 70%+，MLP 接近随机水平附近略高——差距随数据量增大而收窄（先验被数据替代）。
-- 图 3：E3 柱状图：平移后 MLP 大幅下降，CNN 下降较小（等变性 + 池化）。
-- 图 4：RF vs acc：中等 RF 最优，过大过小均略差。
-
-## 5. 观测指标
-
-`test_acc_mlp_vs_cnn`、`acc_by_ntrain`、`acc_after_shift`、`params_count`。
-
-## 6. 结果分析
-
-1. E2 的曲线如何定量支持「归纳偏置 = 先验知识 = 小样本收益」？
-2. E3 中 CNN 的下降为何不是零？（pooling 的不变性是粗粒度的；训练分布内未见 2 像素平移。）
-3. 用 1.3 解释 E4：MNIST 数字判别需要多大感受野才覆盖笔画结构？
-
-## 7. 验收清单
-
-- [ ] T1-T4 通过（卷积前后向均手写）
-- [ ] 能证明卷积的平移等变性、推导输出尺寸与感受野公式
-- [ ] CNN test acc $\geq 99\%$；能解释 E2/E3 两个对照的含义

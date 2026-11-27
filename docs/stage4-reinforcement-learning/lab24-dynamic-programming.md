@@ -66,39 +66,8 @@ $T^*$ 同样是 $\gamma$-压缩。策略迭代 = 交替「求 $v^\pi$（内层�
 - `policy_iteration` — policy_iteration
 - `value_iteration` — value_iteration
 
-- 接口骨架：[`../../code/lab24-dynamic-programming/skeleton.py`](../../code/lab24-dynamic-programming/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab24-dynamic-programming/selftest.py`](../../code/lab24-dynamic-programming/selftest.py)
+- 接口骨架：[`../../code/lab24-dynamic-programming/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab24-dynamic-programming/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab24-dynamic-programming/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab24-dynamic-programming/selftest.py)
 - 实验入口：`cd code/lab24-dynamic-programming && uv sync && uv run run_lab24.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | $\gamma \in \{0.1, 0.5, 0.9, 0.99\}$ | — | 值迭代收敛步数（理论 $\sim \log\epsilon / \log\gamma$） |
-| E2 | 策略迭代 vs 值迭代 | — | 外层迭代数、总扫描次数 |
-| E3 | slippery True/False 的最优策略对照 | — | 策略差异（绕开洞的方式） |
-| E4 | 各状态 $v^*$ 可视化（网格热图） | — | 距目标的梯度结构 |
-
-## 4. 预期图表
-
-- 图 1：$v^*$ 网格热图：从目标向外的指数衰减（$\gamma^{dist}$ 结构），洞附近值梯度被 slippery 摊平。
-- 图 2：E1 收敛步数 vs $\gamma$（半对数图呈线性：$\log$ 步数 $\propto 1/|\log\gamma|$）。
-- 图 3：策略迭代每轮的 $v$ 快照叠层（单调上升）。
-- 图 4：两环境的最优路径叠加图（slippery 下策略偏向远离洞的方向）。
-
-## 5. 观测指标
-
-`v_star`、`iters_by_gamma`、`pi_star`、`convergence_ratio`（实测压缩比）。
-
-## 6. 结果分析
-
-1. 图 1 中 $v^*(s)$ 与「到目标最短步数 $d$」的关系是什么？写成 $v^* \approx \gamma^d$ 并对照残差。
-2. E2 中两种算法的总计算量谁小？与状态数、动作数的关系如何 scale？
-3. 压缩比的实测值与 $\gamma$ 的偏差来自哪里？（逐状态的局部压缩率不同，$\gamma$ 是上界。）
-
-## 7. 验收清单
-
-- [ ] T1-T5 通过；能白板证明 $T^\pi$ 压缩与策略改进单调
-- [ ] 能解释 $\epsilon$-停机准则的来源
-- [ ] 理解「动态规划需要已知 $P$」这一前提，及 Lab 25 起转向 model-free 的动机

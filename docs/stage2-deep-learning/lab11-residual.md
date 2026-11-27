@@ -54,39 +54,8 @@ $$
 - `make_plain_cnn` — 参数量与 plain 对齐（±15%）
 - `make_res_cnn` — 参数量与 plain 对齐（±15%）
 
-- 接口骨架：[`../../code/lab11-residual/skeleton.py`](../../code/lab11-residual/skeleton.py)
-- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab11-residual/selftest.py`](../../code/lab11-residual/selftest.py)
+- 接口骨架：[`../../code/lab11-residual/skeleton.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab11-residual/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab11-residual/selftest.py`](https://github.com/dontreadthisline/ai-project-genesis/blob/main/code/lab11-residual/selftest.py)
 - 实验入口：`cd code/lab11-residual && uv sync && uv run run_lab11.py`
 
 
-## 3. 对照实验
-
-| 编号 | 自变量 | 控制变量 | 因变量 |
-|---|---|---|---|
-| E1 | 深度 $\{4, 8, 16, 32\}$ × plain/res | 参数量对齐 | test acc、首层梯度范数 |
-| E2 | 训练初期（前 3 epoch）loss 能否下降 | 深度 32 | 深网可训练性 |
-| E3 | F 零初始化 vs 标准初始化（res） | — | 初始损失与收敛速度 |
-| E4 | 去掉 BN 的 res vs plain（深度 16） | — | 两者对 norm 的依赖 |
-
-## 4. 预期图表
-
-- 图 1：acc vs 深度：plain 在深度 16 后退化（甚至不如浅层），res 持平或略升。
-- 图 2：首层梯度范数 vs 深度（对数 y 轴）：plain 近似指数下降，res 平缓。
-- 图 3：深度 32 的 loss 曲线：res 正常下降，plain 停滞在高 loss。
-- 图 4：E3 两条曲线：零初始化起始 loss 更低（恒等映射）。
-
-## 5. 观测指标
-
-`acc_by_depth`、`first_layer_grad_norm_by_depth`、`trainable_flag`（3 epoch 内 loss 下降 > 10%）。
-
-## 6. 结果分析
-
-1. 用 1.2 的展开式解释图 2 中 res 的梯度下界。
-2. E1 中 res 在深度 4 时是否优于 plain？（通常差距小——收益随深度才显现。）
-3. 恒等项 $I$ 的存在是否意味着 res 网络等价于浅网？（否：$F$ 项学到的是对恒等的修正，深层复合仍增强表达能力。）
-
-## 7. 验收清单
-
-- [ ] T1-T3 通过；能白板推导 $I + J_F$ 的展开与梯度高速公路论证
-- [ ] 复现 plain 深网退化、res 不退化的深度曲线
-- [ ] 能解释零初始化残差末端与恒等映射初始状态的关系
