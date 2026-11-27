@@ -42,7 +42,7 @@ def multivariate_gaussian_pdf(xs, mu, Sigma: mx.array) -> mx.array:
 
 
 def sample_multivariate_gaussian(mu, Sigma, n: int) -> mx.array:
-    """从 N(mu, Sigma) 采样 n 个样本（Cholesky 方法）：
+    """从 N(mu, Sigma) 采样 n 个样本（线性变换法，推导见讲义 §1.5）：
 
         z ~ N(0, I)（mx.random.normal((n, d))），x = mu + L z，
         其中 Sigma = L L^T（mx.linalg.cholesky(Sigma, stream=mx.cpu)）
