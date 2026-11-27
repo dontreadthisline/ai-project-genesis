@@ -25,10 +25,14 @@ _quarto.yml / _book/ / _extensions/   生成物，不入库
 内容与渲染分离：`docs/manifest.yml` 描述书籍结构，渲染器只消费该清单。
 
 ```bash
-./book_render/scripts/build-book.sh                    # 默认 genesis-book 主题
-GENESIS_THEME=paper-book ./book_render/scripts/build-book.sh   # 换主题
-open _book/index.html     # 本地阅读，断网也可正常渲染公式
+./build.sh                    # 构建书籍（默认 genesis-book 主题）
+./build.sh book indigo-atlas  # 换主题构建（paper-book / indigo-atlas）
+./build.sh serve              # 本地预览（http://localhost:8765）
+./build.sh check              # 全量检查：构建校验 + 实验代码红灯
+./build.sh install            # quarto add 重装线上主题（发布闭环）
+./build.sh release "msg"      # 主题发布（同步 + push 到发布仓库）
 ```
+渲染原语（manifest 生成、MathJax 本地化、resources 处理）在 `book_render/scripts/`；`build.sh` 是工作流编排入口。
 
 换渲染工具（如 VitePress、mdBook）时：在 book_render/scripts/ 新增一个 manifest 生成器即可，`docs/` 与 `code/` 零改动。
 
