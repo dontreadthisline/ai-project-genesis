@@ -1,11 +1,11 @@
 ---
-title: "第六阶段：Agentic RL"
-stage: 6
+title: "第6部分：Agentic RL"
+part: 6
 ---
 
 核心问题：如何让语言模型通过与外部环境交互完成多步骤任务，并通过强化学习优化其行为？
 
-这一阶段不再使用 TinyStories 作为主要任务数据，而是构建一个可验证的工具环境。它是全课程的最终汇聚：概率建模（轨迹分布）、策略梯度（第四阶段）、语言模型训练（第五阶段）、奖励设计（本阶段）在这里合为一体。
+
 
 ## 实验列表
 
@@ -62,4 +62,22 @@ Agent Loop 运行时、Trajectory 序列化存储、Reward 计算管线、Rollou
 
 ## 选修内容
 
-Model-based RL、World Model、Planning、Multi-Agent RL。这些内容不属于当前主线的必要前置，主线完成后再按需补充。
+## 概念接口
+
+**前置依赖**：轨迹分布与回报期望 = 第一阶段的期望算子与 Monte Carlo 估计。 多步交互的信用分配 = 第四阶段的 Advantage/GAE。 Policy = 第五阶段的语言模型；优化目标 = 实验 41 GRPO 迁移到工具交互环境。 奖励可验证性 = Lab 03 的「解析解对照」思想：可自动判分的任务环境。
+
+**后续复用**：见附录 B 概念依赖表
+
+## 工程要求
+
+Agent Loop 运行时、Trajectory 序列化存储、Reward 计算管线、Rollout Worker（批量并行采样与失败隔离）。
+
+## 阶段验收
+
+实验 45 中比较训练前后的任务成功率、工具调用效率、无效动作比例和 KL Divergence，能对训练过程做出定量分析。
+
+## 阶段项目
+
+
+
+**选修**（主线完成后再按需补充）：Model-based RL、World Model、Planning、Multi-Agent RL。这些内容不属于当前主线的必要前置，主线完成后再按需补充。

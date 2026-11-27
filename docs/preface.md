@@ -55,12 +55,16 @@ uv run run_lab01.py     # 自测 -> 对照实验 -> 图表与指标
 
 ## 实现约定
 
-全书实验统一用 MLX 实现（数组计算用 `mlx.core`，第二部分起网络用 `mlx.nn`）。NumPy 只在明确标注的边界场景出现（数据文件解析、个别 MLX 缺失的原语），Matplotlib 对 mx.array 直接可用。
+全书实验统一用 MLX 实现（数组计算用 `mlx.core`，第二部分起网络用 `mlx.nn`）。NumPy 不作为实现选项：Matplotlib 对 mx.array 直接可用（`__array__` 转换协议，仅适合可视化——会触发惰性求值的物化与一次拷贝）；MLX 暂缺的原语（dirichlet、choice、trapezoid、cov 等）在讲义对应位置给出手写替代。
 
 三条贯穿全书的约定：
 
 1. **随机数**：每个实验脚本开头 `mx.random.seed(0)`，函数签名不携带随机状态，结果可复现。
-2. **惰性求值**：MLX 的计算默认延迟执行，打印、比较、画图前需要 `mx.eval()` 强制求值。
-3. **数值精度**：默认 float32；数值梯度检验与闭式解对照使用 float64（需 CPU 设备）。
+2. **惰性求值**：计算默认延迟执行，打印、比较、画图前需要 `mx.eval()`。
+3. **数值精度**：默认 float32；数值检验与闭式解对照用 float64（需 CPU 设备）。
 
-MLX 当前版本的具体局限与标准应对，见第一部分导览的「MLX 与 NumPy 的边界」一节。
+MLX 0.32 实测的三个局限及标准应对，全书统一遵守：
+
+- **fp64 不支持 GPU**：fp64 检验的脚本开头 `mx.set_default_device(mx.cpu)`；第一阶段小规模统计计算无性能损失，GPU 自第二阶段大规模 fp32 张量起用。
+- **`mx.linalg` 四件套（slogdet / solve / cholesky / eigh）不支持 GPU**：显式传 `stream=mx.cpu`，否则抛错。
+- **布尔索引不支持**：求和场景用 `mx.sum(mx.where(mask, vals, 0.0))`；取子数组用 NumPy 桥接 `np.array(a)[np.array(mask)]` 或纯 Python 列表推导。

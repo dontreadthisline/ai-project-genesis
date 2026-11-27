@@ -1,11 +1,11 @@
 ---
-title: "第四阶段：强化学习"
-stage: 4
+title: "第4部分：强化学习"
+part: 4
 ---
 
 核心问题：当模型不再从固定数据集中学习，而是通过与环境交互获得反馈时，应该如何优化策略？
 
-主要环境：Gymnasium。从表格方法到深度方法、从值方法到策略方法、从离散控制到连续控制，共三条递进线。
+
 
 ## 实验列表
 
@@ -42,6 +42,23 @@ stage: 4
 
 - 实验 30 的 PPO 目标（ratio、clip、KL）原样出现在第五阶段 GRPO（实验 41）与第六阶段 Agent PPO/GRPO（实验 45），只是「动作」从 Gymnasium 动作变成 token 序列。
 - 实验 26 的 Replay Buffer 与训练稳定性经验（target network 消融）是理解 off-policy 语言模型训练的参照系。
+
+## 工程要求
+
+Gymnasium 环境管理、Rollout 收集、Replay Buffer、训练与评估循环、指标可视化（episode return、策略熵、KL）。
+
+## 阶段验收
+
+能够独立实现：Tabular Q-Learning、DQN（含消融）、REINFORCE、PPO、SAC。
+
+## 阶段项目
+
+## 概念接口
+
+**前置依赖**：实验 28 的策略梯度 $\nabla J(\theta) = \mathbb E[\nabla_\theta \log \pi_\theta \cdot G]$ 是 Lab 03 Monte Carlo 期望估计的实例：单条轨迹回报就是一次采样，Baseline（实验 28）与 GAE（实验 30）都是 Lab 03「方差缩减」主题的延续。 实验 24 的 Bellman 期望 $v(s) = \mathbb E[r + \gamma v(s')]$ 是 Lab 02 条件期望的递归形态。 实验 26/29 的网络与优化器来自第二阶段；实验 30 的 KL 约束是 Lab 04 的直接应用。
+
+**后续复用**：实验 30 的 PPO 目标（ratio、clip、KL）原样出现在第五阶段 GRPO（实验 41）与第六阶段 Agent PPO/GRPO（实验 45），只是「动作」从 Gymnasium 动作变成 token 序列。
+实验 26 的 Replay Buffer 与训练稳定性经验（target network 消融）是理解 off-policy 语言模型训练的参照系。
 
 ## 工程要求
 
