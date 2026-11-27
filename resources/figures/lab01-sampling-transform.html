@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>图 3：采样 = 分布的线性变换</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 6px 24px 12px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">
+  采样的全部秘密：$z \sim \mathcal N(0, I)$ 的圆云经过 $x = \mu + Lz$（$\Sigma = LL^T$）
+  被斜切成目标椭圆云 —— $\mathrm{Cov}[x] = LL^T = \Sigma$。样本 = 圆云中的点随云一起变形。
+</div>
+<script>
+const s = Sketch(document.getElementById('fig'));
+const P = s.PALETTE;
+
+// 确定性伪随机（图要可复现）: LCG
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const gauss = () => {
+  const u = Math.max(rnd(), 1e-9), v = rnd();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+};
+
+// ---- 左 panel: 标准正态圆云 ----
+const L1 = { cx: 150, cy: 150 };
+s.path(`M ${L1.cx - 115} ${L1.cy} L ${L1.cx + 115} ${L1.cy}`, { arrow: true, opacity: 0.55 });
+s.path(`M ${L1.cx} ${L1.cy + 115} L ${L1.cx} ${L1.cy - 115}`, { arrow: true, opacity: 0.55 });
+s.path(ellipsePath(L1.cx, L1.cy, 82, 82, 0), { width: 1.6, opacity: 0.5, rough: true });
+for (let i = 0; i < 130; i++) {
+  const z1 = gauss() * 33, z2 = gauss() * 33;
+  s.dot(L1.cx + z1, L1.cy - z2, P.dim, 2.2);
+}
+s.label(L1.cx, L1.cy + 150, 'z ~ N(0, I)：各向同性', { size: 19, color: P.deep });
+
+// ---- 变换箭头（带流动光点）----
+const dArrow = 'M 300 150 C 340 110, 380 110, 420 150';
+s.path(dArrow, { arrow: true, width: 2.4, color: P.amber });
+s.flow(dArrow, { color: P.amber, dur: 2.4 });
+s.label(360, 92, 'x = μ + Lz', { size: 22, color: P.amber });
+
+// ---- 右 panel: 目标椭圆云（L = [[1.6,0],[0.7,0.9]] 的斜切）----
+const L2 = { cx: 545, cy: 150 };
+const M = [[1.6, 0], [0.7, 0.9]];   // 下三角
+s.path(`M ${L2.cx - 130} ${L2.cy} L ${L2.cx + 130} ${L2.cy}`, { arrow: true, opacity: 0.55 });
+s.path(`M ${L2.cx} ${L2.cy + 115} L ${L2.cx} ${L2.cy - 115}`, { arrow: true, opacity: 0.55 });
+// 协方差 = M M^T → 椭圆: 特征分解近似画旋转椭圆
+const cov = [[M[0][0]**2 + M[0][1]**2, M[0][0]*M[1][0] + M[0][1]*M[1][1]],
+             [M[0][0]*M[1][0] + M[0][1]*M[1][1], M[1][0]**2 + M[1][1]**2]];
+const tr = cov[0][0] + cov[1][1], det = cov[0][0]*cov[1][1] - cov[0][1]**2;
+const l1 = (tr + Math.sqrt(tr*tr - 4*det)) / 2, l2 = (tr - Math.sqrt(tr*tr - 4*det)) / 2;
+const ang = 0.5 * Math.atan2(2 * cov[0][1], cov[0][0] - cov[1][1]);
+s.path(ellipsePath(L2.cx, L2.cy, Math.sqrt(l1) * 33, Math.sqrt(l2) * 33, ang),
+       { width: 1.6, opacity: 0.55, rough: true });
+for (let i = 0; i < 130; i++) {
+  const z1 = gauss() * 33, z2 = gauss() * 33;
+  const x1 = M[0][0] * z1 + M[0][1] * z2, x2 = M[1][0] * z1 + M[1][1] * z2;
+  s.dot(L2.cx + x1, L2.cy - x2, P.ink, 2.2);
+}
+s.label(L2.cx, L2.cy + 150, 'x ~ N(μ, Σ)：斜切变形', { size: 19, color: P.deep });
+
+function ellipsePath(cx, cy, rx, ry, rot, n = 56) {
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const a = 2 * Math.PI * i / n;
+    const x = rx * Math.cos(a), y = ry * Math.sin(a);
+    const X = cx + x * Math.cos(rot) - y * Math.sin(rot);
+    const Y = cy + x * Math.sin(rot) + y * Math.cos(rot);
+    d += (i ? 'L' : 'M') + ` ${X.toFixed(1)} ${Y.toFixed(1)} `;
+  }
+  return d + 'Z';
+}
+</script>
+</body>
+</html>

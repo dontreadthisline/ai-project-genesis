@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>图 2：协方差矩阵的几何 — 等密度椭圆</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 6px 24px 12px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="360" viewBox="0 0 720 360"></svg>
+<div class="caption">
+  等密度集合是椭圆：主轴沿特征向量 $u_i$，半轴长 $c\sqrt{\lambda_i}$（$\Sigma = U\Lambda U^T$）。
+  $\rho \to 1$ 椭圆压扁成线；$\rho = 0$ 轴与坐标轴对齐。
+</div>
+<script>
+const s = Sketch(document.getElementById('fig'));
+const P = s.PALETTE;
+function ellipsePath(cx, cy, rx, ry, rot, n = 56) {
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const a = 2 * Math.PI * i / n;
+    const x = rx * Math.cos(a), y = ry * Math.sin(a);
+    const X = cx + x * Math.cos(rot) - y * Math.sin(rot);
+    const Y = cy + x * Math.sin(rot) + y * Math.cos(rot);
+    d += (i ? 'L' : 'M') + ` ${X.toFixed(1)} ${Y.toFixed(1)} `;
+  }
+  return d + 'Z';
+}
+// 三个 panel: 独立 | 正相关 | 负相关
+const panels = [
+  { cx: 130, tag: 'ρ = 0（独立）', Sigma: [4, 0], rot: 0, axis: [[2, 0], [0, 1]] },
+  { cx: 360, tag: 'ρ = 0.8', Sigma: [4, 0.8], rot: Math.PI / 5, axis: [[2.1, 1.2], [-0.9, 1.7]] },
+  { cx: 590, tag: 'ρ = −0.8', Sigma: [4, -0.8], rot: -Math.PI / 5, axis: [[2.1, -1.2], [0.9, 1.7]] },
+];
+const CY = 165, RX = 92, RY = 46;
+for (const p of panels) {
+  // 坐标轴
+  s.path(`M ${p.cx - 115} ${CY} L ${p.cx + 115} ${CY}`, { arrow: true, opacity: 0.6 });
+  s.path(`M ${p.cx} ${CY + 105} L ${p.cx} ${CY - 105}`, { arrow: true, opacity: 0.6 });
+  // 椭圆（两层 c=1,2）
+  s.path(ellipsePath(p.cx, CY, RX, RY, p.rot), { width: 2.1, rough: true });
+  s.path(ellipsePath(p.cx, CY, RX * 2, RY * 2, p.rot), { width: 1.2, opacity: 0.4, rough: true });
+  // 长轴方向（特征向量）
+  const [ax, ay] = p.axis[0];
+  s.path(`M ${p.cx - ax * 60} ${CY - ay * 30} L ${p.cx + ax * 60} ${CY + ay * 30}`,
+         { arrow: true, color: P.amber, width: 1.8 });
+  s.dot(p.cx, CY, P.deep, 4);
+  s.label(p.cx, CY + 132, p.tag, { size: 19, color: P.deep });
+}
+s.label(360, 335, '虚线椭圆 = 2σ 层；琥珀色箭头 = 长轴方向 $u_1$（特征向量）',
+        { size: 16, color: P.dim });
+</script>
+</body>
+</html>
