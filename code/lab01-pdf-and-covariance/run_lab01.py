@@ -43,10 +43,12 @@ def check_implementation() -> None:
     mx.set_default_device(mx.cpu)   # 本阶段：fp64 检验与 linalg 均需 CPU
     mx.random.seed(0)
 
-    # T1: 数值积分验证归一化（fp64，容差 1e-8）
+    # T1: 数值积分验证归一化（标准正态；梯形法 2e5 点离散误差 ~1e-8..1e-7 量级，
+    # 公式错误会产生 O(1) 偏差，1e-7 足以区分。注：若用 mu=2/sigma=3 测归一化，
+    # [-12,12] 会截掉右尾 ~4.3e-4 概率质量——本坑已采过）
     x = mx.linspace(-12, 12, 200_001, dtype=mx.float64)
-    y = univariate_gaussian_pdf(x, 2.0, 3.0)
-    assert abs(trapezoid(y, x).item() - 1.0) < 1e-8
+    y = univariate_gaussian_pdf(x, 0.0, 1.0)
+    assert abs(trapezoid(y, x).item() - 1.0) < 1e-7
 
     # T2: 二维密度在均值处取最大值
     Sigma = mx.array([[2.0, 0.6], [0.6, 1.0]])
