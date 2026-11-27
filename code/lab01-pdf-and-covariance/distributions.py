@@ -26,20 +26,19 @@ def univariate_gaussian_pdf(x, mu: float, sigma: float) -> mx.array:
 def multivariate_gaussian_pdf(xs, mu, Sigma: mx.array) -> mx.array:
     """多维高斯密度（讲义 §1.3）。xs: (N, d)，mu: (d,)，Sigma: (d, d)，返回 (N,)。
 
-    实现提示：
-        _, logdet = mx.linalg.slogdet(Sigma, stream=mx.cpu)  # linalg 不支持 GPU，显式 CPU
+    实现提示（返回的是密度值；内部路线自选——二维直接 det 完全可行，
+    log 域是高维/训练场景的推荐习惯，见 lab04/lab15）:
+        sign, logdet = mx.linalg.slogdet(Sigma, stream=mx.cpu)  # 返回 (符号, log|det|)
+        det = sign * mx.exp(logdet)                             # 或直接 mx.linalg.det（二维安全）
         quad = 对每个样本解 Sigma^{-1}(x-mu)：mx.linalg.solve(Sigma, (xs-mu).T, stream=mx.cpu)
-        log_pdf = -0.5*(d*log(2*pi) + logdet + 二次型)
+        pdf = exp(-0.5*quad) / ((2*pi)^{d/2} * sqrt(det))
     """
     d = Sigma.shape[0]
     mean = xs - mu
-    inv = mx.linalg.solve(Sigma, mx.eye(d, d), stream=mx.Device(mx.cpu))
-    _, det = mx.linalg.slogdet(Sigma, stream=mx.Device(mx.cpu))
-    return (
-        1
-        / (mx.power(mx.pi, d / 2) * mx.sqrt(det))
-        * mx.exp(-1 / 2.0 * mean.T * inv * mean)
-    )
+    inv = mx.linalg.solve(Sigma, mx.eye(d, d), stream=mx.cpu)
+    _, det = mx.linalg.slogdet(Sigma, stream=mx.cpu)
+    coeff = 1 / (mx.power(2 * mx.pi, d / 2) * mx.sqrt(det))
+    return coeff * mx.exp(-1 / 2.0 * mean.T @ inv @ mean)
 
 
 def sample_multivariate_gaussian(mu, Sigma, n: int) -> mx.array:
