@@ -6,7 +6,8 @@
 #   ./build.sh book <theme>        # 构建指定主题（genesis-book | paper-book | indigo-atlas）
 #   ./build.sh install             # quarto add 重装线上主题（发布闭环验证）
 #   ./build.sh release <msg>       # 主题发布：同步到发布仓库 + commit + push
-#   ./build.sh serve [port]        # 本地预览 _book（默认 8765）
+#   ./build.sh serve [port]        # 本地预览 _book（默认 8765，幂等：已在跑则复用）
+#   ./build.sh stop [port]         # 停止预览服务（默认 8765）
 #   ./build.sh check               # 全量检查：构建校验 + 实验代码红灯
 #   ./build.sh all                 # install + book（线上主题闭环构建）
 set -euo pipefail
@@ -23,10 +24,10 @@ die()  { printf "${C_R}ERROR:${C_0} %s\n" "$*" >&2; exit 1; }
 
 cmd_book() {
   local theme="${1:-genesis-book}"
-  [[ " ${THEMES[*]} " == *" $theme "* ]] || die "未知主题: $theme（可选: ${THEMES[*]}）"
+  [[ " ${THEMES[*]} " == *" $theme "* ]] || die "未知主题: ${theme}（可选: ${THEMES[*]}）"
   say "构建书籍 [theme=$theme]"
   GENESIS_THEME="$theme" ./book_render/scripts/build-book.sh
-  say "完成: _book/index.html (open _book/index.html 或 ./build.sh serve)"
+  say "完成: _book/index.html (./build.sh serve 预览)"
 }
 
 cmd_install() {
@@ -52,7 +53,7 @@ cmd_release() {
   cmd_sync
   say "发布: commit + push"
   (cd "$THEMES_REPO" && git add -A \
-    && git diff --cached --quiet && warn "无变更，跳过推送" \
+    && { git diff --cached --quiet && warn "无变更，跳过推送"; } \
     || { git commit -qm "$msg" && git push -q; })
   say "已推送: https://github.com/$GH_REPO"
 }
@@ -60,8 +61,25 @@ cmd_release() {
 cmd_serve() {
   local port="${1:-8765}"
   [[ -d _book ]] || die "尚无 _book，先 ./build.sh"
-  say "预览 http://localhost:$port (Ctrl-C 停止)"
+  # 幂等：已有本站服务在跑则复用，不重复起
+  if curl -sf -o /dev/null "http://localhost:$port/index.html"; then
+    say "服务已在运行: http://localhost:${port}（复用；停止: ./build.sh stop ${port}）"
+    return 0
+  fi
+  if lsof -i :"$port" -sTCP:LISTEN >/dev/null 2>&1; then
+    die "端口 $port 被其他进程占用（lsof -i :$port 查看）"
+  fi
+  say "预览 http://localhost:$port (Ctrl-C 停止 或 ./build.sh stop)"
   cd _book && exec python3 -m http.server "$port"
+}
+
+cmd_stop() {
+  local port="${1:-8765}"
+  if pkill -f "http.server $port" 2>/dev/null; then
+    say "已停止端口 $port 的预览服务"
+  else
+    say "端口 $port 无运行中的服务"
+  fi
 }
 
 cmd_check() {
@@ -86,7 +104,8 @@ case "${1:-help}" in
   sync)    cmd_sync ;;
   release) shift; cmd_release "$@" ;;
   serve)   shift; cmd_serve "$@" ;;
+  stop)    shift; cmd_stop "$@" ;;
   check)   cmd_check ;;
   all)     cmd_install && cmd_book indigo-atlas ;;
-  help|*)  sed -n '2,12p' "$0" | sed 's/^# \{0,2\}//' ;;
+  help|*)  sed -n '2,13p' "$0" | sed 's/^# \{0,2\}//' ;;
 esac
