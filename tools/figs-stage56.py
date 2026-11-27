@@ -315,7 +315,7 @@ for (const [tag, fix, x] of kids) {
 }
 """)
 
-fig("lab43-trajectory", "success-ci", "1.4", 290, "成功率与置信区间",
+fig("lab43-trajectory", "success-ci", "1.2", 290, "成功率与置信区间",
     "$n=200$ 时标准误 $\\approx \\sqrt{0.25/200} \\approx 0.035$：报告必须带 $\\pm 2\\mathrm{se}$——Lab 03 的区间规范在 Agentic 阶段的延续。",
     "成功率 + ±2se", """
 const F = Fig(document.getElementById('fig'));

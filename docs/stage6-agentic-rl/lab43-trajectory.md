@@ -30,6 +30,10 @@ meta 含：逐步 token 序列与对数概率（Lab 45 的 ratio 计算需要 $\
 - 循环检测：连续 $k$ 步动作字符串重复（$k \ge 2$ 判循环）；
 - 工具效率：完成任务所需调用数 / 理论最少调用数。
 
+<iframe src="resources/figures/success-ci.html" style="width:100%;height:354px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="成功率与置信区间"></iframe>
+
+<p align="center"><b>图 43.2</b>：成功率 + ±2se</p>
+
 ### 1.3 失败模式分类树
 
 ```
