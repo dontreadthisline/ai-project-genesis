@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>LoRA：冻结主干 + 低秩旁路</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">$h = W_0 x + \frac{\alpha}{r} B A x$，$B = 0$ 初始化（起点严格等于原模型）；$\Delta W$ 的低秩假设——任务适配改变行为子空间而非全部表征。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 60, y: 120, w: 170, h: 60, label: 'W₀（冻结）', fill: 'rgba(0,0,0,0.04)', color: F.P.dim, size: 16 });
+F.box({ x: 60, y: 40, w: 64, h: 40, label: 'A (r×d)', fill: 'rgba(26,127,55,0.12)', color: F.P.green, size: 13 });
+F.box({ x: 170, y: 40, w: 64, h: 40, label: 'B (d×r), =0', fill: 'rgba(26,127,55,0.12)', color: F.P.green, size: 12 });
+F.arrow(128, 80, 172, 80, { color: F.P.green, width: 1.6, label: '×', labelDy: -10 });
+F.path('M 96 120 L 96 80', { color: F.P.green, width: 1.4 });
+F.path('M 202 80 L 202 120', { arrow: true, color: F.P.green, width: 1.4 });
+F.text(300, 150, '+', { size: 28, color: F.P.ink });
+F.text(340, 150, 'h = W₀x + (α/r)·BAx', { size: 16, color: F.P.deep, anchor: 'start' });
+F.text(360, 220, 'r=8, d=256：可训练参数 6.25%', { size: 15, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

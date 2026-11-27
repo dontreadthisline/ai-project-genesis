@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>交叉熵 = 熵 + KL</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">$P = (0.7, 0.3)$ 固定，$Q = (t, 1-t)$ 扫描：$H(P, Q) = H(P) + D_{KL}$ 的最小值恰在 $t = 0.7$，落在水平线 $H(P) \approx 0.611$ 上。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0.02, x1: 0.98, y0: 0, y1: 1.4, labels: ['t', 'nats'] });
+const H = (a, b) => -(a * Math.log(a) + b * Math.log(b));
+F.curve(t => H(0.7, 0.3), { t0: 0.02, t1: 0.98, color: F.P.green, width: 1.8, rough: false,
+                            label: 'H(P)（水平线）', labelAt: 0.2 });
+F.curve(t => H(0.7, 0.3) + (0.7 * Math.log(0.7 / t) + 0.3 * Math.log(0.3 / (1 - t))),
+        { t0: 0.02, t1: 0.98, color: F.P.ink, width: 2.2, label: 'H(P,Q)', labelAt: 0.33 });
+F.curve(t => 0.7 * Math.log(0.7 / t) + 0.3 * Math.log(0.3 / (1 - t)),
+        { t0: 0.02, t1: 0.98, color: F.P.amber, width: 1.8, label: 'D_KL', labelAt: 0.3 });
+F.vbar(0.7, 1.35, { w: 0.012, fill: 'rgba(0,0,0,0.25)', color: 'rgba(0,0,0,0)', width: 0 });
+F.text(0.72, 0.12, 't = 0.7 = P(1)', { size: 16, color: F.P.deep, anchor: 'start' });
+
+</script>
+</body>
+</html>

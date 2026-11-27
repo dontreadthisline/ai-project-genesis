@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>BatchNorm 与 LayerNorm 的轴</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">BN 对每个特征列（跨样本）标准化，LN 对每个样本（跨特征）——Transformer 必须用 LN：变长序列 + 自回归逐步解码，batch/时间轴统计都不可行。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+const rows = 5, cols = 6, x0 = 70, y0 = 58, cw = 62, ch = 40;
+for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) {
+  F.box({ x: x0 + j * cw, y: y0 + i * ch, w: cw - 5, h: ch - 5, label: '', fill: 'rgba(58,74,168,0.04)', width: 0.7 });
+  F.box({ x: x0 + 360 + j * cw, y: y0 + i * ch, w: cw - 5, h: ch - 5, label: '', fill: 'rgba(58,74,168,0.04)', width: 0.7 });
+}
+for (let i = 0; i < rows; i++)
+  F.box({ x: x0 + 2 * cw, y: y0 + i * ch, w: cw - 5, h: ch - 5, fill: 'rgba(58,74,168,0.22)', color: F.P.ink, width: 1.3 });
+for (let j = 0; j < cols; j++)
+  F.box({ x: x0 + 360 + j * cw, y: y0 + 2 * ch, w: cw - 5, h: ch - 5, fill: 'rgba(191,135,0,0.2)', color: F.P.amber, width: 1.3 });
+F.text(x0 + 2.5 * cw, y0 - 18, 'BN：按列（跨样本）', { size: 17, color: F.P.ink, anchor: 'middle' });
+F.text(x0 + 360 + 3 * cw, y0 - 18, 'LN：按行（跨特征）', { size: 17, color: F.P.amber, anchor: 'middle' });
+
+</script>
+</body>
+</html>

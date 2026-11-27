@@ -34,6 +34,10 @@ $$
 
 噪声方差相加 $= \alpha_t(1-\bar\alpha_{t-1}) + (1-\alpha_t) = 1 - \bar\alpha_t$。任意 $t$ 直接采样 $x_t$，训练时无需走完整条链。
 
+<iframe src="resources/figures/noise-chain.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="前向加噪链"></iframe>
+
+<p align="center"><b>图 19.1</b>：x₀ → x_T 的信号衰减</p>
+
 ### 1.2 反向条件与训练目标
 
 固定 $x_0$ 的反向条件是高斯（推导是对 $q(x_{t-1}|x_t, x_0) \propto q(x_t|x_{t-1})q(x_{t-1}|x_0)$ 配方，用 Lab 02 的精度矩阵技术）：
@@ -56,6 +60,10 @@ $$
 $$
 
 直觉：网络从带噪图里减出干净图的成分，等价于预测「加进去的噪声」。
+
+<iframe src="resources/figures/loss-by-t.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="按噪声水平的损失分布"></iframe>
+
+<p align="center"><b>图 19.2</b>：eps 预测 vs x₀ 预测的分桶损失</p>
 
 ### 1.3 采样
 

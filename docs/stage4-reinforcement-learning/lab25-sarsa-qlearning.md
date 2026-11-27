@@ -36,6 +36,14 @@ $$
 
 SARSA 的目标含实际执行的下一动作 $a_{t+1}$（含探索噪声），学的是「当前探索策略下的值」；Q-Learning 的目标是 greedy 最优动作，与执行策略解耦——**学的是最优策略的值，走的是探索策略的路**。Cliff Walking 的经典分化：贴崖走的 greedy 路径在探索噪声下会坠落，SARSA 学到绕远的安全路径；Q-Learning 坚持最优路径、训练期回报更低但策略本身更优。
 
+<iframe src="resources/figures/cliff-path.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="悬崖行走：两种理性"></iframe>
+
+<p align="center"><b>图 25.1</b>：贴崖最优 vs 绕行安全</p>
+
+<iframe src="resources/figures/return-curves.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="训练期回报与执行回报"></iframe>
+
+<p align="center"><b>图 25.2</b>：on/off-policy 的回报分化</p>
+
 ### 1.3 收敛条件与探索
 
 表格 TD 控制收敛需：所有 (s,a) 无限次访问 + α 满足 Robbins-Monro（$\sum\alpha = \infty, \sum\alpha^2 < \infty$）。ε-greedy 衰减（$\epsilon_t = \max(\epsilon_{min}, \epsilon_0 \cdot decay^t$）平衡探索与渐近最优。max 算子的正偏差：$\max_a \mathbb E[Q] \ge \mathbb E[\max_a Q]$（Jensen），Q-Learning 有过高估计倾向——Lab 27 在深度版中正面处理。

@@ -41,6 +41,14 @@ $$
 
 展开式中恒等项 $I$ 永远存在：任何一条「纯恒等路径」的梯度贡献为 1，不随深度衰减；$F$ 的小扰动项只做加性修正。梯度下界不再乘性缩小——这就是 highway 的含义：即使 $F$ 学不到东西，梯度也能无衰减地穿过。
 
+<iframe src="resources/figures/grad-highway.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="残差连接的梯度高速公路"></iframe>
+
+<p align="center"><b>图 11.1</b>：首层梯度范数 vs 深度</p>
+
+<iframe src="resources/figures/residual-block.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="残差块：学习对恒等的修正"></iframe>
+
+<p align="center"><b>图 11.2</b>：y = x + F(x)</p>
+
 ### 1.3 与初始化的配合
 
 若 $F$ 最后一层初始化为零（常见做法），初始网络是严格恒等映射 $h_L = h_0$，训练从「什么都不做」出发逐步增加残差修正。对比普通网络：再好的初始化也无法让 50 层复合恒等于恒等（误差逐层累积）。

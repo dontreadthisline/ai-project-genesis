@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>DPO 的隐式奖励搬家</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">训练前后 $\hat r = \beta \log(\pi/\pi_{ref})$：$y_w$ 右移、$y_l$ 左移、可分性增强——损失直接作用在策略上，RM 与 RL 被折叠成一步。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: -4, x1: 4, y0: 0, y1: 0.55, labels: ['隐式奖励 r̂', '密度'] });
+const gauss = (x, m, s) => Math.exp(-((x - m) ** 2) / (2 * s * s)) / (s * 2.51);
+F.curve(x => gauss(x, -0.4, 1.1), { t0: -4, t1: 4, color: F.P.dim, width: 1.6, label: 'y_w 前', labelAt: -1.8 });
+F.curve(x => gauss(x, 0.4, 1.1), { t0: -4, t1: 4, color: F.P.dim, width: 1.6, label: 'y_l 前', labelAt: 1.8 });
+F.curve(x => gauss(x, 1.6, 0.7), { t0: -4, t1: 4, color: F.P.green, width: 2.2, label: 'y_w 后', labelAt: 2.8 });
+F.curve(x => gauss(x, -1.6, 0.7), { t0: -4, t1: 4, color: F.P.ink, width: 2.2, label: 'y_l 后', labelAt: -2.8 });
+
+</script>
+</body>
+</html>

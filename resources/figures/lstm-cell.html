@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>LSTM：加性细胞状态</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">$c_t = f_t \odot c_{t-1} + i_t \odot \tilde c_t$——对 $c$ 的梯度是 $\mathrm{diag}(f_t)$（可学习趋近 1），不再是连乘 $W_h$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 70, y: 130, w: 90, h: 46, label: 'c_{t−1}' });
+F.box({ x: 300, y: 130, w: 80, h: 46, label: 'c_t' });
+F.arrow(160, 153, 300, 153, { width: 2.2, label: '× f_t', labelDy: -14 });
+F.box({ x: 170, y: 58, w: 112, h: 44, label: 'i_t ⊙ c̃_t', fill: 'rgba(26,127,55,0.08)', color: F.P.green });
+F.arrow(226, 102, 226, 130, { color: F.P.green, width: 1.8, label: '+', labelDy: -10 });
+F.box({ x: 170, y: 212, w: 112, h: 44, label: 'f_t = σ(·)', fill: 'rgba(191,135,0,0.08)', color: F.P.amber });
+F.arrow(226, 212, 226, 182, { color: F.P.amber, width: 1.6 });
+F.text(400, 153, 'h_t = o_t ⊙ tanh(c_t) →', { size: 16, color: F.P.deep, anchor: 'start' });
+
+</script>
+</body>
+</html>

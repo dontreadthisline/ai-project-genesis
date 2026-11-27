@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>少步区间的分野</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">NFE ≤ 8 的少步区间 FM 通常占优（路径近直）；高步数两端趋同——两方法本质是同一族的不同调度。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 1, x1: 128, y0: 0.4, y1: 1.0, labels: ['NFE', '质量'] });
+F.curve(t => 0.5 + 0.47 / (1 + 5 / t), { t0: 1, t1: 128, color: F.P.ink, width: 2.3, label: 'FM', labelAt: 40 });
+F.curve(t => 0.46 + 0.5 / (1 + 22 / t), { t0: 1, t1: 128, color: F.P.dim, width: 1.9, label: 'DDIM', labelAt: 60 });
+F.vbar(8, 0.97, { w: 0.6, fill: 'rgba(0,0,0,0.18)', color: 'rgba(0,0,0,0)', width: 0 });
+F.text(2, 0.86, '少步区', { size: 15, color: F.P.dim });
+
+</script>
+</body>
+</html>

@@ -36,6 +36,10 @@ $$
 
 重要性比值与 clip 语义逐 token（序列优势广播到每个 token，按长度归一）。
 
+<iframe src="resources/figures/group-advantage.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="组内相对优势"></iframe>
+
+<p align="center"><b>图 41.1</b>：组内奖励与归一化优势</p>
+
 ### 1.2 与 PPO 的逐项对照
 
 | | PPO（Lab 30） | GRPO |
@@ -50,6 +54,10 @@ KL 参考从 $\pi_{old}$ 换成 $\pi_{ref}$：约束对象是「别离 SFT 太�
 ### 1.3 组大小与信号
 
 奖励 0/1 时组内至少一个对一个错才有梯度。难度 $p$（策略正确率）下，组内有信号的 probability $= 1 - p^G - (1-p)^G$。$G$ 小于此概率骤降；$G$ 大则采样成本线性增。最优训练区间 $p \in (0.2, 0.8)$：学习发生带——GRPO 的隐式课程。
+
+<iframe src="resources/figures/signal-band.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="学习带：隐式课程"></iframe>
+
+<p align="center"><b>图 41.2</b>：有信号组比例的训练轨迹</p>
 
 ## 2. 实现任务
 

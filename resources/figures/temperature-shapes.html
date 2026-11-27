@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>温度与截断的分布形态</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">$T \to 0$ 退化为 argmax、$T$ 大趋于均匀（秩不变）；top-k 硬截断（固定候选数）、top-p 自适应（分布尖时少保留）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 10, y0: 0, y1: 0.6, labels: ['token', '概率'] });
+const logits = [0, 1, 2, 3, 3.4, 2.6, 1.4, 0.5, 0.1, 0];
+for (const [T, col] of [[0.5, F.P.ink], [1.0, F.P.amber], [1.6, F.P.dim]]) {
+  const exps = logits.map(l => Math.exp(l / T));
+  const Z = exps.reduce((a, b) => a + b, 0);
+  F.curve(t => {
+    const k = Math.min(9, Math.max(0, Math.round(t)));
+    return exps[k] / Z;
+  }, { t0: 0, t1: 9, color: col, width: 2, label: 'T=' + T, labelAt: 0.4, rough: false });
+}
+
+</script>
+</body>
+</html>

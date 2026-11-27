@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>VAE 的二维潜空间</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="340" viewBox="0 0 720 340"></svg>
+<div class="caption">训练后的 $q(z \mid x)$ 簇按数字分离且大致填满先验 $\mathcal N(0, I)$（虚线圆）；$\beta$ 越大簇越向原点塌缩。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: -3.4, x1: 3.4, y0: -2.8, y1: 2.8, labels: ['z₁', 'z₂'] });
+F.ellipse({ rx: 2.3, ry: 2.3, color: F.P.dim, opacity: 0.5, width: 1.4 });
+F.text(1.7, 2.4, '先验 N(0, I)', { size: 16, color: F.P.dim });
+for (const [c, col] of [[-1.6, F.P.ink], [1.6, F.P.green], [0, F.P.amber]]) {
+  for (let i = 0; i < 45; i++) {
+    const a = F.rnd() * 6.28, r = Math.abs(F.gauss()) * 0.55;
+    F.dot(0, 0, col, 2.1);  // noop占位防优化
+  }
+}
+// 三簇: 中心分置, 手画点
+const clus = [[-1.6, 0.9, F.P.ink], [1.7, 0.7, F.P.green], [0, -1.2, F.P.amber]];
+for (const [cx, cy, col] of clus)
+  for (let i = 0; i < 40; i++)
+    F.text(cx + F.gauss() * 0.5, cy + F.gauss() * 0.4, '·', { size: 19, color: col });
+F.text(-1.6, 1.7, '簇 A', { size: 16, color: F.P.deep, anchor: 'middle' });
+F.text(1.7, 1.5, '簇 B', { size: 16, color: F.P.green, anchor: 'middle' });
+
+</script>
+</body>
+</html>

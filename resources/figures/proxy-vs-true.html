@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Reward Hacking 的标准图式</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">代理指标上升、真实成功率停滞或下降——两者的差集就是被利用的空间：优化的是 $R$，从来不是 $R^*$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 100, y0: 0, y1: 1.05, labels: ['训练', '归一值'] });
+F.curve(t => 1 - Math.exp(-0.04 * t), { t0: 0, t1: 100, color: F.P.ink, width: 2.3, label: '代理奖励 R', labelAt: 62 });
+F.curve(t => 0.45 + 0.08 * Math.sin(t * 0.15) * Math.exp(-0.01 * t) - 0.12 / (1 + Math.exp(0.1 * (50 - t))), { t0: 0, t1: 100, color: F.P.green, width: 2.1, label: '真实成功率 R*', labelAt: 62 });
+F.text(35, 0.25, '差集 = hack 的空间', { size: 16, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

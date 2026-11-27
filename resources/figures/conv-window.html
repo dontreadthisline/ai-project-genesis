@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>卷积：局部窗口与参数共享</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">同一 kernel 在全部位置复用（参数共享）；输出尺寸 $m = \lfloor (n + 2p - K)/s \rfloor + 1$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 8.4, y0: 0, y1: 6.4, labels: ['', ''], pad: [16, 16, 16, 16], bare: true });
+F.heat([[0.2,0.5,0.9,0.6,0.3,0.1],[0.3,0.8,1.0,0.7,0.4,0.2],[0.1,0.6,0.9,0.8,0.5,0.3],
+        [0.4,0.7,0.8,0.6,0.3,0.2],[0.2,0.5,0.6,0.4,0.2,0.1],[0.1,0.3,0.4,0.3,0.1,0.05]],
+       { x: 0.5, y: 0.55, cw: 1.15, ch: 1.15 });
+const bx = t => 56 + (t + 0.0) * 86;
+F.box({ x: bx(1.95), y: 92, w: 84, h: 84, color: F.P.amber, fill: 'rgba(0,0,0,0)', width: 2.2 });
+F.arrow(bx(2.9) + 50, 134, bx(3.5) + 10, 134, { label: '滑动', width: 1.8, labelDy: -12 });
+F.text(360, 66, '同一个 3×3 kernel', { size: 18, color: F.P.deep, anchor: 'start' });
+F.text(360, 96, '在所有位置复用', { size: 18, color: F.P.deep, anchor: 'start' });
+F.box({ x: 360, y: 124, w: 76, h: 76, color: F.P.ink });
+
+</script>
+</body>
+</html>

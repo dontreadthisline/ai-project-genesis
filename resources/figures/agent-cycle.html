@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Agent Loop：闭环</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">观察 → 策略解码动作 → 工具执行 → 新观察……策略分布只定义在动作段上，观察段是注入的条件；终止动作或 $T_{max}$ 截断结束。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 250, y: 40, w: 200, h: 46, label: 'Observation', fill: 'rgba(58,74,168,0.08)' });
+F.box({ x: 470, y: 130, w: 180, h: 46, label: 'π_θ 解码动作段', fill: 'rgba(26,127,55,0.08)' });
+F.box({ x: 250, y: 220, w: 200, h: 46, label: 'Tool 执行', fill: 'rgba(191,135,0,0.1)' });
+F.box({ x: 60, y: 130, w: 130, h: 46, label: '新观察拼接', fill: 'rgba(58,74,168,0.08)' });
+F.arrow(450, 63, 540, 128, { width: 2 });
+F.arrow(560, 176, 450, 240, { width: 2, label: 'action', labelDy: -12 });
+F.arrow(250, 243, 125, 178, { width: 2, label: '返回结果', labelDy: 18 });
+F.arrow(125, 128, 250, 63, { width: 2, label: '拼接进上下文', labelDy: 18 });
+F.text(590, 100, 'env.step 的响应\n任何乱码都有定义', { size: 13, color: F.P.dim, anchor: 'start' });
+
+</script>
+</body>
+</html>

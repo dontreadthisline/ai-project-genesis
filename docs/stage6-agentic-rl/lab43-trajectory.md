@@ -45,6 +45,10 @@ meta 含：逐步 token 序列与对数概率（Lab 45 的 ratio 计算需要 $\
 
 分类树是 Lab 45 训练前后对比的观测框架：RL 改善哪一支、不动哪一支。
 
+<iframe src="resources/figures/failure-taxonomy.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="失败分类树"></iframe>
+
+<p align="center"><b>图 43.1</b>：失败 → 归因 → 修法</p>
+
 ## 2. 实现任务
 
 实现清单（签名与 TODO 见骨架源码）：

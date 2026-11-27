@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>最优判别器与均衡</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">$D^*(x) = p_{data}/(p_{data} + p_g)$（橙）在两分布重叠处取中间值；博弈均衡 $p_g = p_{data}$ 时 $D^* \equiv 1/2$，$C(G) = -\log 4$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: -4, x1: 4, y0: 0, y1: 0.55, labels: ['x', '密度'] });
+F.curve(t => Math.exp(-t * t / 2) / Math.sqrt(2 * Math.PI), { t0: -4, t1: 4, color: F.P.ink, width: 2.2, label: 'p_data', labelAt: -1.6 });
+F.curve(t => Math.exp(-(((t - 1.8) ** 2)) / 1.4) / Math.sqrt(2 * Math.PI * 0.7), { t0: -4, t1: 4, color: F.P.green, width: 2, label: 'p_g', labelAt: 2.8 });
+F.curve(t => {
+  const a = Math.exp(-t * t / 2) / 2.5066, b = Math.exp(-(((t - 1.8) ** 2)) / 1.4) / 2.107;
+  return a / (a + b) * 0.5;
+}, { t0: -4, t1: 4, color: F.P.amber, width: 2.1, rough: false, label: 'D*(x)/2', labelAt: 0.6 });
+F.text(-2.6, 0.44, '重叠区 D* ≈ 0.5', { size: 15, color: F.P.dim });
+
+</script>
+</body>
+</html>

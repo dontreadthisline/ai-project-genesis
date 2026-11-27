@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>词表大小的边际收益</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">压缩率随 $|V|$ 快速上升后饱和：高频对耗尽后，继续合并的是低频对——embedding 参数（$|V| \times d$）线性增长、收益骤减。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 100, x1: 4000, y0: 1, y1: 5, labels: ['词表 |V|', '压缩率（字符/token）'] });
+F.curve(v => 4.5 - 3.5 * Math.exp(-0.0011 * (v - 100)), { t0: 100, t1: 4000, color: F.P.ink, width: 2.3, label: 'BPE', labelAt: 2000 });
+F.curve(v => 2.4, { t0: 100, t1: 4000, color: F.P.dim, width: 1.3, rough: false, label: '字符级 = 1', labelAt: 2200 });
+F.vbar(900, 4.9, { w: 30, fill: 'rgba(0,0,0,0.15)', color: 'rgba(0,0,0,0)', width: 0 });
+F.text(900, 1.35, '饱和点', { size: 15, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

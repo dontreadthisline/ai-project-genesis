@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>悬崖行走：两种理性</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">Q-Learning 学最优路径（贴崖，回报 $\approx -13$）但探索噪声下会坠落；SARSA 学当前策略的值（绕行，$\approx -20$）——on-policy 的保守。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+const n = 12, x0 = 40, y0 = 60, cw = 52, ch = 52;
+for (let j = 0; j < n; j++) F.box({ x: x0 + j * cw, y: y0 + 2 * ch, w: cw - 5, h: ch - 5, label: '', fill: 'rgba(58,74,168,0.05)', width: 0.7 });
+for (let j = 1; j < n - 1; j++) F.box({ x: x0 + j * cw, y: y0 + ch, w: cw - 5, h: ch - 5, label: '', fill: 'rgba(200,60,60,0.3)', width: 0.7 });
+F.box({ x: x0, y: y0, w: cw - 5, h: ch - 5, label: 'S', fill: 'rgba(58,74,168,0.2)' });
+F.box({ x: x0 + (n - 1) * cw, y: y0, w: cw - 5, h: ch - 5, label: 'G', fill: 'rgba(26,127,55,0.25)' });
+// Q 路径: 贴崖
+for (let j = 0; j < n - 1; j++) F.text(x0 + j * cw + 24, y0 + 1.6 * ch, '·', { size: 24, color: F.P.ink });
+F.text(300, 45, 'Q-Learning：贴崖（−13，探索时坠落）', { size: 15, color: F.P.ink, anchor: 'middle' });
+// SARSA 路径: 绕一层
+for (let j = 0; j < n - 1; j++) F.text(x0 + j * cw + 24, y0 + 2.6 * ch, '·', { size: 24, color: F.P.green });
+F.text(300, 235, 'SARSA：绕行（−20，探索下稳）', { size: 15, color: F.P.green, anchor: 'middle' });
+F.text(x0 + 5.5 * cw, y0 + ch + 26, '悬崖 −100', { size: 14, color: 'rgba(150,40,40,0.9)', anchor: 'middle' });
+
+</script>
+</body>
+</html>

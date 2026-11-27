@@ -20,6 +20,10 @@ stage: 2
 
 CNN 则不同：卷积核在 $x'$ 上的局部窗口对应原图的随机散点，局部相关性先验彻底失效；且无法用重参数化恢复（卷积结构本身固定了权重共享模式）。预期：CNN 性能大幅下降，MLP 几乎不变（或略降）。
 
+<iframe src="resources/figures/pixel-permute.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="像素打乱：先验的证据"></iframe>
+
+<p align="center"><b>图 10.1</b>：置换破坏空间局部性</p>
+
 ### 1.2 归纳偏置的偏置-方差语言
 
 模型族 $\mathcal H_{\text{CNN}} \subset$（局部函数类），$\mathcal H_{\text{MLP}}$ 更大。误差分解：
@@ -29,6 +33,10 @@ $$
 $$
 
 数据少时估计误差主导，小而对的假设类（CNN）赢；数据多时近似误差主导，差距消失甚至反转（若真实映射确非局部）。实验 10 的样本量扫描就是这条曲线的直接观测。
+
+<iframe src="resources/figures/acc-vs-n.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="归纳偏置 = 小样本收益"></iframe>
+
+<p align="center"><b>图 10.2</b>：准确率 vs 训练样本数</p>
 
 ### 1.3 kernel size 与深度的交互
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>NFE-质量前沿</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">4 步已可辨数字（直线路径的收益）；64 步细节干净——计算与质量的交换曲线，与解码加速（Lab 36）同属一主题。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 1, x1: 64, y0: 0.3, y1: 1.0, labels: ['NFE', '质量（对高步参照）'] });
+F.curve(t => 0.42 + 0.55 / (1 + 8 / t), { t0: 1, t1: 64, color: F.P.ink, width: 2.3, label: 'FM', labelAt: 26 });
+F.vbar(4, 0.62, { w: 0.7, fill: 'rgba(58,74,168,0.3)' });
+F.text(4.4, 0.5, '4 步可辨', { size: 15, color: F.P.dim, anchor: 'start' });
+
+</script>
+</body>
+</html>

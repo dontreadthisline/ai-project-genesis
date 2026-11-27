@@ -29,6 +29,10 @@ $$
 \frac{p_{data}}{D} - \frac{p_g}{1-D} = 0 \ \Longrightarrow\ D^*(x) = \frac{p_{data}(x)}{p_{data}(x) + p_g(x)}
 $$
 
+<iframe src="resources/figures/d-optimal.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="最优判别器与均衡"></iframe>
+
+<p align="center"><b>图 17.1</b>：p_data、p_g 与 D*</p>
+
 ### 1.3 全局最优：JS 散度（推导）
 
 把 $D^*$ 代回 $V$。记 $a = p_{data}, b = p_g$：
@@ -48,6 +52,10 @@ $$
 ### 1.4 实践形态与不稳定
 
 原始 $\log(1-D(G(z)))$ 在 G 差时梯度饱和，实践改为最大化 $\log D(G(z))$（非饱和损失）——它不再对应同一 JS 理论。JS 梯度消失问题：不重叠的低维流形间 JS 为常数 $\log 2$，梯度为零，训练信号断裂。Mode collapse：G 发现个别 $z$ 区域的样本能稳定骗过 D，就把多种 $z$ 都映射到同一输出模式——损失看不出异常，只能靠生成多样性观测。
+
+<iframe src="resources/figures/loss-oscillation.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="GAN 训练的拉锯"></iframe>
+
+<p align="center"><b>图 17.2</b>：D/G 损失的动态均衡</p>
 
 ## 2. 实现任务
 

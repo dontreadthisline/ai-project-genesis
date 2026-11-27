@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>困惑度与规模</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">PPL $= e^{\mathcal L}$：交叉熵的指数——「等效均匀候选数」。模型规模的收益递减；上下文长度的收益在小语料上先饱和。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 64, x1: 512, y0: 4, y1: 20, labels: ['d', 'PPL'] });
+F.curve(d => 19 - 14 * Math.exp(-0.009 * (d - 64)), { t0: 64, t1: 512, color: F.P.ink, width: 2.3, label: '验证集', labelAt: 300 });
+F.text(150, 7, 'PPL=10：每个位置等效 10 选 1', { size: 15, color: F.P.dim });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>梯度方向的信噪比</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">batch 梯度与全量梯度的余弦相似度随 $b$ 上升；$\cos > 0.9$ 后方向收益递减——大 batch 的真实收益在吞吐不在方向。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 1, x1: 4096, y0: 0.4, y1: 1.0, labels: ['b', 'cos'] });
+F.curve(b => 1 - 0.5 / Math.sqrt(b), { t0: 1, t1: 4096, color: F.P.ink, width: 2.2, label: '典型曲线', labelAt: 500 });
+F.curve(b => 0.9, { t0: 1, t1: 4096, color: F.P.green, width: 1.4, rough: false, label: '0.9 实用阈', labelAt: 1600 });
+
+</script>
+</body>
+</html>

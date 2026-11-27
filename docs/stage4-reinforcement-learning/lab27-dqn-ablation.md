@@ -24,6 +24,10 @@ $$
 
 且随动作数与噪声方差增大而增大。自举把高估写回 Q 表，逐轮放大。数值感受：$\epsilon_i \sim \mathcal N(0, 1)$、4 个动作时 $\mathbb E[\max] \approx 1.03$——每步自举平均抬升一个标准差的量级。
 
+<iframe src="resources/figures/q-overestimation.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="max 的正偏差"></iframe>
+
+<p align="center"><b>图 27.1</b>：E[max ε] 随动作数 k</p>
+
 ### 1.2 Double DQN（解耦）
 
 原目标：$\max_{a'} Q(s', a'; \theta^-)$——同一个网络既选出动作又评估它（选择与评估共享噪声，正相关放大偏差）。解耦：
@@ -33,6 +37,10 @@ y = r + \gamma\, Q\big(s',\ \arg\max_{a'} Q(s', a'; \theta);\ \theta^-\big)
 $$
 
 在线网络 $\theta$ 选动作，目标网络 $\theta^-$ 评估：选择误差与评估误差近似独立，$\mathbb E[\text{偏差}]$ 大幅缩小（不归零）。
+
+<iframe src="resources/figures/q-vs-return.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="高估的可视证据"></iframe>
+
+<p align="center"><b>图 27.2</b>：Q 估计 vs 实际回报</p>
 
 ### 1.3 Dueling DQN（结构分解）
 

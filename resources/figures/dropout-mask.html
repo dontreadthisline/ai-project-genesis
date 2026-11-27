@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Inverted Dropout</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="290" viewBox="0 0 720 290"></svg>
+<div class="caption">训练时以概率 $p$ 置零并除以 $1-p$：期望不变、推理无需缩放——$2^n$ 个子网共享参数的隐式集成。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+const n = 8, x0 = 110, y0 = 52, cw = 56, ch = 46;
+for (let i = 0; i < 2; i++) for (let j = 0; j < n; j++) {
+  const drop = F.rnd() < 0.4;
+  F.box({ x: x0 + j * cw, y: y0 + i * ch, w: cw - 6, h: ch - 6, label: drop ? '0' : '×1.67',
+         fill: drop ? 'rgba(0,0,0,0.03)' : 'rgba(26,127,55,0.1)',
+         color: drop ? F.P.dim : F.P.green, width: 1.1, size: 14 });
+}
+F.text(x0 + 3.5 * cw, y0 + 2.7 * ch, '两次前向 = 两个子网（共享参数）', { size: 17, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

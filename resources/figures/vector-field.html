@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>速度场：噪声指向数据</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">学到的 $v_\theta(x, t)$：噪声区域的箭头指向数据高密区，数据区内近零——ODE 积分 = 沿箭头走，质量从 $\mathcal N(0, I)$ 流向 $p_{data}$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: -3.2, x1: 3.2, y0: -2.6, y1: 2.6, labels: ['', ''] });
+for (let i = -2; i <= 2; i++) for (let j = -1; j <= 1; j++) {
+  const x = i * 1.15, y = j * 1.15;
+  const dx = (x > 0.9 ? -0.5 : 0.55), dy = (y > 0.6 ? -0.4 : 0.45);
+  const len = Math.hypot(dx, dy);
+  F.arrow((x - 3.4) * 90 + 360, (2.6 - y) * 55 + 165, (x - 3.4) * 90 + 360 + dx * 34, (2.6 - y) * 55 + 165 - dy * 34, { width: 1.4 });
+}
+for (let k = 0; k < 40; k++) F.text(3.6 + F.gauss() * 0.7, 0.4 + F.gauss() * 0.9, '·', { size: 19, color: F.P.ink });
+F.text(3.5, 2.2, '数据簇', { size: 17, color: F.P.deep });
+F.text(-2.6, 2.2, '噪声区：箭头指向数据', { size: 15, color: F.P.dim });
+
+</script>
+</body>
+</html>

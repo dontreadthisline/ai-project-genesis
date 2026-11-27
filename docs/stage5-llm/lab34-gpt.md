@@ -26,6 +26,10 @@ $$
 
 Block 内：causal MHA + FFN（Lab 14 §1.4 pre-norm）。组件对照 Lab 14 的增量：可学习位置嵌入 $W_p$、最终 LN、LM Head 与 embedding 权重共享（参数节省 $|V| d$，且输入输出空间对齐）。
 
+<iframe src="resources/figures/gpt-stack.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="GPT 的组件栈"></iframe>
+
+<p align="center"><b>图 34.1</b>：自回归 Transformer 的栈</p>
+
 ### 1.2 参数量（推导）
 
 每个 Block：MHA 四个投影 $4d^2$ + FFN $2 \times d \times 4d = 8d^2$，共 $12d^2$（LN 参数可忽略）。总计：
@@ -35,6 +39,10 @@ P \approx L \cdot 12d^2 + |V|\, d \ (\text{embedding，共享时不重复计})
 $$
 
 $d = 256$、$L = 4$、$|V| = 4k$：$12 \cdot 4 \cdot 65536 + 1M \approx 4.2M$。
+
+<iframe src="resources/figures/param-budget.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="参数量：12Ld² 的分层账"></iframe>
+
+<p align="center"><b>图 34.2</b>：参数分解</p>
 
 ### 1.3 训练与生成的统一
 

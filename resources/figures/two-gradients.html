@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>两条梯度路径</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">pathwise：梯度穿过 $\mu + \sigma\epsilon$ 的确定性路径（局部信息）；score function：$f(z)\nabla\log q$（把 $f$ 的幅度当随机乘子——方差大）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 40, y: 120, w: 84, h: 46, label: 'θ' });
+F.box({ x: 190, y: 120, w: 110, h: 46, label: 'μ, σ' });
+F.box({ x: 360, y: 120, w: 90, h: 46, label: 'z = μ+σε', size: 14 });
+F.box({ x: 530, y: 120, w: 90, h: 46, label: 'f(z)' });
+F.arrow(124, 143, 190, 143, { width: 2, label: '梯度可传', labelDy: -12 });
+F.arrow(300, 143, 360, 143, { width: 2 });
+F.arrow(450, 143, 530, 143, { width: 2 });
+F.text(360, 230, 'pathwise：∇f · ∇z —— 局部、低方差', { size: 16, color: F.P.ink, anchor: 'middle' });
+F.text(360, 262, 'score：f(z) ∇log q(z|θ) —— 幅度进方差', { size: 16, color: F.P.amber, anchor: 'middle' });
+
+</script>
+</body>
+</html>

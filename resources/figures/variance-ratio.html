@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>两种估计的方差差</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">同一目标 $\nabla_\mu \mathbb E[f]$：score function 估计的样本方差随 $f$ 幅度平方增长，pathwise 不变——VAE 走 pathwise 的原因。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 4, y0: 0, y1: 16, labels: ['log |f| 幅度', 'log Var'] });
+F.curve(t => 2 * t, { t0: 0.2, t1: 3.9, color: F.P.amber, width: 2.3, label: 'score（∝ f²）', labelAt: 1.1 });
+F.curve(t => 1.2, { t0: 0.2, t1: 3.9, color: F.P.ink, width: 2.3, label: 'pathwise（不变）', labelAt: 2.2 });
+
+</script>
+</body>
+</html>

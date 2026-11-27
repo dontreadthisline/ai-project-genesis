@@ -40,6 +40,10 @@ $$
 
 推论：固定 $P$ 时，最小化交叉熵等价于最小化 KL（$H(P)$ 是常数）。这就是「语言模型训练 = 最小化与数据分布的 KL」的来源。
 
+<iframe src="resources/figures/h-ce-kl.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="交叉熵 = 熵 + KL"></iframe>
+
+<p align="center"><b>图 04.1</b>：三曲线: 最小值在 Q=P 处</p>
+
 ### 1.2 KL 非负（Jensen 不等式推导）
 
 设 $f(x) = Q(x)/P(x)$ 在 $\mathrm{supp}(P)$ 上取值。$\log$ 是凹函数，Jensen 不等式给出 $\mathbb E[\log f] \le \log \mathbb E[f]$：
@@ -63,6 +67,10 @@ $$
 
 - 前向 $D_{\mathrm{KL}}(P\|Q)$：只要 $P(x) > 0$，则 $Q(x) \to 0$ 会把 KL 推到无穷。最小化它迫使 $Q$ 覆盖 $P$ 的所有模式：mode-covering（质量铺开）。
 - 反向 $D_{\mathrm{KL}}(Q\|P)$：在 $P(x) = 0$ 处 $Q$ 必须为 0，但 $P$ 小的地方 $Q$ 可以更小。最小化它允许 $Q$ 集中在 $P$ 的单个模式：mode-seeking（质量集中）。VAE 用前向，典型 GAN 的最优判别器对应 JS，扩散模型变分界也含前向结构，RLHF/DPO 中 policy 相对 reference 的 KL 用 $D_{\mathrm{KL}}(\pi \| \pi_{\mathrm{ref}})$。
+
+<iframe src="resources/figures/kl-asymmetry.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="KL 的不对称"></iframe>
+
+<p align="center"><b>图 04.2</b>：双向 KL: 两个不同的量</p>
 
 ### 1.4 分类损失：Cross Entropy vs Brier Score
 

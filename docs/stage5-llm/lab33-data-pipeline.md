@@ -28,6 +28,10 @@ $$
 
 target 是 input 左移一位（shift）。一步前向 + 一次交叉熵（按位置平均）完成 T 个预测的损失。
 
+<iframe src="resources/figures/shift-mask.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="自回归的输入-目标对"></iframe>
+
+<p align="center"><b>图 33.1</b>：input/target 错位与掩码</p>
+
 ### 1.2 Causal mask
 
 注意力 logits 加上三角掩码 $M_{ij} = -\infty\ (j > i)$（Lab 14 §1.1）后，位置 $t$ 的表示严格不含 $x_{>t}$ 信息。**掩码是唯一需要的位置级防泄漏机制**：配合 shift，整条序列的 T 个位置同时训练而无泄漏。验证方法：打乱 target 的未来部分，loss 不应变化（信息论上的独立性检查）。
@@ -43,6 +47,10 @@ $$
 ### 1.4 Sequence packing
 
 短样本拼接到 block_size（如 512），一条样本承载多个文档。**必须加文档边界掩码**（block 内第 k 个文档的位置不 attend 跨文档），否则模型学到「上个文档的结尾预测下个文档的开头」——分布错误。工程收益：pad 浪费从 30%+ 降到近 0。
+
+<iframe src="resources/figures/packing-boundary.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Sequence Packing 的边界"></iframe>
+
+<p align="center"><b>图 33.2</b>：同 block 两个文档 + 边界掩码</p>
 
 ## 2. 实现任务
 

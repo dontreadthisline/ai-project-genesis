@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>组内相对优势</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">同 prompt 采 $G$ 个回答、按可验证判分：$\hat A_i = (r_i - \mathrm{mean})/\mathrm{std}$——全对/全错组 $\hat A \equiv 0$（无信号，弃用）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 8, y0: -1.6, y1: 1.6, labels: ['G 个回答', 'r / Â'] });
+const rs = [1, 0, 1, 1, 0, 0, 1, 0];
+const mean = rs.reduce((a, b) => a + b) / 8, sd = Math.sqrt(rs.reduce((a, b) => a + (b - mean) ** 2, 0) / 8);
+for (let i = 0; i < 8; i++) {
+  F.vbar(i + 0.32, rs[i], { w: 0.3, fill: 'rgba(58,74,168,0.3)' });
+  F.vbar(i + 0.72, (rs[i] - mean) / sd, { w: 0.3, fill: 'rgba(26,127,55,0.3)' });
+}
+F.curve(t => 0, { t0: 0, t1: 8, color: 'rgba(0,0,0,0.2)', width: 0.8, rough: false });
+F.text(0.55, 1.45, 'r（左蓝）', { size: 14, color: F.P.ink, anchor: 'middle' });
+F.text(1.05, 1.45, 'Â（右绿）', { size: 14, color: F.P.green, anchor: 'middle' });
+F.text(4, -1.45, 'mean=0.5, std=0.53 → Â = ±0.94', { size: 15, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

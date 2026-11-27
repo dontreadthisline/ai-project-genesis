@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>过拟合的分歧点</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">train loss 持续下降、val loss 触底回升：小语料上大模型（$d=512$）的分歧点来得早——容量-数据的匹配问题。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 100, y0: 0, y1: 2.5, labels: ['step / 100', 'loss'] });
+F.curve(t => 2.3 * Math.exp(-0.05 * t) + 0.35, { t0: 0, t1: 100, color: F.P.ink, width: 2.2, label: 'train', labelAt: 70 });
+F.curve(t => 2.3 * Math.exp(-0.05 * t) + 0.5 + 0.9 / (1 + Math.exp(0.18 * (55 - t))), { t0: 0, t1: 100, color: F.P.green, width: 2.2, label: 'val', labelAt: 70 });
+F.vbar(58, 2.4, { w: 0.8, fill: 'rgba(200,60,60,0.35)', color: 'rgba(0,0,0,0)', width: 0 });
+F.text(58, 0.7, '分歧点', { size: 15, color: 'rgba(200,60,60,0.9)', anchor: 'middle' });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>值迭代的几何收敛</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">$T^*$ 是 $\gamma$-压缩：误差上界 $\|v_k - v^*\| \le \gamma^k/(1-\gamma)\|v_1 - v_0\|$——$\gamma$ 越大越准但收敛越慢。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 30, y0: -6, y1: 0, labels: ['迭代 k', 'log 误差'] });
+for (const [g, col] of [[0.5, F.P.dim], [0.9, F.P.ink]]) {
+  F.curve(t => -2 + t * Math.log(g), { t0: 0, t1: Math.min(30, 46 * Math.abs(Math.log(0.9) / Math.log(g)) * 0.6),
+             color: col, width: 2.2, label: 'γ=' + g, labelAt: 4 });
+}
+F.text(16, -4.5, 'γ=0.5 每步误差减半', { size: 15, color: F.P.dim });
+
+</script>
+</body>
+</html>

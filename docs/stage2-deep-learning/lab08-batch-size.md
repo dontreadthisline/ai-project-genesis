@@ -30,6 +30,10 @@ $$
 
 梯度噪声是方差问题而非偏差问题；标准误差按 $1/\sqrt b$ 缩减。
 
+<iframe src="resources/figures/variance-scaling.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="梯度噪声随 batch 的缩放"></iframe>
+
+<p align="center"><b>图 08.1</b>：Var ∝ 1/b 与 SNR ∝ √b</p>
+
 ### 1.2 梯度信噪比与有效学习率
 
 SGD 更新 $\Delta\theta = -\eta \hat g$ 的噪声协方差为 $\eta^2 \sigma^2 / b$。若把 batch 扩大 $k$ 倍并保持噪声不变，可将 $\eta$ 放大 $\sqrt k$；线性缩放规则（经验）则取 $\eta \propto b$ 并配 warmup。噪声尺度的一种度量：
@@ -39,6 +43,10 @@ $$
 $$
 
 随 $b$ 以 $\sqrt b$ 增长。噪声本身有隐式正则化作用（flat minima 假说）：大 batch + 大学习率补偿不足时常见泛化下降。
+
+<iframe src="resources/figures/cos-vs-b.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="梯度方向的信噪比"></iframe>
+
+<p align="center"><b>图 08.2</b>：cos(batch, full) vs b</p>
 
 ### 1.3 相似度度量
 

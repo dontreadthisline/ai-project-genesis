@@ -24,6 +24,14 @@ $$
 
 其中 $\bar{(\cdot)}$ 表示上游梯度。整网反向 = 逆序逐层应用 VJP，代价与前向同阶；数值微分对 $P$ 个参数各需两次前向，代价 $O(P)$ 倍。
 
+<iframe src="resources/figures/net-structure.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="MLP：全连接的层级结构"></iframe>
+
+<p align="center"><b>图 06.1</b>：全连接网络（压缩维度示意）</p>
+
+<iframe src="resources/figures/grad-flow.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="反向传播的梯度流"></iframe>
+
+<p align="center"><b>图 06.2</b>：逐层梯度范数（输出→输入）</p>
+
 ### 1.2 Softmax 与交叉熵的合并梯度
 
 softmax：$p_i = e^{z_i} / \sum_j e^{z_j}$，交叉熵 $L = -\log p_y$。推导 $\partial L / \partial z$：

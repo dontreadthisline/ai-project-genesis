@@ -30,6 +30,10 @@ $$
 
 行列式度量体积伸缩：变换在某方向压缩体积，密度必须增大补偿。训练 = 最大化数据点上的 $\log p_x$。
 
+<iframe src="resources/figures/flow-transform.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="可逆变换的密度传输"></iframe>
+
+<p align="center"><b>图 18.1</b>：圆云 → 双峰（体积补偿）</p>
+
 ### 1.2 三角结构的行列式
 
 任意可逆变换的 Jacobian 行列式是 $O(d^3)$（LU 分解）。上/下三角矩阵的行列式 = 对角线乘积，$O(d)$。RealNVP 仿射耦合层：把 $x$ 拆成两半，变换一半、条件于另一半：
@@ -46,6 +50,10 @@ J = \begin{pmatrix} I & 0 \\ \partial h_2/\partial x_1 & \mathrm{diag}(\exp s) \
 $$
 
 $s, t$ 是任意网络（不需可逆）：逆 $x_2 = (h_2 - t(h_1)) \odot \exp(-s(h_1))$ 显式可写。多层交错变换两半，积累表达能力。
+
+<iframe src="resources/figures/logdet-compensation.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Jacobian 行列式的补偿"></iframe>
+
+<p align="center"><b>图 18.2</b>：log|det| 随 Σs 的线性关系</p>
 
 ### 1.3 采样与密度的对偶
 

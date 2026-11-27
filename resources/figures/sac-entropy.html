@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>最大熵：付钱买探索</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">$J = \mathbb E[\sum r + \alpha \mathcal H]$：$\alpha$ 大策略保持宽分布（相空间覆盖广）、回报略降；确定性策略零熵——探索外包给噪声进程。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 0.6, y0: 0, y1: 1.05, labels: ['α（熵温度）', '归一值'] });
+F.curve(t => 1 - 0.4 * t, { t0: 0.02, t1: 0.58, color: F.P.ink, width: 2.3, label: '回报', labelAt: 0.42 });
+F.curve(t => 0.15 + 1.5 * t, { t0: 0.02, t1: 0.58, color: F.P.amber, width: 2.1, label: '策略熵', labelAt: 0.1 });
+F.text(0.3, 0.75, '能量花在探索上', { size: 16, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

@@ -24,6 +24,10 @@ $$
 
 若 $x(t)$ 服从 ODE $\dot x = v_t(x)$、初始 $x(0) \sim \rho_0 = \mathcal N(0, I)$，则 $x(t)$ 的分布就是由该方程传输的 $\rho_t$。生成 = 积分 ODE 从 $\rho_0$ 到 $\rho_1 \approx p_{data}$。与 DDPM 的联系：每个扩散过程都有对应的概率流 ODE（漂移改写），FM 直接学这个 ODE 的右端。
 
+<iframe src="resources/figures/vector-field.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="速度场：噪声指向数据"></iframe>
+
+<p align="center"><b>图 20.1</b>：速度场把噪声导向数据</p>
+
 ### 1.2 条件流匹配（推导骨架）
 
 直接回归边际场 $v_t$ 不可行（它由边际 $\rho_t$ 定义，而 $\rho_t$ 未知）。构造条件概率路径 $\rho_t(x | x_1)$：以某个数据点 $x_1$ 为目标的简单路径，其条件速度场 $u_t(x | x_1)$ 已知。关键恒等式（边缘化）：
@@ -49,6 +53,10 @@ $$
 $$
 
 边际场 $v_t$ 是「指向数据的直线路径平均」：在高密度重叠区，多个目标的平均方向起主导——这就是弯曲的来源。采样：欧拉法 $x_{t+\Delta} = x_t + \Delta\, v_\theta(t, x_t)$。
+
+<iframe src="resources/figures/ode-steps.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="积分步数与轨迹弯曲度"></iframe>
+
+<p align="center"><b>图 20.2</b>：NFE 少 → 轨迹须近乎直线</p>
 
 ## 2. 实现任务
 

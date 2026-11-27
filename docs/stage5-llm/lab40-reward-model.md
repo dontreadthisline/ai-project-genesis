@@ -26,6 +26,10 @@ $$
 
 梯度：$\nabla \propto -\sigma(r_l - r_w)(\nabla r_w - \nabla r_l)$——分不开的对拉大间隔，已分开的几乎不更新（对比 margin-based 损失的常数梯度）。
 
+<iframe src="resources/figures/rm-separation.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Reward Model 的判别"></iframe>
+
+<p align="center"><b>图 40.1</b>：rw 与 rl 的分数分布</p>
+
 ### 1.2 为什么偏好而非打分
 
 绝对分数标注跨标注者不可比（每人「7 分」含义不同，Lab 04 的交叉熵视角：分数不是概率）；两两比较在标注者内部一致性好。BT 把比较还原为共享的潜在标量：只利用了「序」的信息，天然丢弃不可比的水平差异。
@@ -35,6 +39,10 @@ $$
 - 判别准确率：held-out 对上的 $r_w > r_l$ 比例；
 - 与真值的相关：构造任务上真值（对错）已知，RM 分数应与之一致（AUC）；
 - 泛化：对未见过的错误类型（构造时故意留出）的判别力——RM 过拟合表面特征（长度、格式）时会在此暴露。
+
+<iframe src="resources/figures/length-bias.html" style="width:100%;height:354px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="RM 的表面特征依赖"></iframe>
+
+<p align="center"><b>图 40.2</b>：分数随长度的漂移</p>
 
 ### 1.4 RM 与可验证奖励的边界
 

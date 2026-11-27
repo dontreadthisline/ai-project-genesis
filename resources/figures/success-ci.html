@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>成功率与置信区间</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="290" viewBox="0 0 720 290"></svg>
+<div class="caption">$n=200$ 时标准误 $\approx \sqrt{0.25/200} \approx 0.035$：报告必须带 $\pm 2\mathrm{se}$——Lab 03 的区间规范在 Agentic 阶段的延续。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 4, y0: 0, y1: 1, labels: ['温度', '成功率'] });
+for (const [i, m] of [[0.6, 0.38], [1.6, 0.62], [2.6, 0.55], [3.6, 0.30]]) {
+  F.vbar(i, m, { w: 0.5, fill: 'rgba(58,74,168,0.25)' });
+  F.text(i, m + 0.07, (m * 100).toFixed(0) + '%', { size: 15, color: F.P.deep, anchor: 'middle' });
+  F.vbar(i + 0.26, m + 0.07, { w: 0.02, fill: 'rgba(0,0,0,0.4)', color: 'rgba(0,0,0,0)', width: 0 });
+}
+F.text(2.1, 0.12, '±2se ≈ ±7%（n=200）', { size: 15, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

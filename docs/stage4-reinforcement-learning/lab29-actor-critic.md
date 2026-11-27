@@ -28,6 +28,10 @@ $$
 
 （由 $Q = A + V$ 与 baseline 无偏性直接得到。）直觉：$A > 0$ 的动作比该状态下平均更好，提高其概率；$A < 0$ 降低。逐状态去中心比全局 baseline 更精细。
 
+<iframe src="resources/figures/ac-architecture.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Actor-Critic 双头"></iframe>
+
+<p align="center"><b>图 29.1</b>：共享 trunk 的双头结构</p>
+
 ### 1.2 TD 误差作为优势的估计
 
 $$
@@ -43,6 +47,10 @@ $$
 ### 1.3 联合训练
 
 Actor 用 $-\log\pi \cdot \delta.\text{detach}()$，critic 用 $\delta^2$。两者耦合的非平稳性：critic 落后则 actor 用错误优势，actor 快变则 critic 追不上分布。实践：critic lr 常大于 actor lr、或 critic 每步多次更新。
+
+<iframe src="resources/figures/nstep-spectrum.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="n-step：偏差-方差光谱"></iframe>
+
+<p align="center"><b>图 29.2</b>：n 与稳定性</p>
 
 ## 2. 实现任务
 

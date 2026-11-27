@@ -22,6 +22,10 @@ $$
 
 $h_t$ 是对话历史（prompt + 历次动作与观察的拼接）。与 Lab 36 的纯解码差别：序列不再一次性由策略生成——环境在中间注入 token（observation）。策略分布定义在「动作段」上，观察段是给定条件。终止条件：模型发出终止动作、或达到最大步数 $T_{max}$（防死循环）。
 
+<iframe src="resources/figures/agent-cycle.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Agent Loop：闭环"></iframe>
+
+<p align="center"><b>图 42.1</b>：obs → policy → action → tool 循环</p>
+
 ### 1.2 上下文拼接协议
 
 每步上下文 = 系统提示 + 任务 + 历史轮次（THOUGHT / ACTION / OBSERVATION 标记化拼接）。协议即「观测编码」：格式必须无歧义（模型能区分自己说的话与工具返回），且训练与推理的拼接格式严格一致（Lab 45 的 rollouts 用同一协议）。
@@ -36,6 +40,10 @@ $h_t$ 是对话历史（prompt + 历次动作与观察的拼接）。与 Lab 36 
 - `answer(x)` / `finish`：终止并给出最终答案。
 
 无效动作（解析失败、未知工具名）：环境返回 `INVALID_ACTION` 提示并继续——这是 Lab 43 无效动作统计的来源。**环境的鲁棒性原则：任何模型输出都必须有定义好的响应**。
+
+<iframe src="resources/figures/tool-safety.html" style="width:100%;height:354px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="受限工具的边界"></iframe>
+
+<p align="center"><b>图 42.2</b>：安全边界（进得来的才执行）</p>
 
 ### 1.4 部分可观测性
 

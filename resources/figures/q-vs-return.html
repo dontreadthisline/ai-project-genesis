@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>高估的可视证据</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">DQN 的 $\bar Q$ 系统性飘在真实回报上方；Double 解耦选/评后两者贴合——修的是偏差不是方差。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 60, y0: 0, y1: 500, labels: ['训练', '值'] });
+F.curve(t => 200 + 5.5 * t, { t0: 4, t1: 60, color: F.P.ink, width: 2.2, label: 'DQN 的 Q̄（虚高）', labelAt: 8 });
+F.curve(t => 150 + 4.8 * t, { t0: 4, t1: 60, color: F.P.green, width: 2.2, label: 'Double 的 Q̄', labelAt: 12 });
+F.curve(t => 150 + 4.8 * t - 40, { t0: 4, t1: 60, color: F.P.dim, width: 1.5, label: '实际回报（参照）', labelAt: 30 });
+
+</script>
+</body>
+</html>

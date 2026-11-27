@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>估计量自身的分布（CLT）</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">重复实验 $10^3$ 次的 $\hat\mu_n$ 直方图近似正态——无论 $f$ 的原始分布多么偏斜（CLT 的威力）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: -3.4, x1: 3.4, y0: 0, y1: 0.5, labels: ['(μ̂ − μ)/se', '频率'] });
+// 正态直方 bins（预计算 24 bins 的正态形状）
+const bins = 24, h = 6.4 / bins, n = 1000;
+const counts = new Array(bins).fill(0);
+for (let i = 0; i < n; i++) {
+  const t = F.gauss();
+  const k = Math.floor((t + 3.2) / h);
+  if (k >= 0 && k < bins) counts[k]++;
+}
+for (let k = 0; k < bins; k++) F.vbar(-3.2 + (k + 0.5) * h, counts[k] / (n * h));
+F.curve(x => Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI),
+        { t0: -3.2, t1: 3.2, color: F.P.amber, width: 2.4, rough: false, label: 'N(0,1)' });
+
+</script>
+</body>
+</html>

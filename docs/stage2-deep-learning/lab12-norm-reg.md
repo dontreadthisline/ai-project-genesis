@@ -25,6 +25,10 @@ $$
 
 $\mu_j, \sigma_j^2$ 是 batch 统计；推理时用训练期的指数滑动平均 $\bar\mu, \bar\sigma$（running stats，momentum $m$：$\bar\mu \leftarrow (1-m)\bar\mu + m\mu_{batch}$）。训练/推理不一致是 BN 的固有代价；batch 内样本相互依赖（同一 batch 的归一化互相影响），大 batch 或序列长度可变时问题加剧。
 
+<iframe src="resources/figures/bn-vs-ln.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="BatchNorm 与 LayerNorm 的轴"></iframe>
+
+<p align="center"><b>图 12.1</b>：BN 按列 vs LN 按行</p>
+
 ### 1.2 LayerNorm
 
 对每个样本的所有特征归一化：
@@ -44,6 +48,10 @@ $$
 $$
 
 期望不变 $\mathbb E[\tilde h] = h$（推理时无需缩放）。集成视角：$2^n$ 个 mask 对应 $2^n$ 个子网络共享参数，每步训练随机采样一个子网；推理是权重比例近似的隐式集成。
+
+<iframe src="resources/figures/dropout-mask.html" style="width:100%;height:354px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Inverted Dropout"></iframe>
+
+<p align="center"><b>图 12.2</b>：mask 采样与期望保持</p>
 
 ### 1.4 Weight Decay
 

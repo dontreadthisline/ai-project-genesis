@@ -46,6 +46,14 @@ $$
 
 $T^*$ 同样是 $\gamma$-压缩。策略迭代 = 交替「求 $v^\pi$（内层解方程）+ 改进」；值迭代 = 直接迭代 $T^*$。前者外层步数少但每步贵（解线性系统），后者每步便宜但步数多（几何速度同为 $\gamma$ 控制，实际常用 $\epsilon$-停机：$\|v_{k+1}-v_k\|_\infty < \epsilon(1-\gamma)/\gamma$ 保证 $\|v_k - v^*\|_\infty < \epsilon$）。
 
+<iframe src="resources/figures/value-landscape.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="值函数的地形"></iframe>
+
+<p align="center"><b>图 24.1</b>：v*(s) 热图（目标在右下）</p>
+
+<iframe src="resources/figures/vi-convergence.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="值迭代的几何收敛"></iframe>
+
+<p align="center"><b>图 24.2</b>：误差 vs 迭代数（按 γ）</p>
+
 ## 2. 实现任务
 
 <div class="theorem algorithm">

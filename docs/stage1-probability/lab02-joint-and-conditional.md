@@ -69,6 +69,10 @@ $$
 2. 条件方差 $\sigma_y^2(1-\rho^2) \le \sigma_y^2$：知道 $x$ 之后 $y$ 的不确定性只会减少或不增。$|\rho| \to 1$ 时条件方差趋于 0，即由 $x$ 可几乎确定 $y$。
 3. 方差缩减量 $\rho^2 \sigma_y^2$ 正是「被 $x$ 解释掉的方差」，$\rho^2$ 即决定系数。
 
+<iframe src="resources/figures/conditional-slice.html" style="width:100%;height:404px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="条件分布 = 联合的竖切"></iframe>
+
+<p align="center"><b>图 02.1</b>：联合云的竖切给出条件分布（ρ=0.8）</p>
+
 ### 1.3 相同边缘、不同联合：两个反例
 
 **反例 A（高斯族内部，靠 $\rho$ 区分）**：$\rho$ 取不同值时边缘都还是 $\mathcal N(0,1)$（二维高斯边缘是一维高斯，与 $\rho$ 无关），联合形状完全不同。说明：边缘相同 + 每个分量是高斯，联不起来。
@@ -81,6 +85,10 @@ p(x, y) = 0.5\, \mathcal N\!\left(\mathbf 0, \Sigma_+\right) + 0.5\, \mathcal N\
 $$
 
 每个分量的边缘是 $\mathcal N(0,1)$，混合后边缘 $= 0.5\,\mathcal N(0,1) + 0.5\,\mathcal N(0,1) = \mathcal N(0,1)$，与反例 A 的边缘完全相同。但联合分布呈 X 形（两条脊线），协方差 $= 0.5\Sigma_+ + 0.5\Sigma_- = I$：整体线性相关为零，结构全在非线性依赖里。这就是「皮尔逊相关为零但强依赖」的标准例子。
+
+<iframe src="resources/figures/same-marginals.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="相同边缘、不同联合"></iframe>
+
+<p align="center"><b>图 02.2</b>：X 形混合: 边缘相同、联合相反</p>
 
 ### 1.4 条件分布的经验估计
 

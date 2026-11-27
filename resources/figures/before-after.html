@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>训练改变的是什么</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">成功率跳升、无效动作与截断率大降、平均步数下降——协议型失败几乎不动：RL 修复行为质量，不修复格式遵循。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 4, y0: 0, y1: 1.05, labels: ['', '归一值'] });
+const metrics = [['成功率', 0.35, 0.72, F.P.ink], ['无效动作率', 0.42, 0.12, 'rgba(200,60,60,0.8)'], ['截断率', 0.5, 0.18, F.P.dim], ['平均步数', 0.85, 0.55, F.P.amber]];
+metrics.forEach(([tag, before, after, col], i) => {
+  const x = 0.5 + i;
+  F.vbar(x - 0.14, before, { w: 0.24, fill: 'rgba(0,0,0,0.18)' });
+  F.vbar(x + 0.14, after, { w: 0.24, fill: 'rgba(58,74,168,0.3)' });
+  F.text(x, 0.04, tag, { size: 13, color: col, anchor: 'middle' });
+});
+F.text(0.36, 0.98, '前', { size: 14, color: F.P.dim, anchor: 'end' });
+F.text(0.64, 0.98, '后', { size: 14, color: F.P.ink, anchor: 'start' });
+
+</script>
+</body>
+</html>

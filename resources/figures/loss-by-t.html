@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>按噪声水平的损失分布</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">$\epsilon$-预测让各 $t$ 的损失天然均匀（预测的是与 $t$ 无关的标准噪声）；$x_0$-预测在大 $t$ 损失巨大——凭空猜结构的代价。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 10, y0: 0, y1: 1.6, labels: ['t / T', 'loss'] });
+for (let k = 0; k < 10; k++) F.vbar(k + 0.5, 0.45 + 0.08 * Math.sin(k), { w: 0.3, fill: 'rgba(58,74,168,0.25)' });
+F.curve(t => 0.5 + 0.05 * Math.sin(4 * t), { t0: 0.3, t1: 9.7, color: F.P.ink, width: 2.2, label: 'ε 预测：均匀', labelAt: 2 });
+F.curve(t => 0.15 + 0.13 * t * t / 10, { t0: 0.3, t1: 9.7, color: F.P.dim, width: 1.8, label: 'x₀ 预测：大 t 爆炸', labelAt: 3.4 });
+
+</script>
+</body>
+</html>

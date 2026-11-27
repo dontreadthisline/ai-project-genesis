@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>BPE：从字符到子词</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">每步合并最高频相邻对：频率驱动的贪心压缩。合并顺序即优先级——编码必须按训练顺序应用同样的合并。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+const steps = [
+  ['低', '最', '新', '低', '频', '低', '最'],
+  ['最低', '新', '低', '频', '最低'],
+  ['最低', '新', '低频', '最低'],
+  ['最新', '低频', '最低'],
+];
+for (let r = 0; r < 4; r++) {
+  F.text(80, 60 + r * 62, '步骤 ' + (r + 1) + ':', { size: 15, color: F.P.dim, anchor: 'end' });
+  let x = 110;
+  for (const tok of steps[r]) {
+    const w = 22 + tok.length * 30;
+    F.box({ x, y: 38 + r * 62, w, h: 42, label: tok, fill: 'rgba(58,74,168,0.08)', size: 15 });
+    x += w + 8;
+  }
+}
+F.text(360, 300, '「最低」高频 → 先合并；token 数单调下降', { size: 16, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

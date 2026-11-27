@@ -22,9 +22,17 @@ $$
 
 温度 $T$：logits 整体除以 $T$。$T \to 0$ 退化为 argmax（贪心），$T \to \infty$ 趋于均匀。$T$ 保持分布的**秩**不变，只改熵（Lab 04：KL(均匀‖采样分布) 随 T 单调）。Top-k：保留前 k 个、其余置 0 后重归一化（硬截断，截断量固定）。Top-p（nucleus）：保留累计概率达 p 的最小集合（自适应截断：分布尖时少保留、分布平时多保留）。
 
+<iframe src="resources/figures/temperature-shapes.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="温度与截断的分布形态"></iframe>
+
+<p align="center"><b>图 36.2</b>：同分布不同 T</p>
+
 ### 1.2 KV cache 的可行性
 
 因果注意力下位置 $t$ 的查询只与键值 $\le t$ 交互。生成第 $t+1$ 个 token 时，历史位置的 K、V 不变（各层一次算好缓存），只需：新 token 的 $q, k, v$（一次）、与缓存的注意力（一步）。无 cache 时每步重算全部 T 个位置的 K/V 及注意力矩阵——$O(T^2 d)$ 重复劳动；cache 后每步 $O(T d)$。代价：缓存占用 $2 \times L \times T \times d$ 内存（长上下文时的主要内存项）。
+
+<iframe src="resources/figures/kv-cache.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="KV Cache：省掉重复劳动"></iframe>
+
+<p align="center"><b>图 36.1</b>：无缓存（全重算）vs 缓存（增量）</p>
 
 ### 1.3 Prefill 与 decode
 

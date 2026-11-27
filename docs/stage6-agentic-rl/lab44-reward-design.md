@@ -34,9 +34,17 @@ $$
 
 经典实例（本实验复现）：process 奖励按「工具调用次数」发 → 策略学会无限调用合法但无用的工具刷分；格式奖励按「包含某关键词」发 → 策略复读关键词。Hack 的识别信号：**代理指标上升 + 真实成功率停滞或下降**。
 
+<iframe src="resources/figures/proxy-vs-true.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Reward Hacking 的标准图式"></iframe>
+
+<p align="center"><b>图 44.1</b>：代理分 ↑ 而真实成功率 →</p>
+
 ### 1.3 可验证性与防线
 
 可验证奖励（程序判分）把 $R$ 与 $R^*$ 的差距压缩到判分器 bug 层面，是 Agentic RL 的主线选择。防线的层次：奖励仅绑定终态（稀疏但干净）> 绑定过程（密集但可 hack）；KL 正则限制策略偏离（Lab 39/41 的 β 机制）间接限制 hack 的可达性；成本惩罚封堵「刷次数」类 hack。
+
+<iframe src="resources/figures/weight-pareto.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="成本惩罚的 Pareto 前沿"></iframe>
+
+<p align="center"><b>图 44.2</b>：成功率 vs 平均步数（w_c 扫描）</p>
 
 ## 2. 实现任务
 

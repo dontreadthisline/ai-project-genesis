@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>n-step：偏差-方差光谱</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">$\hat A^{(n)}$ 是 TD 误差的加权和：$n=1$ 低方差高偏差（critic 主导），$n \to T$ 匹配 MC——$\lambda$ 是这条光谱的连续插值（GAE）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 1, x1: 20, y0: 0, y1: 1.15, labels: ['n-step', '训练稳定性（示意）'] });
+for (const [n, col] of [[1, F.P.ink], [5, F.P.amber], [20, F.P.dim]]) {
+  F.curve(t => (n === 1 ? 1.0 - 0.05 * t / 20 : n === 5 ? 1.04 - 0.12 * Math.abs(t - 6) / 14 : 1.08 - 0.3 * t / 20),
+           { t0: 1, t1: 20, color: col, width: 2.0, label: 'n=' + n, labelAt: 13 });
+}
+F.text(4, 0.55, 'n 大 → MC 化 → 震荡', { size: 15, color: F.P.dim });
+
+</script>
+</body>
+</html>

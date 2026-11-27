@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>受限工具的边界</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="290" viewBox="0 0 720 290"></svg>
+<div class="caption">白名单算符、禁 import/open/exec、超时兜底：环境的鲁棒性原则——任何模型输出都必须有定义好的响应，错误也是 observation。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 70, y: 60, w: 220, h: 46, label: 'py("import os; ...")', size: 14 });
+F.box({ x: 70, y: 130, w: 220, h: 46, label: 'py("1+2*3")', size: 14 });
+F.box({ x: 430, y: 90, w: 180, h: 46, label: '受限执行器', fill: 'rgba(26,127,55,0.08)' });
+F.arrow(290, 83, 430, 100, { width: 1.8, color: 'rgba(200,60,60,0.8)', label: '拒绝', labelDy: -12 });
+F.arrow(290, 153, 430, 130, { width: 2, color: F.P.green, label: '白名单', labelDy: 16 });
+F.text(360, 215, '输出: INVALID / TIMEOUT / 结果——全是合法观察', { size: 15, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

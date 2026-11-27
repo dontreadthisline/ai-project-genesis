@@ -25,6 +25,10 @@ $$
 
 $\gamma$ 的三重身份：数学上保证无穷和收敛；行为上编码「未来的重要程度」（$\gamma = 0.9$ 意味着 10 步后的奖励权重只剩 $0.35$）；计算上让值函数成为贝尔曼方程的不动点。
 
+<iframe src="resources/figures/gridworld.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="FrozenLake：MDP 的最小实例"></iframe>
+
+<p align="center"><b>图 23.1</b>：4×4 网格世界（S/H/G 标注）</p>
+
 ### 1.2 FrozenLake 的实例化
 
 - $\mathcal S = \{0..15\}$（4x4 网格），$\mathcal A = \{0..3\}$（左/下/右/上）。
@@ -32,6 +36,10 @@ $\gamma$ 的三重身份：数学上保证无穷和收敛；行为上编码「�
 - slippery：$P(\text{预期方向}) = 1/3$，$P(\text{垂直两侧})$ 各 $1/3$。预期动作不等于实际动作——转移核是环境的属性而非智能体的选择。
 
 Gymnasium 通过 `env.unwrapped.P[s][a]` 暴露完整转移表：列表 of (prob, next_state, reward, done)。**本实验就是把它转成矩阵张量** $P \in \mathbb R^{S \times A \times S}$、$R \in \mathbb R^{S \times A}$，供 Lab 24/25 的表格算法直接使用。
+
+<iframe src="resources/figures/slippery.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="slippery：动作 ≠ 结果"></iframe>
+
+<p align="center"><b>图 23.2</b>：预期方向与实际转移</p>
 
 ### 1.3 转移核的合理性检查
 

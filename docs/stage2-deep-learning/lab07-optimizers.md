@@ -39,6 +39,14 @@ $$
 
 常数梯度下 $\hat m / \sqrt{\hat v} \approx 1$：有效步长约为 $\eta$，与梯度尺度无关（逐参数自适应）。
 
+<iframe src="resources/figures/optimizer-curves.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="三个优化器的收敛形态"></iframe>
+
+<p align="center"><b>图 07.1</b>：优化器 loss 曲线（形态示意）</p>
+
+<iframe src="resources/figures/adam-bias-fix.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Adam 偏差修正"></iframe>
+
+<p align="center"><b>图 07.2</b>：m 有偏 vs m̂ 修正</p>
+
 ### 1.3 AdamW：解耦权重衰减
 
 Adam 将 L2 正则并入梯度（$g + \lambda\theta$）后，$\theta$ 会经过 $1/\sqrt{\hat v}$ 的自适应缩放，正则强度在不同参数上不一致。AdamW 直接解耦：

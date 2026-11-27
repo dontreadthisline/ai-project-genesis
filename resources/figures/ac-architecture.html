@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Actor-Critic 双头</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">共享骨干、两个头：策略头输出 logits、价值头输出标量 $V(s)$——优势 $\delta = r + \gamma V(s') - V(s)$ 同时喂两头。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 40, y: 126, w: 90, h: 48, label: 's' });
+F.box({ x: 190, y: 126, w: 110, h: 48, label: '共享骨干' });
+F.box({ x: 400, y: 60, w: 150, h: 48, label: '策略头 π(a|s)', fill: 'rgba(58,74,168,0.08)', size: 15 });
+F.box({ x: 400, y: 192, w: 150, h: 48, label: '价值头 V(s)', fill: 'rgba(26,127,55,0.08)' });
+F.arrow(130, 150, 190, 150, { width: 2 });
+F.path('M 300 150 C 350 150, 350 84, 400 84', { arrow: true, color: F.P.ink, width: 1.8 });
+F.path('M 300 150 C 350 150, 350 216, 400 216', { arrow: true, color: F.P.green, width: 1.8 });
+F.text(590, 90, '→ logits', { size: 15, color: F.P.ink, anchor: 'start' });
+F.text(590, 222, '→ 标量', { size: 15, color: F.P.green, anchor: 'start' });
+
+</script>
+</body>
+</html>

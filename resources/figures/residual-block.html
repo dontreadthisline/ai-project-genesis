@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>残差块：学习对恒等的修正</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">零初始化 $F$ 末端时初始网络严格等于恒等映射——从「什么都不做」出发逐步增加修正（与 LoRA 的 $B=0$ 起步同构）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 60, y: 120, w: 90, h: 46, label: 'x' });
+F.arrow(150, 143, 250, 143, { width: 1.8 });
+F.box({ x: 250, y: 106, w: 150, h: 74, label: 'F(x)  末层零初始化', fill: 'rgba(26,127,55,0.07)', color: F.P.green, size: 15 });
+F.path('M 150 143 C 200 55, 340 55, 430 132', { arrow: true, color: F.P.amber, width: 2 });
+F.text(290, 60, '恒等捷径', { size: 17, color: F.P.amber });
+F.text(214, 130, '+', { size: 26, color: F.P.ink });
+F.box({ x: 430, y: 120, w: 120, h: 46, label: 'y = x + F(x)', size: 15 });
+
+</script>
+</body>
+</html>

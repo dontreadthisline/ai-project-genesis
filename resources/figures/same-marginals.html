@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>相同边缘、不同联合</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">两个分布的边缘都是 $\mathcal N(0,1)$，联合却是 $+$ 形与 $-$ 形——边缘对联合的信息为零（讲义反例 B）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: -3, x1: 3, y0: -3, y1: 3, labels: ['x', 'y'] });
+for (const sg of [1, -1]) {
+  // 两支: 均值 0, 协方差 [[1, .9*sg],[.9*sg, 1]] 各 90 点
+  const rot = sg > 0 ? Math.PI / 4 : -Math.PI / 4;
+  F.cloud(80, z => {
+    const x = z[0] * 0.9 + z[1] * 0.44, y = (z[0] * 0.9 + z[1] * 0.44) * sg; // 近似斜切
+    return [x, y];
+  }, { color: sg > 0 ? F.P.ink : F.P.green, r: 2.1 });
+  F.ellipse({ rx: 1.85, ry: 0.75, rot, color: sg > 0 ? F.P.ink : F.P.green, opacity: 0.6 });
+}
+F.text(0, -2.5, '整体协方差 ≈ 0，但结构全在相关性里', { size: 17, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

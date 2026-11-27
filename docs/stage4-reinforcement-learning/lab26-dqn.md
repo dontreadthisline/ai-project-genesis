@@ -32,9 +32,17 @@ $\theta^-$ 是目标网络参数（滞后副本），$\mathcal D$ 是 replay 分
 
 **Target Network**：目标 $y$ 若用在线 $\theta$，则 $\theta$ 更新 → 目标移动 → 追逐自己的尾巴（复合误差，贝尔曼残差被不断放大）。$\theta^-$ 每 $C$ 步或按 $\tau \theta + (1-\tau)\theta^-$ 软更新，把目标短期冻结。
 
+<iframe src="resources/figures/replay-target.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="两个解药各治一病"></iframe>
+
+<p align="center"><b>图 26.1</b>：解药与病灶的对应</p>
+
 ### 1.3 网络与训练细节
 
 输入 4 维状态，输出 4 个动作的 Q 值（单网多头，优于「状态入网 + 动作拼接」的玩具设计）。ε-greedy 探索，ε 从 1.0 线性衰减到 0.05。Huber 损失（$\mathcal L_\delta$：小误差二次、大误差线性）抑制离群 TD 误差的梯度爆炸。
+
+<iframe src="resources/figures/component-ablation.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="组件的阶梯"></iframe>
+
+<p align="center"><b>图 26.2</b>：逐步加组件的回报曲线</p>
 
 ## 2. 实现任务
 

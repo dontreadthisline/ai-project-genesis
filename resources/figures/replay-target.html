@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>两个解药各治一病</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">Replay 打破样本时间相关（i.i.d. 前提）、提高复用；Target Network 冻结自举目标——$y$ 不再追逐自己，复合误差被截断。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 40, y: 60, w: 130, h: 52, label: '样本相关', fill: 'rgba(200,60,60,0.08)' });
+F.box({ x: 40, y: 150, w: 130, h: 52, label: '自举目标移动', fill: 'rgba(200,60,60,0.08)' });
+F.box({ x: 320, y: 60, w: 150, h: 52, label: 'Replay Buffer', fill: 'rgba(58,74,168,0.08)' });
+F.box({ x: 320, y: 150, w: 150, h: 52, label: 'Target Network θ⁻', fill: 'rgba(58,74,168,0.08)' });
+F.arrow(170, 86, 320, 86, { label: '打散相关性', width: 2, labelDy: -12 });
+F.arrow(170, 176, 320, 176, { label: '冻结 y', width: 2, labelDy: -12 });
+F.text(360, 240, '致命三要素：函数近似 + 自举 + off-policy', { size: 16, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

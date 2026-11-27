@@ -41,9 +41,17 @@ $$
 
 故减 baseline 不改变期望梯度，只改变估计量分布。取 $b(s) \approx V^\pi(s)$ 时 $G_t - b$ 是信号的「去中心化」：回报恒正的问题（如每步 +1）不再把所有动作的概率一律推高——方差大幅下降。
 
+<iframe src="resources/figures/baseline-variance.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="baseline：无偏而降方差"></iframe>
+
+<p align="center"><b>图 28.1</b>：梯度估计的方差对比</p>
+
 ### 1.3 离散策略网络
 
 $\pi_\theta(a|s) = \mathrm{softmax}(f_\theta(s))$，$\nabla_\theta \log \pi$ 即 softmax 交叉熵对 logits 的梯度减去动作独热（Lab 06 §1.2 同款结构）。
+
+<iframe src="resources/figures/entropy-to-deterministic.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="策略从随机到确定"></iframe>
+
+<p align="center"><b>图 28.2</b>：策略熵的训练轨迹</p>
 
 ## 2. 实现任务
 

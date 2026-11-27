@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>统一插值视角</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">$x_t = a(t) x_1 + b(t) x_0$：DDPM 的方差保持调度与 FM 的直线路径是同族——目标只差与 $(t, x_t)$ 相关的确定性重缩放。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 1, y0: 0, y1: 1.05, labels: ['t', '系数'] });
+F.curve(t => t, { t0: 0, t1: 1, color: F.P.ink, width: 2.3, label: 'FM: a(t)=t', labelAt: 0.18 });
+F.curve(t => 1 - t, { t0: 0, t1: 1, color: F.P.green, width: 1.8, label: 'FM: b(t)=1−t', labelAt: 0.5 });
+F.curve(t => Math.sqrt(1 - Math.exp(-3 * t * t)), { t0: 0, t1: 1, color: F.P.dim, width: 1.8, label: 'DDPM: √ᾱ(t)', labelAt: 0.55 });
+F.curve(t => Math.sqrt(Math.exp(-3 * t * t)), { t0: 0, t1: 1, color: F.P.amber, width: 1.8, label: 'DDPM: √(1−ᾱ)', labelAt: 0.42 });
+
+</script>
+</body>
+</html>

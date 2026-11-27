@@ -51,6 +51,10 @@ $$
 
 二阶条件可验证确为最大值（对数似然在 $(\hat\mu, \hat\sigma^2)$ 处 Hessian 负定），这里略。
 
+<iframe src="resources/figures/likelihood-contour.html" style="width:100%;height:424px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="对数似然的地形"></iframe>
+
+<p align="center"><b>图 05.1</b>：logL(μ, σ²) 等值线与 MLE 峰</p>
+
 ### 1.3 $\hat\sigma^2$ 的偏差（完整推导）
 
 关键引理：$\mathbb E\big[ (x_i - \bar x)^2 \big] = \sigma^2 (1 - \tfrac1n)$。推导：记 $\bar x = \mu + \bar\varepsilon$，$\varepsilon_i = x_i - \mu$ i.i.d. 均值 0 方差 $\sigma^2$，则 $x_i - \bar x = \varepsilon_i - \bar\varepsilon$，且
@@ -66,6 +70,10 @@ $$
 $$
 
 MLE 系统性低估方差，根源是「先用数据估了 $\bar x$ 再估方差」，残差平方和比围绕真均值的偏小。无偏修正即除以 $n - 1$（Bessel 修正）。$n$ 大时两者差异可忽略，小样本时显著。
+
+<iframe src="resources/figures/bias.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="σ̂² 的偏差与修正"></iframe>
+
+<p align="center"><b>图 05.2</b>：1/n 有偏 vs 1/(n−1) 无偏</p>
 
 ### 1.4 抽样分布与 Fisher 信息
 

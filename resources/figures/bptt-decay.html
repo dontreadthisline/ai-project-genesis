@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>BPTT 的指数衰减</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">$\partial L/\partial h_0 = \prod_t W_h^T \mathrm{diag}(1-h_t^2)$：谱半径 $\rho < 1$ 时按 $\rho^T$ 消失——50 步后只剩约 $10^{-10}$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 1, x1: 50, y0: -22, y1: 0, labels: ['T', 'log ||∂L/∂h₀||'] });
+for (const rho of [0.5, 0.85]) {
+  const k = Math.log(rho);
+  F.curve(t => 0.1 + k * t, { t0: 1, t1: 50, color: rho < 0.6 ? F.P.dim : F.P.ink, width: 2.1,
+                              label: 'ρ = ' + rho, labelAt: 7 });
+}
+F.text(24, -13, 'tanh 饱和进一步加速衰减', { size: 16, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

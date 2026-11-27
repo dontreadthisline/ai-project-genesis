@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>对数似然的地形</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="360" viewBox="0 0 720 360"></svg>
+<div class="caption">固定 30 个样本（真值 $\mu = 3, \sigma^2 = 4$），$\ell(\mu, \sigma^2)$ 的等值线是同心椭圆族，峰值即 MLE 闭式解 $\bar x$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 2.3, x1: 3.7, y0: 1.6, y1: 6.4, labels: ['μ', 'σ²'] });
+const lvls = [{ r: 1, op: 0.75 }, { r: 2, op: 0.5 }, { r: 3.2, op: 0.32 }];
+for (const l of lvls)
+  F.ellipse({ cx: 3, cy: 4, rx: 0.13 * l.r, ry: 0.42 * l.r, opacity: l.op, width: 1.6 });
+F.text(3.02, 4.1, 'μ̂ = x̄', { size: 17, color: F.P.deep, anchor: 'start' });
+// 真值标记
+F.node(0, 0, {}); // noop
+F.text(2.52, 5.6, '真值 (3, 4)', { size: 15, color: F.P.dim, anchor: 'start' });
+F.ellipse({ cx: 2.62, cy: 5.55, rx: 0.06, ry: 0.06, color: F.P.amber, width: 1.5 });
+
+</script>
+</body>
+</html>

@@ -34,6 +34,10 @@ $$
 
 逐样本取 min 的含义：$A > 0$（好动作）时上限 $1+\epsilon$——好动作概率提得过高就不再奖励；$A < 0$ 时下限 $1-\epsilon$——坏动作压得过低就不再受益。**只惩罚「越界后还继续同向移动」**，下界保证目标函数是真实代理目标的悲观下界（TRPO 信任域的一阶近似）。
 
+<iframe src="resources/figures/clip-curve.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Clipped 目标的分段语义"></iframe>
+
+<p align="center"><b>图 30.1</b>：A>0 与 A<0 两支的包络</p>
+
 ### 1.3 GAE（推导骨架）
 
 n-step 优势 $\hat A^{(n)} = \sum_{l=0}^{n-1} \gamma^l r_{t+l+1} + \gamma^n V(s_{t+n}) - V(s_t)$，即 TD 误差的加权和：$\hat A^{(n)} = \sum_{l=0}^{n-1} (\gamma\lambda)^l$ 型组合。GAE 定义为各 n-step 的指数加权：
@@ -51,6 +55,10 @@ $$
 $$
 
 值损失、熵奖励（保持探索，防过早坍缩）、KL 项（软约束，可做早停：$\mathrm{KL} > 1.5 \times \mathrm{KL}_{target}$ 跳过该批更新）。
+
+<iframe src="resources/figures/kl-earlystop.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="信任域的守门员"></iframe>
+
+<p align="center"><b>图 30.2</b>：KL 随 epoch 的膨胀与熔断</p>
 
 ## 2. 实现任务
 

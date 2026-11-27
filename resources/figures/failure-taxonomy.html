@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>失败分类树</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">截断型（循环/无进展）与终止型（答错）的分野：协议型失败修 SFT、能力型失败交给 RL、空转型靠成本惩罚——训练前后按此对照。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.box({ x: 280, y: 24, w: 140, h: 40, label: '失败', fill: 'rgba(200,60,60,0.08)' });
+const kids = [
+  ['协议型（大量 INVALID）', '修 SFT 数据', 20],
+  ['循环型（同动作重复）', '成本惩罚 / 上下文困惑', 130],
+  ['无进展（合法但空转）', '规划缺失 → RL', 250],
+  ['答案错、工具链对', '算术/检索能力 → RL', 370],
+];
+for (const [tag, fix, x] of kids) {
+  F.box({ x, y: 120, w: 190, h: 40, label: tag, size: 12, fill: 'rgba(58,74,168,0.06)' });
+  F.box({ x, y: 200, w: 190, h: 40, label: fix, size: 12, fill: 'rgba(26,127,55,0.06)', color: F.P.green });
+  F.arrow(340, 64, x + 95, 118, { width: 1.2 });
+}
+
+</script>
+</body>
+</html>

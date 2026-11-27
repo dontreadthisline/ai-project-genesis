@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>梯度噪声随 batch 的缩放</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+<div class="caption">batch 梯度方差 $\propto 1/b$（斜率 $-1$）、信噪比 $\propto \sqrt{b}$（斜率 $+1/2$）——Lab 03 的 Monte Carlo 结构在优化中的重现。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 4, y0: -2, y1: 1, labels: ['log b', 'log 量'] });
+F.curve(t => -t, { t0: 0.1, t1: 3.9, color: F.P.ink, width: 2.2, label: 'log Var（−1）', labelAt: 1.15 });
+F.curve(t => 0.5 * t - 1.7, { t0: 0.1, t1: 3.9, color: F.P.amber, width: 2.2, label: 'log SNR（+1/2）', labelAt: 1.6 });
+for (let i = 0; i < 10; i++) {
+  const t = 0.2 + F.rnd() * 3.5;
+  F.text(t, -t + (F.rnd() - 0.5) * 0.3, '·', { size: 20, color: F.P.ink });
+}
+
+</script>
+</body>
+</html>

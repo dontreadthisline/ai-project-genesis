@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>像素打乱：先验的证据</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">固定置换 $\Pi$ 打乱像素：MLP 可重参数化吸收（假设空间不变），CNN 的局部性先验彻底失效——同一数据、两种命运。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 13, y0: 0, y1: 5.8, labels: ['', ''], pad: [16, 16, 16, 16], bare: true });
+F.heat([[0.1,0.4,0.9,0.8],[0.3,0.8,1.0,0.5],[0.9,0.6,0.7,0.2],[0.2,0.5,0.3,0.1]], { x: 0.3, y: 0.2, cw: 1.4, ch: 1.4 });
+F.heat([[0.9,0.2,0.3,0.1],[0.5,1.0,0.7,0.4],[0.1,0.8,0.2,0.9],[0.8,0.6,0.4,0.3]], { x: 7.4, y: 0.2, cw: 1.4, ch: 1.4 });
+F.text(140, 288, '原图', { size: 18, color: F.P.deep, anchor: 'middle' });
+F.text(580, 288, '同一组像素随机排列', { size: 18, color: F.P.deep, anchor: 'middle' });
+F.arrow(300, 138, 440, 138, { label: 'Π', width: 2.2, labelDy: -12 });
+
+</script>
+</body>
+</html>

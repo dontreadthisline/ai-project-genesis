@@ -26,6 +26,14 @@ $$
 
 DDPM 取 $a = \sqrt{\bar\alpha_t}, b = \sqrt{1-\bar\alpha_t}$（方差保持调度），FM 取 $a = t, b = 1-t$（线性调度）。目标间的换算：给定网络输出任一种参数化，另一个由 $x_1 = \frac{x_t - b(t)x_0}{a(t)}$ 反解。理论上仅差一个与 $(x_t, t)$ 相关的确定性重缩放。
 
+<iframe src="resources/figures/unified-path.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="统一插值视角"></iframe>
+
+<p align="center"><b>图 22.1</b>：两种调度下的 a(t), b(t)</p>
+
+<iframe src="resources/figures/nfe-frontier.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="少步区间的分野"></iframe>
+
+<p align="center"><b>图 22.2</b>：质量-NFE 双曲线</p>
+
 ### 1.2 采样与步数
 
 DDPM 反向是马尔可夫链（祖先采样，每步加噪），其确定性版本 DDIM 对应 FM 的概率流 ODE 欧拉积分——同为 ODE 积分器。步数瓶颈来自 ODE 轨迹弯曲度：训练好的 FM 直线路径边际场接近直（尤其在 reflow 后），少步即可；DDPM 方差保持调度在高噪声端的场变化更剧烈。

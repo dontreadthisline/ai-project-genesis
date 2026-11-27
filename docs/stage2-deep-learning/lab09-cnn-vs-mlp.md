@@ -28,6 +28,10 @@ $$
 
 多通道：输入 $C_{in}$ 通道时每个 kernel 是 $K \times K \times C_{in}$ 张量，$C_{out}$ 个 kernel 输出 $C_{out}$ 通道。参数量 $C_{out} \cdot K^2 \cdot C_{in} + C_{out}$，与输入空间尺寸无关。
 
+<iframe src="resources/figures/conv-window.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="卷积：局部窗口与参数共享"></iframe>
+
+<p align="center"><b>图 09.1</b>：kernel 滑动（同一组权重）</p>
+
 ### 1.2 平移等变性（证明）
 
 设平移算子 $\tau$，卷积算子 $\mathcal K$。则 $\mathcal K(\tau x) = \tau(\mathcal K x)$：把 $(\tau x)(i,j) = x(i-1, j)$ 代入定义即得——求和窗口整体平移，权重的相对位置不变。卷积与平移可交换，故「特征出现在哪」不影响「是什么特征被检出」。全连接层不具备此性质：每个输入位置对应独立的权重列，平移后激活完全改变。
@@ -43,6 +47,10 @@ RF_L = 1 + L(K-1)
 $$
 
 归纳法：$RF_1 = K$；每加一层，感受野扩大 $K-1$。两层 $3\times3$（$RF=5$，参数 $18C^2$）与一层 $5\times5$（$RF=5$，参数 $25C^2$）等感受野，但前者更深、非线性更多、参数更少。
+
+<iframe src="resources/figures/receptive-field.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="感受野的线性增长"></iframe>
+
+<p align="center"><b>图 09.2</b>：RF = 1 + 2L</p>
 
 ### 1.4 参数量对照
 

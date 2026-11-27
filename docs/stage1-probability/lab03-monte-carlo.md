@@ -51,6 +51,10 @@ $$
 \hat\sigma_f^2 = \frac{1}{n-1}\sum_{i=1}^n \left( f(X_i) - \hat\mu_n \right)^2, \qquad \hat{\mathrm{se}} = \hat\sigma_f / \sqrt n
 $$
 
+<iframe src="resources/figures/convergence.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Monte Carlo 收敛速率"></iframe>
+
+<p align="center"><b>图 03.1</b>：MC 误差 ∝ 1/√n（log-log）</p>
+
 ### 1.3 中心极限定理
 
 $$
@@ -68,6 +72,10 @@ $$
 $$
 
 若 $p_A = 0.001$、想要 10% 相对误差，需要 $n \ge (1-p_A)/(p_A \cdot 0.1^2) \approx 10^5$：比事件本身罕见一千倍的样本量才能换来一个还不错的估计。稀有事件是朴素 Monte Carlo 的死穴（重要性采样的动机，本课在 RL 阶段再展开）。
+
+<iframe src="resources/figures/clt.html" style="width:100%;height:394px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="估计量自身的分布（CLT）"></iframe>
+
+<p align="center"><b>图 03.2</b>：估计量的抽样分布 → 正态</p>
 
 ### 1.5 二维均匀采样估计 π
 

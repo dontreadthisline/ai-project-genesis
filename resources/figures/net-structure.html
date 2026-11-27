@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>MLP：全连接的层级结构</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+<div class="caption">全连接：每对相邻神经元都有权重。示意 $5 \to 4 \to 3 \to 2$（实作 $784 \to 256 \to 128 \to 10$），参数量 $\sum d_l d_{l+1}$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+const L = [5, 4, 3, 2], X = [110, 300, 490, 640];
+const ys = L.map((n, i) => F.layer({ x: X[i], y: 150, n, spread: 52, label: i ? '' : '输入' }));
+for (let i = 0; i < 3; i++) F.links(ys[i], ys[i + 1], X[i] + 8, X[i + 1] - 8, { opacity: 0.22 });
+F.text(300, 278, '隐藏层（ReLU）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.text(640, 278, '输出', { size: 16, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>

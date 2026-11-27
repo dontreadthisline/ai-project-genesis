@@ -37,10 +37,18 @@ token 级目标与 KL 项同 Lab 41 §1.1，$\rho_{t,j}$ 逐动作段 token 计�
 
 rollout 必须用当前（或上一轮）策略采样；轨迹数据用后即弃（off-policy 偏差在多步下被复合放大）。批量 rollout 的吞吐决定训练速度：环境步（工具执行）与模型步（解码）交替，串行慢——并行 worker（独立 env + 批量解码）是必要的工程结构。
 
+<iframe src="resources/figures/seven-steps.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="训练闭环的七步"></iframe>
+
+<p align="center"><b>图 45.1</b>：on-policy 七步环</p>
+
 ### 1.4 训练-评估协议
 
 - 指标：真实成功率（不含 process 奖励）、动作合法率、平均步数、无效动作率、KL to ref、截断率——训练前后按 Lab 43 分类树逐项对照；
 - 早停与回滚：成功率不升或 KL 爆炸时回滚 checkpoint（Lab 44 的 hack 监控持续在线）。
+
+<iframe src="resources/figures/before-after.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="训练改变的是什么"></iframe>
+
+<p align="center"><b>图 45.2</b>：训练前后指标对照</p>
 
 ## 2. 实现任务
 

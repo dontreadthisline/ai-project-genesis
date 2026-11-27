@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>DDPG → TD3 → SAC 的阶梯</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">DDPG（噪声探索 + 单 Q，失败 seed 常见）→ TD3（双 Q 取 min + 延迟更新）→ SAC（熵内建 + 随机策略）：多 seed 回归带一路收窄。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 100, y0: -200, y1: -20, labels: ['step', 'Pendulum 回报'] });
+F.curve(t => -170 + 60 / (1 + Math.exp(-0.07 * (t - 55))) + 40 * Math.sin(t * 0.4) * Math.exp(-0.01 * t), { t0: 0, t1: 100, color: 'rgba(150,60,60,0.7)', width: 1.7, label: 'DDPG', labelAt: 12 });
+F.curve(t => -160 + 80 / (1 + Math.exp(-0.08 * (t - 40))) + 18 * Math.sin(t * 0.3), { t0: 0, t1: 100, color: F.P.dim, width: 1.9, label: 'TD3', labelAt: 8 });
+F.curve(t => -150 + 120 / (1 + Math.exp(-0.09 * (t - 30))), { t0: 0, t1: 100, color: F.P.ink, width: 2.3, label: 'SAC', labelAt: 62 });
+
+</script>
+</body>
+</html>

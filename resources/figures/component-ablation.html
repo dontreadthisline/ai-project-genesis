@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>组件的阶梯</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">裸网络剧烈震荡甚至坍塌；+replay 稳一半；+target 稳定收敛到 300+——E1 消融的预期形态（CartPole 满分 500）。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+F.axis({ x0: 0, x1: 200, y0: 0, y1: 500, labels: ['step / 10', '回报'] });
+F.curve(t => 40 + 30 * Math.sin(t * 0.8) * Math.exp(-0.004 * t) + 20 * (F.rnd() - 0.5) + 100 * Math.exp(-0.06 * t), { t0: 0, t1: 200, color: 'rgba(150,60,60,0.8)', width: 1.6, label: '裸网络', labelAt: 60 });
+F.curve(t => 30 + 180 / (1 + Math.exp(-0.05 * (t - 70))) + 25 * Math.sin(t * 0.5), { t0: 0, t1: 200, color: F.P.dim, width: 1.8, label: '+replay', labelAt: 40 });
+F.curve(t => 20 + 460 / (1 + Math.exp(-0.07 * (t - 60))), { t0: 0, t1: 200, color: F.P.ink, width: 2.3, label: '全量', labelAt: 110 });
+
+</script>
+</body>
+</html>

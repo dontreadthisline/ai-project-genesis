@@ -24,6 +24,10 @@ $$
 
 偏好数据只要求「相对好」，BT 把相对判断映射到标量差——reward model 的训练目标（Lab 40）与此相同。
 
+<iframe src="resources/figures/bt-sigmoid.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="Bradley-Terry：偏好 = 奖励差的 sigmoid"></iframe>
+
+<p align="center"><b>图 39.1</b>：σ(rw − rl) 与平局点</p>
+
 ### 1.2 从 RLHF 到 DPO（推导骨架）
 
 RLHF 的 KL 约束优化问题有闭式解（对每 prompt 独立）：
@@ -57,6 +61,10 @@ $$
 $$
 
 隐式奖励差已正确时梯度趋零；否则按错误概率加权提高 $y_w$、压低 $y_l$ 的对数概率（按长度归一）。$\beta$ 小 → 约束弱，策略可大幅偏离 ref（过拟合偏好噪声）；$\beta$ 大 → 几乎不动。
+
+<iframe src="resources/figures/implicit-reward-shift.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="DPO 的隐式奖励搬家"></iframe>
+
+<p align="center"><b>图 39.2</b>：rw/rl 分布的训练前后</p>
 
 ### 1.4 隐式奖励的 KL 视角
 

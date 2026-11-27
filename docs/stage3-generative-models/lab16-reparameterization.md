@@ -34,9 +34,17 @@ $$
 
 梯度穿过 $f$ 的内部——要求 $f$ 可微且 $q_\phi$ 可重参数化。
 
+<iframe src="resources/figures/two-gradients.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="两条梯度路径"></iframe>
+
+<p align="center"><b>图 16.1</b>：pathwise vs score function</p>
+
 ### 1.2 方差对比的直觉
 
 Score function 的估计量 $f(z)\nabla\log q$ 把 $f$ 的值当作随机乘子：$f$ 的绝对幅度直接进入方差（baseline 技术是 Lab 28 的主题，缓解但不消除）。Pathwise 只用 $\nabla f$ 的局部信息，信号通常小一两个数量级。具体差距取决于 $f$：本实验用数值回答。
+
+<iframe src="resources/figures/variance-ratio.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="两种估计的方差差"></iframe>
+
+<p align="center"><b>图 16.2</b>：估计量方差 vs f 的幅度</p>
 
 ### 1.3 对照用例的解析真值
 

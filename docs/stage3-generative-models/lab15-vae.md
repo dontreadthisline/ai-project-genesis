@@ -36,6 +36,10 @@ $$
 
 差值恰是 $\log p_\theta(x) - \mathrm{ELBO} = D_{\mathrm{KL}}(q_\phi(z|x) \| p_\theta(z|x))$：近似后验越接近真后验，界越紧。
 
+<iframe src="resources/figures/vae-latent.html" style="width:100%;height:404px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="VAE 的二维潜空间"></iframe>
+
+<p align="center"><b>图 15.1</b>：潜空间簇 vs 标准正态先验</p>
+
 ### 1.3 两项的闭式形式
 
 KL 项（Lab 04 §1.5 高斯对高斯，先验标准正态）：
@@ -45,6 +49,10 @@ D_{\mathrm{KL}} = \tfrac12 \sum_{j=1}^{d}\left( \mu_j^2 + \sigma_j^2 - 1 - \log 
 $$
 
 重构项：二值 MNIST 用 Bernoulli 解码 $\log p(x|z) = \sum x\log\hat x + (1-x)\log(1-\hat x)$；或高斯解码退化为 MSE。重构项期望用单样本估计（Lab 03）。
+
+<iframe src="resources/figures/elbo-tradeoff.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="重构与 KL 的拉锯"></iframe>
+
+<p align="center"><b>图 15.2</b>：两项的此消彼长</p>
 
 ### 1.4 重参数化与 $\beta$
 

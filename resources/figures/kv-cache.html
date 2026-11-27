@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>KV Cache：省掉重复劳动</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+<div class="caption">因果注意力下位置 $t$ 只看 $\le t$：历史 K/V 不变，缓存后每步只算新 token 的 $q, k, v$——$O(T^2 d) \to O(Td)$。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+for (const [x0, tag, col] of [[60, '无 cache', F.P.dim], [400, '有 cache', F.P.ink]]) {
+  F.text(x0 + 130, 40, tag, { size: 18, color: col, anchor: 'middle' });
+  for (let i = 0; i < 5; i++) {
+    F.box({ x: x0 + i * 52, y: 70, w: 44, h: 40, label: i < 4 ? 'k' : 'k', fill: i === 4 ? 'rgba(191,135,0,0.25)' : 'rgba(58,74,168,0.12)', size: 13 });
+    F.box({ x: x0 + i * 52, y: 120, w: 44, h: 40, label: 'v', fill: i === 4 ? 'rgba(191,135,0,0.25)' : 'rgba(58,74,168,0.12)', size: 13 });
+  }
+  if (tag === '无 cache') {
+    for (let i = 0; i < 4; i++) { F.box({ x: x0 + i * 52, y: 70, w: 44, h: 40, fill: 'rgba(200,60,60,0.2)', label: '×', color: 'rgba(150,60,60,0.9)', size: 13 }); }
+    F.text(x0 + 104, 190, '每步全部重算（琥珀+红叉）', { size: 14, color: F.P.dim, anchor: 'middle' });
+  } else {
+    F.text(x0 + 130, 190, '只算新 token（琥珀）', { size: 14, color: F.P.dim, anchor: 'middle' });
+  }
+}
+F.text(360, 240, '延迟: 线性恶化 → 近乎平坦（512 长度差一个量级）', { size: 16, color: F.P.deep, anchor: 'middle' });
+
+</script>
+</body>
+</html>

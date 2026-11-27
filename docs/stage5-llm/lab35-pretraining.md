@@ -23,6 +23,10 @@ $$
 
 PPL = 「模型在每个位置上等效的均匀选择数」：PPL $= 10$ 意味着与「从 10 个等概率候选中选对」同水平的不确定性（Lab 04 的 $H(P, Q)$ 视角：$e^{H(P,Q)}$ 是交叉熵的指数）。
 
+<iframe src="resources/figures/train-val-divergence.html" style="width:100%;height:384px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="过拟合的分歧点"></iframe>
+
+<p align="center"><b>图 35.1</b>：train/val 双曲线</p>
+
 ### 1.2 学习率调度与梯度累积
 
 Warmup + cosine（Lab 07 §1.4）。梯度累积：分 micro-batch 前向反传，梯度累加后一次更新。数学等价性：损失为各 micro-batch 均值的加权平均（权重 = 样本数比），梯度同。等效 batch = micro × accum，绕开内存限制。
@@ -30,6 +34,10 @@ Warmup + cosine（Lab 07 §1.4）。梯度累积：分 micro-batch 前向反传�
 ### 1.3 规模的三方约束
 
 固定算力下：$d$（宽度）↑ → 容量↑ 但易过拟合（数据不足时）；block_size ↑ → 长程依赖可学但有效样本数↓（同量文本切出的窗口变少）；数据量决定前两者的上限。TinyStories 的短文本特性使 block_size 128 已接近饱和——这本身是一个实验发现。
+
+<iframe src="resources/figures/ppl-scale.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="困惑度与规模"></iframe>
+
+<p align="center"><b>图 35.2</b>：PPL vs d</p>
 
 ### 1.4 检查点与评估协议
 

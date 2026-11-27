@@ -24,6 +24,10 @@ $$
 
 因果掩码：$M_{ij} = 0\ (j \le i)$，$-\infty\ (j > i)$，softmax 后未来位置权重严格为 0——自回归分解 $p(x_1,\dots,x_T) = \prod_t p(x_t \mid x_{<t})$ 的实现。
 
+<iframe src="resources/figures/causal-mask.html" style="width:100%;height:374px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="因果掩码：时间箭头"></iframe>
+
+<p align="center"><b>图 14.1</b>：下三角注意力掩码</p>
+
 ### 1.2 多头注意力
 
 $$
@@ -32,6 +36,10 @@ $$
 $$
 
 单头是秩 1 的软查找倾向（一个注意力分布只能强调一种模式）；多头允许在不同子空间并行关注不同关系（句法/位置/复制），代价是每头维度 $d/h$。
+
+<iframe src="resources/figures/mha-flow.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="多头注意力的数据流"></iframe>
+
+<p align="center"><b>图 14.2</b>：Q/K/V → heads → concat → W^O</p>
 
 ### 1.3 位置编码
 

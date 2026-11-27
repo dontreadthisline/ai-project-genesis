@@ -30,6 +30,10 @@ stage: 5
 
 关键性质：**合并是确定性序列**——编码时必须按训练时的优先级顺序应用合并，乱序会得到不同切分。
 
+<iframe src="resources/figures/bpe-merge.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="BPE：从字符到子词"></iframe>
+
+<p align="center"><b>图 32.1</b>：低, 最低, 低频 → 合并成块</p>
+
 ### 1.3 压缩率
 
 $$
@@ -37,6 +41,10 @@ $$
 $$
 
 随合并数增加单调不减。理论极限：语料的经验熵 $H$（Lab 04）给出平均码长下界（token 的 $\log_2 |V|$ 比特/token），BPE 是贪心近似而非最优编码。
+
+<iframe src="resources/figures/compression-curve.html" style="width:100%;height:364px;border:1px solid rgba(58,74,168,.18);border-radius:8px" title="词表大小的边际收益"></iframe>
+
+<p align="center"><b>图 32.2</b>：压缩率 vs |V|</p>
 
 ## 2. 实现任务
 

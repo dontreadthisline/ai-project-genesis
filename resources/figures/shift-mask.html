@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>自回归的输入-目标对</title>
+<style>
+  @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 500;
+    src: url(../fonts/caveat-500.woff2) format('woff2'); }
+  body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
+  .fig { display: block; margin: 0 auto; }
+  .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
+</style>
+<script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
+</head>
+<body>
+<svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+<div class="caption">target = input 左移一位：位置 $t$ 的预测头只用 $\le t$ 的输入（因果掩码），一条序列同时是 $T$ 个训练样本；pad 位置 label = $-100$ 不计损。</div>
+<script>
+
+const F = Fig(document.getElementById('fig'));
+const toks = ['今', '天', '天', '气', '很', '好'];
+for (let i = 0; i < 6; i++) {
+  F.box({ x: 60 + i * 100, y: 60, w: 88, h: 44, label: toks[i], fill: 'rgba(58,74,168,0.08)' });
+  if (i < 5) F.box({ x: 110 + i * 100, y: 150, w: 88, h: 44, label: toks[i + 1], fill: 'rgba(26,127,55,0.08)' });
+  else F.box({ x: 610, y: 150, w: 88, h: 44, label: 'pad', fill: 'rgba(0,0,0,0.05)', color: F.P.dim });
+}
+F.text(40, 82, '输入', { size: 17, color: F.P.ink, anchor: 'end' });
+F.text(40, 172, '目标', { size: 17, color: F.P.green, anchor: 'end' });
+for (let i = 0; i < 5; i++) F.arrow(104 + i * 100, 104, 154 + i * 100, 150, { width: 1.1, color: F.P.dim });
+F.text(360, 240, '位置 t 的目标 = 位置 t+1 的输入（左移一位）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.text(654, 215, 'label = −100', { size: 13, color: F.P.dim, anchor: 'middle' });
+
+</script>
+</body>
+</html>
