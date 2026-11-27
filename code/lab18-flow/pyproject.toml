@@ -1,0 +1,7 @@
+[project]
+name = "lab18-flow"
+version = "0.1.0"
+description = "实验 18: 见讲义 docs/stage3-generative-models/lab18-flow.md"
+requires-python = ">=3.11"
+dependencies = [
+]

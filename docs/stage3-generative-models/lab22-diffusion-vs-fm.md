@@ -44,21 +44,16 @@ DDPM 反向是马尔可夫链（祖先采样，每步加噪），其确定性版
 
 共用 `UNetLite`（时间嵌入条件化同时服务两者）。实现统一训练循环，`method ∈ {ddpm, fm}` 切换损失与采样。
 
-```python
-class DDPM:  # Lab 19 精简版
-class FM:    # Lab 20/21 精简版
-def train_compare(methods, steps_budget): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `DDPM` — Lab 19 精简版
+- `FM` — Lab 20/21 精简版
+- `train_compare` — train_compare
 
-```python
-# T1: 目标换算：同一 (x0, x1, t)，DDPM 的 eps 与 FM 的速度互相线性表出
-#     （eps = -(x1-x0 型换算按调度系数手算对照）
-# T2: 两方法同预算下 loss 曲线量级可对比（无纲化：都除以维度）
-# T3: 采样器对照：DDIM 1 步 vs FM 1 步（都退化为「一次大跳」），输出均模糊
-# T4: NFE 对齐时两方法的采样时间近似（同一网络同一积分器）
-```
+- 接口骨架：[`../../code/lab22-diffusion-vs-fm/skeleton.py`](../../code/lab22-diffusion-vs-fm/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab22-diffusion-vs-fm/selftest.py`](../../code/lab22-diffusion-vs-fm/selftest.py)
+- 实验入口：`cd code/lab22-diffusion-vs-fm && uv sync && uv run run_lab22.py`
+
 
 ## 3. 对照实验
 

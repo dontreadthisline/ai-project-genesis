@@ -1,0 +1,10 @@
+[project]
+name = "lab38-lora"
+version = "0.1.0"
+description = "实验 38: 见讲义 docs/stage5-llm/lab38-lora.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

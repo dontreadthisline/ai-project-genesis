@@ -46,25 +46,19 @@ rollout 必须用当前（或上一轮）策略采样；轨迹数据用后即弃
 
 完整闭环七步（大纲 6.3）：
 
-```python
-def collect_group_rollouts(model, env, prompts, G, cfg): ...
-    # 1.prompt 采样 2.agent rollout 3.轨迹收集（含逐步 logprob）
-def compute_group_reward(trajs, reward_cfg): ...     # 4.奖励计算
-def compute_advantages(rewards): ...                 # 5.组归一化
-def grpo_update(model, ref_model, trajs, advs, cfg): ...  # 6.token 级更新
-def evaluate(model, env, tasks, n): ...              # 7.独立评估（真实成功率）
-def train_loop(cfg): ...   # 以上循环 + KL 监控 + hack 监控 + checkpoint
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `collect_group_rollouts` — 1.prompt 采样 2.agent rollout 3.轨迹收集（含逐步 logprob）
+- `compute_group_reward` — 4.奖励计算
+- `compute_advantages` — 5.组归一化
+- `grpo_update` — 6.token 级更新
+- `evaluate` — 7.独立评估（真实成功率）
+- `train_loop` — 以上循环 + KL 监控 + hack 监控 + checkpoint
 
-```python
-# T1: 轨迹 logprob 一致性：rollout 时记录的 logprob_old 与离线重算一致（1e-4）
-# T2: 观测段梯度隔离：损失对观测 token 位置的 logprob 无梯度（mask 正确）
-# T3: 更新前 ratio 全 1（重放同轨迹计算）
-# T4: 组退化：同 prompt 全部轨迹同奖励时，该组参数更新量为 0
-# T5: 评估独立性：evaluate 不接触任何奖励权重（真实判分专用）
-```
+- 接口骨架：[`../../code/lab45-agent-rl/skeleton.py`](../../code/lab45-agent-rl/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab45-agent-rl/selftest.py`](../../code/lab45-agent-rl/selftest.py)
+- 实验入口：`cd code/lab45-agent-rl && uv sync && uv run run_lab45.py`
+
 
 ## 3. 对照实验
 

@@ -32,23 +32,17 @@ Prefill（处理 prompt）：全部位置并行，compute-bound（大矩阵乘�
 
 ## 2. 实现任务
 
-```python
-def sample_token(logits, temperature, top_k, top_p): ...
-class KVCache:
-    def append(self, k, v): ...    # (L, B, T, d) 累积
-def generate_cached(model, prompt, max_new, cfg, cache): ...
-def generate_naive(model, prompt, max_new, cfg): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `sample_token` — sample_token
+- `KVCache` — (L, B, T, d) 累积
+- `generate_cached` — generate_cached
+- `generate_naive` — generate_naive
 
-```python
-# T1: 采样等价性：cached 与 naive 生成在 greedy（T=0）下逐 token 一致
-# # T2: 温度单调性：同一分布下采样熵随 T 单调增（MC 估计）
-# # T3: top-p 自适应性：尖分布（熵 0.5）保留的候选数 < 平分布（熵 3）的
-# # T4: 缓存正确性：手工前向一步的 K/V 与 cache 追加后一致
-# # T5: 数值一致：T=1、top_k=V 时采样分布 == 原分布（频率检验）
-```
+- 接口骨架：[`../../code/lab36-inference/skeleton.py`](../../code/lab36-inference/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab36-inference/selftest.py`](../../code/lab36-inference/selftest.py)
+- 实验入口：`cd code/lab36-inference && uv sync && uv run run_lab36.py`
+
 
 ## 3. 对照实验
 

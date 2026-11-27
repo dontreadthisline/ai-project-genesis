@@ -59,30 +59,24 @@ $$
 
 结构 $784 \to 256 \to 128 \to 10$，激活 ReLU，输出交叉熵。**用 MLX 实现**（`mx.array` 张量运算），但**不用框架自动微分**：手写 forward/backward，不调用 `mx.grad`。数值梯度检验用 `dtype=mx.float64`（MLX 的 fp64 在 CPU 流水线执行，精度满足 $10^{-6}$ 相对误差）。
 
-```python
-class Linear:
-    def __init__(self, fan_in, fan_out): ...   # He 初始化 W, 零初始化 b
-    def forward(self, x): ...                       # 缓存 x
-    def backward(self, grad_out): ...               # 返回 grad_in，累积 self.dW/db
+实现清单（签名与 TODO 见骨架源码）：
 
-class MLP:
-    def __init__(self, sizes): ...             # 逐层 Linear + ReLU
-    def forward(self, x): ...
-    def backward(self, grad): ...                   # 逆序 VJP
-    def params_grads(self): ...                     # [(W, b, dW, db), ...]
+- `Linear` — He 初始化 W, 零初始化 b
+- `MLP` — 逐层 Linear + ReLU
+- `softmax_cross_entropy` — 数值稳定：logits 减最大值。返回 (loss, dlogits)。dlogits 用 1.2 的闭式解。
 
-def softmax_cross_entropy(logits, y_onehot):
-    """数值稳定：logits 减最大值。返回 (loss, dlogits)。dlogits 用 1.2 的闭式解。"""
-```
+- 接口骨架：[`../../code/lab06-mlp-from-scratch/skeleton.py`](../../code/lab06-mlp-from-scratch/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab06-mlp-from-scratch/selftest.py`](../../code/lab06-mlp-from-scratch/selftest.py)
+- 实验入口：`cd code/lab06-mlp-from-scratch && uv sync && uv run run_lab06.py`
 
-自测：
+实现清单（签名与 TODO 见骨架源码）：
 
-```python
-# T1: softmax-CE 梯度与数值梯度一致（float64，rel err < 1e-6，随机 20 组）
-# T2: 全网络 backward 与数值梯度一致（逐参数抽样检查，rel err < 1e-6）
-# T3: He 初始化后各层激活方差在 [0.5, 2] 区间（随机 512 个样本过网络）
-# T4: softmax 数值稳定：logits = [1000, 1000.1, 999.9] 不产生 nan/inf
-```
+
+
+- 接口骨架：[`../../code/lab06-mlp-from-scratch/skeleton.py`](../../code/lab06-mlp-from-scratch/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab06-mlp-from-scratch/selftest.py`](../../code/lab06-mlp-from-scratch/selftest.py)
+- 实验入口：`cd code/lab06-mlp-from-scratch && uv sync && uv run run_lab06.py`
+
 
 ## 3. 对照实验
 
@@ -99,7 +93,7 @@ def softmax_cross_entropy(logits, y_onehot):
 - 图 2：E2 四条 loss 曲线：全零初始化完全不动（对称性无法打破），大方差高斯发散或震荡，He 正常下降。
 - 图 3：逐层梯度范数柱状图（反向第 1 层梯度最小但与首层同数量级）。
 
-## 5. 观测指标（metrics.json）
+## 5. 观测指标
 
 `final_test_acc`、`per_layer_grad_norm`、`per_layer_activation_var`、`E2_final_loss_by_init`。
 

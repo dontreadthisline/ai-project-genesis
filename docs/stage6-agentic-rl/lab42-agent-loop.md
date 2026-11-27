@@ -43,27 +43,15 @@ Agent 只见观测不见环境内部状态（如数据表全貌）：这是 POMD
 
 ## 2. 实现任务
 
-```python
-class ToolEnv:
-    def __init__(self, tasks): ...
-    def reset(self) -> str: ...               # 返回任务 prompt
-    def step(self, action_str) -> (obs, done, info): ...
-    def score(self, final_answer) -> float: ...  # 可验证判分
-def agent_loop(model, env, max_steps, sampler): ...
-    # 拼接 -> 解码动作段 -> env.step -> 拼 observation -> 循环
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-任务族（可自动生成 + 判分）：算术（calc 可全对）、查表问答（query）、两者组合的多步任务（先查数再算）。
+- `ToolEnv` — 返回任务 prompt
+- `agent_loop` — 拼接 -> 解码动作段 -> env.step -> 拼 observation -> 循环
 
-自测：
+- 接口骨架：[`../../code/lab42-agent-loop/skeleton.py`](../../code/lab42-agent-loop/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab42-agent-loop/selftest.py`](../../code/lab42-agent-loop/selftest.py)
+- 实验入口：`cd code/lab42-agent-loop && uv sync && uv run run_lab42.py`
 
-```python
-# T1: 工具边界：calc("__import__('os')") 返回错误串而非执行；py 超时返回 TIMEOUT
-# T2: 环境全响应：对 20 种任意乱码 action，env.step 均返回定义好的观测、不抛异常
-# T3: 终止语义：answer 后 done=True；max_steps 截断 done=True 且 info 标记 truncated
-# T4: 上下文一致性：同一交互序列两次拼接的 token 序列完全一致（确定性协议）
-# T5: 判分器：构造对/错/格式错答案，score ∈ {1, 0} 边界清晰
-```
 
 ## 3. 对照实验
 

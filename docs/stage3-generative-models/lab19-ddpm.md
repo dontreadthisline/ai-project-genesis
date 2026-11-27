@@ -80,24 +80,15 @@ $$
 
 </div>
 
-```python
-class Diffusion:
-    def betas_schedule(T): ...          # 线性或余弦
-    def q_sample(self, x0, t, eps): ... # 1.1 边缘采样
-    def loss(self, x0): ...        # 1.2 simple loss
-    def sample(self, n): ...       # 1.3 完整链
-class EpsNet: ...                        # 简化 UNet：conv + 时间嵌入（sinusoidal）
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `Diffusion` — 线性或余弦
+- `EpsNet` — 简化 UNet：conv + 时间嵌入（sinusoidal）
 
-```python
-# T1: 边缘统计：固定 x0，采样 q(x_t|x0) 1e4 次，均值 ≈ sqrt(abar_t)*x0、
-#     方差 ≈ 1-abar_t（容差 3%）
-# T2: t=T 时 abar_T ≈ 0（x_T 近似标准正态，与 x0 无关）
-# T3: 训练收敛后 loss < 0.1 量级（MNIST 小模型）
-# T4: 噪声预测 vs x0 预测等价性：eps_hat 换算 x0_hat = (x_t - sqrt(1-abar)*eps)/sqrt(abar)
-```
+- 接口骨架：[`../../code/lab19-ddpm/skeleton.py`](../../code/lab19-ddpm/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab19-ddpm/selftest.py`](../../code/lab19-ddpm/selftest.py)
+- 实验入口：`cd code/lab19-ddpm && uv sync && uv run run_lab19.py`
+
 
 ## 3. 对照实验
 

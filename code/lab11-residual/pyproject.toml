@@ -1,0 +1,7 @@
+[project]
+name = "lab11-residual"
+version = "0.1.0"
+description = "实验 11: 见讲义 docs/stage2-deep-learning/lab11-residual.md"
+requires-python = ">=3.11"
+dependencies = [
+]

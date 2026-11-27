@@ -36,18 +36,15 @@ $$
 
 ## 2. 实现任务
 
-```python
-def make_permutation( n=784): ...        # 固定置换，训练/测试共用
-def permute_dataset(X, perm): ...            # X (N, 28, 28) -> 打乱后 reshape 回
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `make_permutation` — 固定置换，训练/测试共用
+- `permute_dataset` — X (N, 28, 28) -> 打乱后 reshape 回
 
-```python
-# T1: 置换可逆：permute_dataset 的逆变换恢复原图（allclose）
-# T2: 打乱后像素值的边缘分布不变（每个像素的直方图整体重排）
-# T3: 打乱图像上 5x5 局部窗口的像素相关性大幅低于原图（相关系数对照）
-```
+- 接口骨架：[`../../code/lab10-inductive-bias/skeleton.py`](../../code/lab10-inductive-bias/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab10-inductive-bias/selftest.py`](../../code/lab10-inductive-bias/selftest.py)
+- 实验入口：`cd code/lab10-inductive-bias && uv sync && uv run run_lab10.py`
+
 
 ## 3. 对照实验
 

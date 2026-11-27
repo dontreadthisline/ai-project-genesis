@@ -20,6 +20,12 @@ if [ -d resources ]; then
   rm -rf _book/resources
   cp -r resources _book/resources
 fi
+# 实验源码进站（讲义链接 code/... 需在站点内可解析）
+if [ -d code ]; then
+  rm -rf _book/code
+  rsync -a --exclude '.venv' --exclude 'output' --exclude '__pycache__' \
+    --exclude '.DS_Store' --exclude 'uv.lock' --exclude '.python-version' code _book/
+fi
 
 python3 - <<'PY'
 from pathlib import Path
@@ -50,23 +56,24 @@ if grep -rE 'href="[^"]*\.md"' _book --include='*.html' | grep -q .; then
     exit 1
 fi
 
-# 校验 3：本地资源引用必须真实存在（防文件名错位导致的静默 404）
+# 校验 3：全部本地相对引用必须真实存在（site_libs / code / resources，防静默 404）
 python3 - <<'PY'
 import re, sys
 from pathlib import Path
 book = Path("_book")
 missing = set()
 for html in book.rglob("*.html"):
-    depth = len(html.relative_to(book).parts) - 1
-    for m in re.finditer(r'(?:src|href)="([^"#?]*site_libs/[^"#?]+)"', html.read_text(encoding="utf-8")):
+    for m in re.finditer(r'(?:src|href)="([^"#?]+)"', html.read_text(encoding="utf-8")):
         ref = m.group(1)
-        if ref.startswith(("http", "//")):
+        if ref.startswith(("http", "//", "mailto:", "data:")):
+            continue
+        if not ref.strip():
             continue
         target = (html.parent / ref).resolve()
         if not target.exists():
             missing.add(f"{html.relative_to(book)} -> {ref}")
 if missing:
-    print("ERROR: 本地资源引用 404:", file=sys.stderr)
+    print("ERROR: 本地引用 404:", file=sys.stderr)
     for m in sorted(missing):
         print(f"  {m}", file=sys.stderr)
     sys.exit(1)

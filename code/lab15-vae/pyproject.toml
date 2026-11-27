@@ -1,0 +1,7 @@
+[project]
+name = "lab15-vae"
+version = "0.1.0"
+description = "实验 15: 见讲义 docs/stage3-generative-models/lab15-vae.md"
+requires-python = ">=3.11"
+dependencies = [
+]

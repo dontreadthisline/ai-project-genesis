@@ -77,48 +77,14 @@ $$
 
 在 `estimators.py` 中：
 
-```python
-import mlx.core as mx
+实现清单（模块与接口见源码）：
 
-def mc_estimate(f, sampler, n: int):
-    """f: 向量化函数 mx.array -> mx.array；sampler: callable(n) -> mx.array。
-    返回 dict(est=float, se=float, n=int)。
-    要求 se 用 1/(n-1) 的样本方差公式手写（MX 无 cov/ddof 现成接口）。"""
-    xs = sampler(n)
-    fs = f(xs)
-    # TODO
-    ...
-```
+- `mc_estimate` — f: 向量化函数 mx.array -> mx.array；sampler: callable(n) -> mx.array。
 
-自测（解析解已知的对照用例）：
+- 模块源码：[`code/lab03-monte-carlo/`](../../code/lab03-monte-carlo/)
+- 自测断言（红灯标准）：`run_lab03.py` 的 `check_implementation()`
+- 实验入口：`cd code/lab03-monte-carlo && uv run run_lab03.py`
 
-```python
-import math
-import mlx.core as mx
-
-mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
-mx.random.seed(0)
-std_normal = lambda n: mx.random.normal((n,))
-
-# T1: E[X] = 0, E[X^2] = 1（n = 10^6，2 个标准误差内）
-r1 = mc_estimate(lambda z: z, std_normal, 10**6)
-assert abs(r1["est"] - 0.0) < 2 * r1["se"]
-r2 = mc_estimate(lambda z: z**2, std_normal, 10**6)
-assert abs(r2["est"] - 1.0) < 2 * r2["se"]
-
-# T3: E[|X|] = sqrt(2/pi)
-r3 = mc_estimate(lambda z: mx.abs(z), std_normal, 10**6)
-assert abs(r3["est"] - math.sqrt(2/math.pi)) < 2 * r3["se"]
-
-# T4: E[sin X] = 0（奇函数，对称分布）
-r4 = mc_estimate(lambda z: mx.sin(z), std_normal, 10**6)
-assert abs(r4["est"]) < 2 * r4["se"]
-
-# T5: pi/4，先验误差检查
-square = lambda n: mx.random.uniform(-1, 1, shape=(n, 2))
-r5 = mc_estimate(lambda P: (P**2).sum(axis=1) <= 1, square, 10**6)
-assert abs(r5["est"] - math.pi/4) < 5e-3
-```
 
 ## 3. 对照实验设计
 
@@ -136,19 +102,12 @@ assert abs(r5["est"] - math.pi/4) < 5e-3
 - 图 3（E3）：对数-对数图，$p_c$ vs 相对误差，叠加 $1/\sqrt{n p_c}$ 理论线。预期落在理论线附近：$c = 4$ 时 $p \approx 3.2\times 10^{-5}$，$n = 10^6$ 下期望命中仅约 32 次，相对误差约 18%；$c = 5$ 时期望命中约 0.29 次，多数重复实验中一个命中都没有，估计量为 0。
 - 图 4（E4）：$\pi$ 估计误差随 $n$ 收敛曲线 + $1/\sqrt n$ 参考线。
 
-## 5. 观测指标（metrics.json）
+## 5. 观测指标
 
-```json
-{
-  "E1_loglog_slope": ...,
-  "E2_per_function": {
-    "x":    {"emp_sd": ..., "theo_se": ..., "rel_err": ...},
-    "x2":   {...}, "ind_x_gt_3": {...}, "sin": {...}
-  },
-  "E3_rare_event": {"c=1": {"p_hat": ..., "rel_err": ...}, "c=2": {...}, "c=3": {...}, "c=4": {...}},
-  "T_all_passed": true
-}
-```
+以下指标在实验运行后写入 `output/metrics.json`（键名与 §3 对照实验表的因变量对应；写入逻辑见 `run_lab03.py`）：
+
+
+
 
 ## 6. 结果分析
 

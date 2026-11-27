@@ -1,0 +1,10 @@
+[project]
+name = "lab33-data-pipeline"
+version = "0.1.0"
+description = "实验 33: 见讲义 docs/stage5-llm/lab33-data-pipeline.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

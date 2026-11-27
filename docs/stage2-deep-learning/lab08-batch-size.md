@@ -52,21 +52,16 @@ $$
 
 ## 2. 实现任务
 
-```python
-def full_batch_grad(model, data): ...            # 全数据集梯度（参考真值）
-def batch_grad(model, data, idx): ...
-def grad_stats(model, data, sizes, n_rep):  # 返回各 batch size 的方差、SNR、cos
-    ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `full_batch_grad` — 全数据集梯度（参考真值）
+- `batch_grad` — 返回各 batch size 的方差、SNR、cos
+- `grad_stats` — 返回各 batch size 的方差、SNR、cos
 
-```python
-# T1: 无偏性：b=64 重复 200 次，各坐标均值的均值 ≈ g*（相对误差 < 5%）
-# T2: 方差缩放：var(b=1)/var(b=64) 在 [55, 75] 区间（理论 64，随机波动）
-# T3: SNR 随 b 增长：SNR(1024)/SNR(16) ∈ [6, 10]（理论 sqrt(64)=8）
-# T4: batch 内均匀无放回采样（不能重复索引）
-```
+- 接口骨架：[`../../code/lab08-batch-size/skeleton.py`](../../code/lab08-batch-size/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab08-batch-size/selftest.py`](../../code/lab08-batch-size/selftest.py)
+- 实验入口：`cd code/lab08-batch-size && uv sync && uv run run_lab08.py`
+
 
 ## 3. 对照实验
 

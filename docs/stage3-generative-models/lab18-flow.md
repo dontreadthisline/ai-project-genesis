@@ -55,21 +55,15 @@ $s, t$ 是任意网络（不需可逆）：逆 $x_2 = (h_2 - t(h_1)) \odot \exp(
 
 4-6 个耦合层（$s, t$ 为 2 层小 MLP），目标分布：两个高斯混合 $\tfrac12\mathcal N((-2,0), I) + \tfrac12\mathcal N((2,0), I)$。
 
-```python
-class AffineCoupling:        # 实现 forward / inverse / log_det
-class Flow:                  # 堆叠 coupling，交替 mask 两半
-    def sample(self, n): ...
-    def log_prob(self, x): ...   # 1.1 公式累加 -log|det|
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `AffineCoupling` — 实现 forward / inverse / log_det
+- `Flow` — 堆叠 coupling，交替 mask 两半
 
-```python
-# T1: 可逆性：random x, f^{-1}(f(x)) == x（rel err < 1e-5）
-# T2: log_det：单层耦合的解析值 exp(Σs) 与数值 Jacobian slogdet 一致（2x2 数值可行）
-# T3: 密度归一化：网格上数值积分 log_prob 的 exp ≈ 1（容差 2%）
-# T4: 目标分布解析对照：训练后模型在两峰附近密度高、在 (0,0) 附近密度低
-```
+- 接口骨架：[`../../code/lab18-flow/skeleton.py`](../../code/lab18-flow/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab18-flow/selftest.py`](../../code/lab18-flow/selftest.py)
+- 实验入口：`cd code/lab18-flow && uv sync && uv run run_lab18.py`
+
 
 ## 3. 对照实验
 

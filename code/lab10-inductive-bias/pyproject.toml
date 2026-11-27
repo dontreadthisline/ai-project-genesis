@@ -1,0 +1,7 @@
+[project]
+name = "lab10-inductive-bias"
+version = "0.1.0"
+description = "实验 10: 见讲义 docs/stage2-deep-learning/lab10-inductive-bias.md"
+requires-python = ">=3.11"
+dependencies = [
+]

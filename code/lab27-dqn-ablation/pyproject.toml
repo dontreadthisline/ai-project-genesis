@@ -1,0 +1,10 @@
+[project]
+name = "lab27-dqn-ablation"
+version = "0.1.0"
+description = "实验 27: 见讲义 docs/stage4-reinforcement-learning/lab27-dqn-ablation.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

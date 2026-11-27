@@ -1,0 +1,6 @@
+"""Lab 35 接口骨架。TODO 注释即实现要求，讲义见 docs 对应章节。"""
+
+def pretrain(model, loader, cfg): ...      # warmup+cosine、梯度累积、checkpoint
+def evaluate_ppl(model, val_loader): ...
+def generate_samples(model, prompts, cfg): ...
+

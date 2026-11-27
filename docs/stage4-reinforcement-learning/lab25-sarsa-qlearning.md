@@ -44,21 +44,16 @@ SARSA 的目标含实际执行的下一动作 $a_{t+1}$（含探索噪声），�
 
 Cliff Walking：4x12 网格，底行起点左端、目标右端、中间 10 格悬崖（坠落 r = -100 回起点），每步 r = -1。
 
-```python
-class CliffWalking:                    # 自制环境：reset/step
-def sarsa(env, episodes, alpha, gamma, eps_fn): ...
-def q_learning(env, episodes, alpha, gamma, eps_fn): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `CliffWalking` — 自制环境：reset/step
+- `sarsa` — sarsa
+- `q_learning` — q_learning
 
-```python
-# T1: 确定性检查：同种子同轨迹（FrozenLake 上 100 步逐位一致）
-# T2: TD 更新手算：给定 Q 表与一步转移，验证单次更新数值
-# T3: Q-Learning 在 Cliff Walking 学到最短路径（回报 ≈ -13），
-#     SARSA 学到安全路径（回报 ≈ -17 ~ -25 区间、不贴崖）
-# T4: ε=0（纯利用）+ 随机初始化：部分状态从未更新（探索失败的直接证据）
-```
+- 接口骨架：[`../../code/lab25-sarsa-qlearning/skeleton.py`](../../code/lab25-sarsa-qlearning/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab25-sarsa-qlearning/selftest.py`](../../code/lab25-sarsa-qlearning/selftest.py)
+- 实验入口：`cd code/lab25-sarsa-qlearning && uv sync && uv run run_lab25.py`
+
 
 ## 3. 对照实验
 

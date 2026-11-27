@@ -59,22 +59,17 @@ $T^*$ 同样是 $\gamma$-压缩。策略迭代 = 交替「求 $v^\pi$（内层�
 
 </div>
 
-```python
-def policy_evaluation(P, R, pi, gamma, eps=1e-8): ...
-def policy_improvement(P, R, v, gamma): ...
-def policy_iteration(P, R, gamma): ...
-def value_iteration(P, R, gamma, eps=1e-8): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `policy_evaluation` — policy_evaluation
+- `policy_improvement` — policy_improvement
+- `policy_iteration` — policy_iteration
+- `value_iteration` — value_iteration
 
-```python
-# T1: 随机策略的迭代求值 vs 线性方程组直接解（allclose 1e-6）
-# T2: 收敛速度：迭代误差比 ||v_{k+1}-v_k|| / ||v_k - v_{k-1}|| ≤ γ（slippery 下 ≈ γ）
-# T3: policy_iteration 与 value_iteration 的 v* 一致（allclose 1e-6）
-# T4: γ<1 时改进单调：每次改进后 v^{π'} ≥ v^π 逐状态成立
-# T5: 停机界：ε-停机后 ||v-v*||∞ < ε（与更精确解对照）
-```
+- 接口骨架：[`../../code/lab24-dynamic-programming/skeleton.py`](../../code/lab24-dynamic-programming/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab24-dynamic-programming/selftest.py`](../../code/lab24-dynamic-programming/selftest.py)
+- 实验入口：`cd code/lab24-dynamic-programming && uv sync && uv run run_lab24.py`
+
 
 ## 3. 对照实验
 

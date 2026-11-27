@@ -37,22 +37,16 @@ Warmup + cosine（Lab 07 §1.4）。梯度累积：分 micro-batch 前向反传�
 
 ## 2. 实现任务
 
-```python
-def pretrain(model, loader, cfg): ...      # warmup+cosine、梯度累积、checkpoint
-def evaluate_ppl(model, val_loader): ...
-def generate_samples(model, prompts, cfg): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-配置基线：$d=256$、$L=4$、heads 4、block 128、$|V|=4k$（Lab 32）、AdamW lr $3\times10^{-4}$、warmup 200、cosine 到 5k-20k 步。
+- `pretrain` — warmup+cosine、梯度累积、checkpoint
+- `evaluate_ppl` — evaluate_ppl
+- `generate_samples` — generate_samples
 
-自测：
+- 接口骨架：[`../../code/lab35-pretraining/skeleton.py`](../../code/lab35-pretraining/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab35-pretraining/selftest.py`](../../code/lab35-pretraining/selftest.py)
+- 实验入口：`cd code/lab35-pretraining && uv sync && uv run run_lab35.py`
 
-```python
-# T1: 初始 val loss ≈ ln(4000) ≈ 8.29（±0.1）
-# T2: 梯度累积等价性：accum=2×8 与 batch=16 一步更新后参数差 < 1e-6（同数据）
-# T3: PPL = exp(loss) 数值核对
-# T4: checkpoint 恢复：加载后继续训练的 loss 与不中断连续训练一致（同种子）
-```
 
 ## 3. 对照实验
 

@@ -46,23 +46,17 @@ $$
 
 ## 2. 实现任务
 
-```python
-def make_shift_pairs(ids, block_size): ...    # 滑窗切 -> (input, target)
-def collate(batch, pad_id): ...               # pad + labels(-100)
-def pack_sequences(docs, block_size): ...     # 拼接 + doc_mask
-def masked_ce_loss(logits, labels): ...       # 1.3 公式
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `make_shift_pairs` — 滑窗切 -> (input, target)
+- `collate` — pad + labels(-100)
+- `pack_sequences` — 拼接 + doc_mask
+- `masked_ce_loss` — 1.3 公式
 
-```python
-# T1: shift 正确性：target[i] == input[i+1]（逐位）
-# T2: pad 不计损失：全 pad 批的 loss == 0（0/0 以 0 处理）
-# T3: 掩码独立性：把 target 的后半替换为随机 token，前半位置的 loss 不变
-#     （位置 < k 的预测不依赖 target > k —— 验证无泄漏）
-# T4: packing 计数：N 个文档 pack 后总 token 利用率 > 95%
-# T5: 文档边界：pack 后第一个文档的 attention 最后一行不含第二文档 token
-```
+- 接口骨架：[`../../code/lab33-data-pipeline/skeleton.py`](../../code/lab33-data-pipeline/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab33-data-pipeline/selftest.py`](../../code/lab33-data-pipeline/selftest.py)
+- 实验入口：`cd code/lab33-data-pipeline && uv sync && uv run run_lab33.py`
+
 
 ## 3. 对照实验
 

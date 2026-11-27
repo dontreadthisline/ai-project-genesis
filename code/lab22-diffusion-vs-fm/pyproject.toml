@@ -1,0 +1,10 @@
+[project]
+name = "lab22-diffusion-vs-fm"
+version = "0.1.0"
+description = "实验 22: 见讲义 docs/stage3-generative-models/lab22-diffusion-vs-fm.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

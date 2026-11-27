@@ -47,21 +47,16 @@ $\pi_\theta(a|s) = \mathrm{softmax}(f_\theta(s))$，$\nabla_\theta \log \pi$ 即
 
 ## 2. 实现任务
 
-```python
-class PolicyNet: ...                       # 4 -> 128 -> 128 -> 4 logits
-def reinforce(env_fn, episodes, lr, gamma, use_baseline): ...
-def policy_grad_loss(logits, actions, returns_or_adv): ...   # -logπ * A 的均值
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `PolicyNet` — 4 -> 128 -> 128 -> 4 logits
+- `reinforce` — -logπ * A 的均值
+- `policy_grad_loss` — -logπ * A 的均值
 
-```python
-# T1: baseline 无偏性数值验证：固定状态、随机 b，E[b ∇logπ] 随采样数 → 0
-#     （1e5 样本，均值范数 < 1e-2 × 无 b 时的梯度范数）
-# T2: 梯度方向检查：增大高回报动作的 logπ 概率（单步手工例）
-# T3: 方差对照：同一批轨迹，带/不带 baseline 的梯度估计样本方差比值
-# T4: 收敛后策略接近确定性：eval 时动作熵 < 0.3 nats
-```
+- 接口骨架：[`../../code/lab28-reinforce/skeleton.py`](../../code/lab28-reinforce/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab28-reinforce/selftest.py`](../../code/lab28-reinforce/selftest.py)
+- 实验入口：`cd code/lab28-reinforce && uv sync && uv run run_lab28.py`
+
 
 ## 3. 对照实验
 

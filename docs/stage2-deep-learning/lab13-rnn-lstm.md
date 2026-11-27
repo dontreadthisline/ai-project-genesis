@@ -57,21 +57,16 @@ $$
 
 任务：加法问题（经典 long-term dependency 基准）。序列长 $T$，两个位置 $i, j$ 的输入附加标志 1，其余为 0，第一通道为均匀噪声，目标 = 两标志位置的噪声之和。以及复制记忆任务（可选）。
 
-```python
-class VanillaRNN:  # h_t = tanh(W_h h + W_x x)
-class LSTM:        # 1.2 六个方程
-def bptt_grad_norm(model, T, seed): ...   # 返回 ∂L/∂h_0 的范数
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `VanillaRNN` — h_t = tanh(W_h h + W_x x)
+- `LSTM` — 1.2 六个方程
+- `bptt_grad_norm` — 返回 ∂L/∂h_0 的范数
 
-```python
-# T1: 手算单步：给定 W_h, h，RNN 一步前向与手算一致
-# T2: LSTM c_t 更新：f=1, i=0 时 c_t == c_{t-1}（恒等记忆）
-# T3: 梯度缩放实证：随机 W_h（谱半径 0.5）下 ||∂L/∂h_0|| 随 T 单调指数下降；
-#     LSTM（f 门偏置初始化 +1，靠近 1）下降缓慢（T=50 时比值 > 100 倍）
-# T4: 梯度裁剪：norm=10 的梯度裁剪到 5 后范数为 5、方向不变（余弦 = 1）
-```
+- 接口骨架：[`../../code/lab13-rnn-lstm/skeleton.py`](../../code/lab13-rnn-lstm/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab13-rnn-lstm/selftest.py`](../../code/lab13-rnn-lstm/selftest.py)
+- 实验入口：`cd code/lab13-rnn-lstm && uv sync && uv run run_lab13.py`
+
 
 ## 3. 对照实验
 

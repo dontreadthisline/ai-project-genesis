@@ -28,22 +28,18 @@ $v_\theta(x, t)$ 必须对 $t$ 条件化：不同时刻的最优速度不同（�
 
 ## 2. 实现任务
 
-```python
-class TimeEmbedding: ...               # sinusoidal -> MLP
-class ResBlockT: ...                   # ResBlock + 时间 FiLM
-class UNetLite: ...                    # 下采样-上采样 + 跳跃，输入 (x, t)
-def cfm_loss(model, x1): ...      # 同 Lab 20，域换成图像
-def sample(model, n, steps): ...  # 欧拉积分 + 最后一步 clamp 到 [-1,1]
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `TimeEmbedding` — sinusoidal -> MLP
+- `ResBlockT` — ResBlock + 时间 FiLM
+- `UNetLite` — 下采样-上采样 + 跳跃，输入 (x, t)
+- `cfm_loss` — 同 Lab 20，域换成图像
+- `sample` — 欧拉积分 + 最后一步 clamp 到 [-1,1]
 
-```python
-# T1: 时间嵌入唯一性：不同 t 的嵌入向量互不相同（余弦 < 0.999）
-# T2: FiLM 注入：同 x 不同 t 的网络输出不同（范数差异 > 1e-3）
-# T3: 训练收敛：loss 降到 < 0.05 量级（归一化像素）
-# T4: 采样终值范围：clamp 后像素在 [-1,1]
-```
+- 接口骨架：[`../../code/lab21-flow-matching-mnist/skeleton.py`](../../code/lab21-flow-matching-mnist/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab21-flow-matching-mnist/selftest.py`](../../code/lab21-flow-matching-mnist/selftest.py)
+- 实验入口：`cd code/lab21-flow-matching-mnist && uv sync && uv run run_lab21.py`
+
 
 ## 3. 对照实验
 

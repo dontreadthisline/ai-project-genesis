@@ -67,22 +67,17 @@ $$
 
 </div>
 
-```python
-class ActorCritic: ...                    # Lab 29 复用
-def gae(rewards, values, dones, gamma, lam): ...
-def ppo_loss(logits_new, logits_old, actions, adv, returns, cfg): ...
-def ppo_train(env_fn, iters, cfg): ...    # 采集 batch -> PPO epoch 多轮更新
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `ActorCritic` — Lab 29 复用
+- `gae` — 采集 batch -> PPO epoch 多轮更新
+- `ppo_loss` — 采集 batch -> PPO epoch 多轮更新
+- `ppo_train` — 采集 batch -> PPO epoch 多轮更新
 
-```python
-# T1: 更新前 r == 1 且 clip 不变：初始时刻目标 == A 的均值
-# T2: clip 语义数值：r=2, A>0 时目标锁定 (1+ε)A；r=0.2, A<0 时锁定 (1-ε)A
-# T3: GAE 端点：λ=0 时 == δ；λ=1 且 V=0 时 == G_t（手算小例）
-# T4: advantage 标准化后均值 0、方差 1（批内）
-# T5: KL 早停：构造大策略变化，KL 超阈值时更新被跳过
-```
+- 接口骨架：[`../../code/lab30-ppo/skeleton.py`](../../code/lab30-ppo/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab30-ppo/selftest.py`](../../code/lab30-ppo/selftest.py)
+- 实验入口：`cd code/lab30-ppo && uv sync && uv run run_lab30.py`
+
 
 ## 3. 对照实验
 

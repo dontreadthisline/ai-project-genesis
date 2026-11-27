@@ -1,0 +1,10 @@
+[project]
+name = "lab21-flow-matching-mnist"
+version = "0.1.0"
+description = "实验 21: 见讲义 docs/stage3-generative-models/lab21-flow-matching-mnist.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

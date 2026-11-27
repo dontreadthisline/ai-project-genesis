@@ -36,22 +36,16 @@ $$
 
 ## 2. 实现任务
 
-```python
-class LoRALinear:
-    def __init__(self, base_linear, r, alpha): ...   # 冻结 base
-    def forward(self, x): ...                        # base(x) + scale * B(A(x))
-def apply_lora(model, targets, r, alpha): ...        # 替换 q/k/v/o 投影
-def merge_lora(model): ...                           # W += BA 合并（推理零开销）
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `LoRALinear` — 冻结 base
+- `apply_lora` — 替换 q/k/v/o 投影
+- `merge_lora` — W += BA 合并（推理零开销）
 
-```python
-# T1: 零初始化：B=0 时 LoRALinear 输出 == base 输出（逐位）
-# T2: 参数量公式：2*d*r*层数*投影数 vs 实际可训练参数（误差 <1%）
-# T3: 合并等价：merge 后的前向 == 未合并前向（1e-5）
-# T4: 冻结检查：base 参数梯度恒为 0
-```
+- 接口骨架：[`../../code/lab38-lora/skeleton.py`](../../code/lab38-lora/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab38-lora/selftest.py`](../../code/lab38-lora/selftest.py)
+- 实验入口：`cd code/lab38-lora && uv sync && uv run run_lab38.py`
+
 
 ## 3. 对照实验
 

@@ -1,0 +1,11 @@
+[project]
+name = "lab40-reward-model"
+version = "0.1.0"
+description = "实验 40: 见讲义 docs/stage5-llm/lab40-reward-model.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+    "gymnasium",
+]

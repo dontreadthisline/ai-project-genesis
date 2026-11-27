@@ -42,22 +42,17 @@ $$
 
 ## 2. 实现任务
 
-```python
-class RewardModel: ...          # GPT 骨干 + scalar head，最后一个 token 位置的输出
-def rm_loss(r_w, r_l): ...      # 1.1 公式
-def rm_train(model, pairs, cfg): ...
-def rm_auc(model, pairs): ...   # 判别 AUC
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `RewardModel` — GPT 骨干 + scalar head，最后一个 token 位置的输出
+- `rm_loss` — 1.1 公式
+- `rm_train` — 判别 AUC
+- `rm_auc` — 判别 AUC
 
-```python
-# T1: loss 平衡点：r_w == r_l 时 loss == ln2；r_w - r_l = 5 时 loss < 0.01
-# T2: 标量头形状：输出 (B,) 而非 (B, T)；只取末位（completion 结束 token）
-# T3: 梯度加权：构造 (r_w - r_l) ∈ {0, 5} 两类，前者的梯度范数远大
-#     （logistic 的「难样本加权」特性，T3 数值验证 > 10 倍）
-# T4: held-out 判别：训练后 AUC > 0.85（构造数据）
-```
+- 接口骨架：[`../../code/lab40-reward-model/skeleton.py`](../../code/lab40-reward-model/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab40-reward-model/selftest.py`](../../code/lab40-reward-model/selftest.py)
+- 实验入口：`cd code/lab40-reward-model && uv sync && uv run run_lab40.py`
+
 
 ## 3. 对照实验
 

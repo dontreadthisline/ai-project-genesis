@@ -1,0 +1,7 @@
+[project]
+name = "lab19-ddpm"
+version = "0.1.0"
+description = "实验 19: 见讲义 docs/stage3-generative-models/lab19-ddpm.md"
+requires-python = ">=3.11"
+dependencies = [
+]

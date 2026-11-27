@@ -47,21 +47,17 @@ $$
 
 ## 2. 实现任务
 
-```python
-class PlainConvBlock:   # conv-bn-relu-conv-bn + (可选下采样)
-class ResidualBlock:    # 同上 + 跳跃连接；下采样时 1x1 conv 投影对齐维度
-def make_plain_cnn(depth): ...
-def make_res_cnn(depth): ...   # 参数量与 plain 对齐（±15%）
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `PlainConvBlock` — conv-bn-relu-conv-bn + (可选下采样)
+- `ResidualBlock` — 同上 + 跳跃连接；下采样时 1x1 conv 投影对齐维度
+- `make_plain_cnn` — 参数量与 plain 对齐（±15%）
+- `make_res_cnn` — 参数量与 plain 对齐（±15%）
 
-```python
-# T1: ResidualBlock 在 F=0（零初始化最后 conv）时输出 == 输入
-# T2: 随机权重下，反向传播到第 1 层的梯度范数：res 网络随深度下降缓慢、
-#     plain 网络显著更小（深度 20 对照，比值 > 5 倍）
-# T3: 深度增加时前向激活范数：res 网络各层范数稳定，plain 网络可能衰减
-```
+- 接口骨架：[`../../code/lab11-residual/skeleton.py`](../../code/lab11-residual/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab11-residual/selftest.py`](../../code/lab11-residual/selftest.py)
+- 实验入口：`cd code/lab11-residual && uv sync && uv run run_lab11.py`
+
 
 ## 3. 对照实验
 

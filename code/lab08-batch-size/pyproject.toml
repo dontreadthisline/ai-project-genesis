@@ -1,0 +1,7 @@
+[project]
+name = "lab08-batch-size"
+version = "0.1.0"
+description = "实验 8: 见讲义 docs/stage2-deep-learning/lab08-batch-size.md"
+requires-python = ">=3.11"
+dependencies = [
+]

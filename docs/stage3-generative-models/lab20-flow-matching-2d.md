@@ -52,21 +52,16 @@ $$
 
 ## 2. 实现任务
 
-```python
-class VelocityNet: ...                 # (t, x) -> v，t 用 sinusoidal 嵌入
-def cfm_loss(model, x1): ...      # 1.3 直线路径损失
-def euler_sample(model, n_steps): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `VelocityNet` — (t, x) -> v，t 用 sinusoidal 嵌入
+- `cfm_loss` — 1.3 直线路径损失
+- `euler_sample` — euler_sample
 
-```python
-# T1: 直线路径下条件速度与 t 无关：d/dt[(1-t)x0 + t*x1] == x1 - x0
-# T2: 线性情形精确性：若目标本身是高斯，学到的场近线性，欧拉 1 步近似即可
-#     （对比多步，MSE 差距小）
-# T3: 采样分布与目标：W2 距离（数值：sinkhorn 或简单分箱 L2）随训练下降
-# T4: 积分步数 {2, 5, 20, 100} 的样本质量单调改善
-```
+- 接口骨架：[`../../code/lab20-flow-matching-2d/skeleton.py`](../../code/lab20-flow-matching-2d/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab20-flow-matching-2d/selftest.py`](../../code/lab20-flow-matching-2d/selftest.py)
+- 实验入口：`cd code/lab20-flow-matching-2d && uv sync && uv run run_lab20.py`
+
 
 ## 3. 对照实验
 

@@ -1,0 +1,10 @@
+[project]
+name = "lab25-sarsa-qlearning"
+version = "0.1.0"
+description = "实验 25: 见讲义 docs/stage4-reinforcement-learning/lab25-sarsa-qlearning.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

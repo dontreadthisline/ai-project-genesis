@@ -51,22 +51,17 @@ $$
 
 ## 2. 实现任务
 
-```python
-class Generator:     # z(64) -> 256 -> 512 -> 784 sigmoid
-class Discriminator: # 784 -> 512 -> 256 -> 1 sigmoid
-def d_loss(real_logits, fake_logits): ...   # BCE with logits
-def g_loss(fake_logits): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `Generator` — z(64) -> 256 -> 512 -> 784 sigmoid
+- `Discriminator` — 784 -> 512 -> 256 -> 1 sigmoid
+- `d_loss` — BCE with logits
+- `g_loss` — g_loss
 
-```python
-# T1: D* 公式数值验证：两个解析高斯 p_data=N(0,1), p_g=N(2,1)，
-#     在网格点上 D*(x) = p_data/(p_data+p_g) 与公式一致（这是固定 G 的极限 sanity）
-# T2: BCE with logits 数值稳定：大 logits 不产生 nan
-# T3: 训练早期的均衡基准：D 输出接近 0.5 时 D 的二分类准确率应接近 50%~70% 区间
-# T4: 生成器输出范围 [0,1]（sigmoid 生效）
-```
+- 接口骨架：[`../../code/lab17-gan/skeleton.py`](../../code/lab17-gan/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab17-gan/selftest.py`](../../code/lab17-gan/selftest.py)
+- 实验入口：`cd code/lab17-gan && uv sync && uv run run_lab17.py`
+
 
 ## 3. 对照实验
 

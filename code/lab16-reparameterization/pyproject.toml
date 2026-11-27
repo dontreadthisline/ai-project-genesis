@@ -1,0 +1,7 @@
+[project]
+name = "lab16-reparameterization"
+version = "0.1.0"
+description = "实验 16: 见讲义 docs/stage3-generative-models/lab16-reparameterization.md"
+requires-python = ">=3.11"
+dependencies = [
+]

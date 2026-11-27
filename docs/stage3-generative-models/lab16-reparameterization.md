@@ -51,21 +51,15 @@ $$
 
 ## 2. 实现任务
 
-```python
-def sf_grad(f, mu, sigma, n): ...
-    # (f(z) - b) * (z-mu)/sigma^2 对 mu 的均值；b 为可选 baseline（默认 0）
-def pathwise_grad(f, mu, sigma, n): ...
-    # eps ~ N(0,1), z = mu + sigma*eps, 数值梯度 df/dz (中心差分) * 1
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `sf_grad` — (f(z) - b) * (z-mu)/sigma^2 对 mu 的均值；b 为可选 baseline（默认 0）
+- `pathwise_grad` — eps ~ N(0,1), z = mu + sigma*eps, 数值梯度 df/dz (中心差分) * 1
 
-```python
-# T1: 无偏性：两种估计对 mu 的梯度均值随 n=1e6 收敛到解析值（3 个标准误差内）
-# T2: 方差比：n=1 时重复 5000 次的样本方差比 sf/pathwise（记录数量级）
-# T3: baseline=b 的 sf：E[b * ∇log q] = 0（无偏不变，方差改变）
-# T4: sigma 的梯度同构验证（解析 dE/dσ 存在时 pathwise 成立）
-```
+- 接口骨架：[`../../code/lab16-reparameterization/skeleton.py`](../../code/lab16-reparameterization/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab16-reparameterization/selftest.py`](../../code/lab16-reparameterization/selftest.py)
+- 实验入口：`cd code/lab16-reparameterization && uv sync && uv run run_lab16.py`
+
 
 ## 3. 对照实验
 

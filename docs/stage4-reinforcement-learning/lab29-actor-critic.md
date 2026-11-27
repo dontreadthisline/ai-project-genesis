@@ -46,20 +46,15 @@ Actor 用 $-\log\pi \cdot \delta.\text{detach}()$，critic 用 $\delta^2$。两�
 
 ## 2. 实现任务
 
-```python
-class ActorCritic: ...     # 共享 trunk：策略头 logits + 价值头标量
-def a2c_train(env_fn, steps, cfg): ...   # on-policy：采集 n_step 回合批，一次更新
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `ActorCritic` — 共享 trunk：策略头 logits + 价值头标量
+- `a2c_train` — on-policy：采集 n_step 回合批，一次更新
 
-```python
-# T1: δ 的期望 = 优势：表格 MDP（Lab 23 的 P/R）上，收敛 V 后验证
-#     E_{a}[δ(s,a)] ≈ 0（均值）且 E[δ | s, a*] > E[δ | s, a_worst]
-# T2: detach 检查：actor 损失对 V 参数梯度恒为 0
-# T3: A 的符号逻辑：构造两条动作轨迹（好坏），δ 符号与动作质量一致
-# T4: 训练后 V(s) 与实际折扣回报的 MC 估计一致（容差 15%）
-```
+- 接口骨架：[`../../code/lab29-actor-critic/skeleton.py`](../../code/lab29-actor-critic/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab29-actor-critic/selftest.py`](../../code/lab29-actor-critic/selftest.py)
+- 实验入口：`cd code/lab29-actor-critic && uv sync && uv run run_lab29.py`
+
 
 ## 3. 对照实验
 

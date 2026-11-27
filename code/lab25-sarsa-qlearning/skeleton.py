@@ -1,0 +1,6 @@
+"""Lab 25 接口骨架。TODO 注释即实现要求，讲义见 docs 对应章节。"""
+
+class CliffWalking:                    # 自制环境：reset/step
+def sarsa(env, episodes, alpha, gamma, eps_fn): ...
+def q_learning(env, episodes, alpha, gamma, eps_fn): ...
+

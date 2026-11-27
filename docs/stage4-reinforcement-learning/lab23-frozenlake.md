@@ -39,22 +39,16 @@ Gymnasium 通过 `env.unwrapped.P[s][a]` 暴露完整转移表：列表 of (prob
 
 ## 2. 实现任务
 
-```python
-def build_P_R(env):
-    """从 env.unwrapped.P 构造 P (S,A,S), R (S,A)，终止态自吸收处理"""
-def expected_reward(R, s, a): ...
-def sample_step(P, s, a): ...    # 按 P 采样下一状态（自实现，不用 env.step）
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `build_P_R` — 从 env.unwrapped.P 构造 P (S,A,S), R (S,A)，终止态自吸收处理
+- `expected_reward` — 按 P 采样下一状态（自实现，不用 env.step）
+- `sample_step` — 按 P 采样下一状态（自实现，不用 env.step）
 
-```python
-# T1: 每行概率和为 1（所有 (s,a)）
-# T2: 终止态自吸收：P[hole, a, hole] == 1
-# T3: slippery 概率分布：非边界状态上三个可能转移各 1/3
-#     边界/角落撞墙时分布折叠（概率合并回合法状态）
-# T4: sample_step 与 P 的频率一致（1e5 次采样，各 s' 频率误差 < 1%）
-```
+- 接口骨架：[`../../code/lab23-frozenlake/skeleton.py`](../../code/lab23-frozenlake/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab23-frozenlake/selftest.py`](../../code/lab23-frozenlake/selftest.py)
+- 实验入口：`cd code/lab23-frozenlake && uv sync && uv run run_lab23.py`
+
 
 ## 3. 对照实验
 

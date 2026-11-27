@@ -61,24 +61,18 @@ $$
 
 ## 2. 实现任务
 
-```python
-class SGD:      def step(self, params, grads): ...
-class Momentum: def __init__(self, lr, beta=0.9): ...
-class Adam:     def __init__(self, lr, beta1=0.9, beta2=0.999, eps=1e-8): ...
-class AdamW:    def __init__(self, lr, weight_decay=0.01): ...
+实现清单（签名与 TODO 见骨架源码）：
 
-def cosine_schedule(t, T, warmup, lr_max): ...
-```
+- `SGD` — SGD
+- `Momentum` — Momentum
+- `Adam` — Adam
+- `AdamW` — AdamW
+- `cosine_schedule` — cosine_schedule
 
-统一接口 `step(params, grads)`，t 计数内置于优化器。自测：
+- 接口骨架：[`../../code/lab07-optimizers/skeleton.py`](../../code/lab07-optimizers/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab07-optimizers/selftest.py`](../../code/lab07-optimizers/selftest.py)
+- 实验入口：`cd code/lab07-optimizers && uv sync && uv run run_lab07.py`
 
-```python
-# T1: 常数梯度下 Adam 第 1 步更新量 ≈ lr（偏差修正生效）：
-#     g = 0.1 恒定，step 后 |Δθ| ≈ lr * 1.0 ± 1e-4
-# T2: Momentum 对交替梯度 (+g, -g)：θ 几乎不动（v≈0）；对恒定梯度：步长按 1/(1-β) 放大
-# T3: AdamW 与 Adam 在 weight_decay>0 时轨迹不同；decay=0 时一致
-# T4: cosine_schedule 端点：t=0 为 0（warmup 起点）、t=T 为 0、峰值在 t=T_w
-```
 
 ## 3. 对照实验
 

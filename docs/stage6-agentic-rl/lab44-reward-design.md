@@ -40,21 +40,16 @@ $$
 
 ## 2. 实现任务
 
-```python
-class RewardConfig: ...     # w_outcome, w_process, w_step, w_format ...
-def compute_reward(traj, cfg) -> float: ...
-def make_hackable_rewards(): ...   # 故意设计有漏洞的两种奖励
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `RewardConfig` — w_outcome, w_process, w_step, w_format ...
+- `compute_reward` — 故意设计有漏洞的两种奖励
+- `make_hackable_rewards` — 故意设计有漏洞的两种奖励
 
-```python
-# T1: 纯 outcome：正确轨迹 R=1、错误 R=0、截断 R=0
-# T2: 成本惩罚单调性：同任务两条轨迹（3 步 vs 10 步均成功），R 差 == w_c*7
-# T3: hack 复现 1：process 按调用计分时，「空转刷工具」轨迹的 R 超过直接答对的最短轨迹
-# T4: hack 复现 2：格式奖励含关键词时，复读关键词的轨迹得高分
-# T5: 权重为零的退化：w_o=1, 其余 0 时 R == outcome（还原 Lab 43 基线）
-```
+- 接口骨架：[`../../code/lab44-reward-design/skeleton.py`](../../code/lab44-reward-design/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab44-reward-design/selftest.py`](../../code/lab44-reward-design/selftest.py)
+- 实验入口：`cd code/lab44-reward-design && uv sync && uv run run_lab44.py`
+
 
 ## 3. 对照实验
 

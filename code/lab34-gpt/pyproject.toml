@@ -1,0 +1,10 @@
+[project]
+name = "lab34-gpt"
+version = "0.1.0"
+description = "实验 34: 见讲义 docs/stage5-llm/lab34-gpt.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

@@ -65,22 +65,17 @@ KL 参考从 $\pi_{old}$ 换成 $\pi_{ref}$：约束对象是「别离 SFT 太�
 
 </div>
 
-```python
-def make_arith_task(): ...             # 题目 + 可验证判分器
-def group_rollout(model, prompts, G, cfg): ...   # 批采样 G 个回答 + logprob_old
-def grpo_advantage(rewards): ...          # 1.1 归一化
-def grpo_loss(...): ...                   # token 级 clip 目标 + KL(ref)
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `make_arith_task` — 题目 + 可验证判分器
+- `group_rollout` — 批采样 G 个回答 + logprob_old
+- `grpo_advantage` — 1.1 归一化
+- `grpo_loss` — token 级 clip 目标 + KL(ref)
 
-```python
-# T1: 归一化性质：A 的组内均值 == 0；全同奖励时 A 全 0
-# T2: 判分器：构造对/错回答，r ∈ {0,1} 边界情况（大小写/多空格）明确
-# T3: token 级 ratio：更新前全 1；一步更新后直方图分散
-# T4: KL(ref) 单调性：β 大时训练后策略与 ref 的 KL 显著更小
-# T5: 无信号组弃用：全对/全错组对参数更新贡献为 0（梯度检查）
-```
+- 接口骨架：[`../../code/lab41-grpo/skeleton.py`](../../code/lab41-grpo/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab41-grpo/selftest.py`](../../code/lab41-grpo/selftest.py)
+- 实验入口：`cd code/lab41-grpo && uv sync && uv run run_lab41.py`
+
 
 ## 3. 对照实验
 

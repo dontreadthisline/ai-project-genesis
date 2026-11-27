@@ -56,21 +56,17 @@ $$
 
 字符级自回归：语料用 tiny-shakespeare 或自制中文短语语料（确保可离线生成）。模型 $d=128$、$h=4$、$L=4$、块大小 128。
 
-```python
-def attention(q, k, v, mask=None): ...     # 1.1 公式，softmax 数值稳定
-class MultiHeadAttention: ...
-class Block: ...                            # 1.4 pre-norm
-class MiniTransformer: ...                  # emb + pos + L*Block + ln_f + head
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `attention` — 1.1 公式，softmax 数值稳定
+- `MultiHeadAttention` — MultiHeadAttention
+- `Block` — 1.4 pre-norm
+- `MiniTransformer` — emb + pos + L*Block + ln_f + head
 
-```python
-# T1: 因果掩码：注意力权重矩阵下三角严格为 0（p < 1e-8），每行和为 1
-# T2: 置换等变性验证（无位置编码、无掩码时）：打乱序列顺序，输出对应重排
-# T3: 多头形状：Concat 后维度 == d_model
-# T4: 参数量手算：4/d² 系数核对（每 Block ≈ 12d²：4 个 d² 投影 + FFN 8d²）
-```
+- 接口骨架：[`../../code/lab14-attention-transformer/skeleton.py`](../../code/lab14-attention-transformer/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab14-attention-transformer/selftest.py`](../../code/lab14-attention-transformer/selftest.py)
+- 实验入口：`cd code/lab14-attention-transformer && uv sync && uv run run_lab14.py`
+
 
 ## 3. 对照实验
 

@@ -92,62 +92,16 @@ $$
 
 在 `distributions.py` 中补充：
 
-```python
-import mlx.core as mx
+实现清单（模块与接口见源码）：
 
-def gaussian_conditional(mu, Sigma, x_obs, obs_idx: int = 0):
-    """已知多维高斯 N(mu, Sigma)，观测其中 obs_idx 维为 x_obs，
-    返回剩余维度的 (cond_mean, cond_cov)。
-    要求用分块矩阵公式实现：
-        Sigma = [[A, B], [B^T, C]]（A 对应观测维，C 对应剩余维）
-        cond_mean = mu_rest + B^T A^{-1} (x_obs - mu_obs)
-        cond_cov  = C - B^T A^{-1} B        （Schur 补）
-    禁止 for 循环调 grid；用 mx.linalg.solve（stream=mx.cpu，linalg 不支持 GPU）。"""
-    ...
+- `gaussian_conditional` — 已知多维高斯 N(mu, Sigma)，观测其中 obs_idx 维为 x_obs，
+- `gaussian_mixture_sample` — 从混合高斯采样：先按 weights 抽成分，再从对应高斯采样。
+- `empirical_conditional` — 经验条件分布（讲义 §1.4）：取窄带 |samples[:,obs_idx] - x0| <= delta 内的样本。
 
-def gaussian_mixture_sample(weights, mus, Sigmas, n: int):
-    """从混合高斯采样：先按 weights 抽成分，再从对应高斯采样。
-    MLX 无 rng.choice：采样 u ~ mx.random.uniform((n,))，与累积权重
-    （mx.cumsum）比较决定每个样本的成分。"""
-    ...
+- 模块源码：[`code/lab02-joint-and-conditional/`](../../code/lab02-joint-and-conditional/)
+- 自测断言（红灯标准）：`run_lab02.py` 的 `check_implementation()`
+- 实验入口：`cd code/lab02-joint-and-conditional && uv run run_lab02.py`
 
-def empirical_conditional(samples, x0: float, delta: float, obs_idx: int = 0):
-    """经验条件分布（讲义 §1.4）：取窄带 |samples[:,obs_idx] - x0| <= delta 内的样本。
-    MX 不支持布尔索引：取子数组用 NumPy 桥接
-    mask = np.array(mx.abs(...) <= delta)；sub = mx.array(np.array(samples)[mask])。
-    返回 (其余维度样本, 带内样本数)。"""
-    ...
-```
-
-自测（fp64；`sample_cov` 复用 Lab 01）：
-
-```python
-import mlx.core as mx
-
-mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
-mx.random.seed(0)
-
-# T1: 与 1.2 手推公式对照（rho=0.6, sx=1.5, sy=0.8, x0=1.2）
-mu = mx.zeros((2,))
-sx, sy, rho = 1.5, 0.8, 0.6
-Sigma = mx.array([[sx**2, rho*sx*sy], [rho*sx*sy, sy**2]], dtype=mx.float64)
-m, S = gaussian_conditional(mu, Sigma, x_obs=1.2, obs_idx=0)
-assert abs(m[0].item() - rho*sy/sx*1.2) < 1e-12
-assert abs(S[0, 0].item() - sy**2*(1 - rho**2)) < 1e-12
-
-# T2: rho -> 0 时条件分布退化为边缘
-Sigma0 = mx.array([[1.0, 0.0], [0.0, 2.0]], dtype=mx.float64)
-m0, S0 = gaussian_conditional(mx.zeros((2,)), Sigma0, x_obs=3.0, obs_idx=0)
-assert abs(m0[0].item()) < 1e-12 and abs(S0[0,0].item() - 2.0) < 1e-12
-
-# T3: 混合高斯边缘校验（反例 B）：边缘均值 0、方差 1（n=400_000，容差 0.02）
-Sigma_p = mx.array([[1.0, 0.9], [0.9, 1.0]])
-Sigma_m = mx.array([[1.0, -0.9], [-0.9, 1.0]])
-XY = gaussian_mixture_sample([0.5, 0.5], [mx.zeros((2,))]*2, [Sigma_p, Sigma_m], 400_000)
-mx.eval(XY)
-assert abs(XY[:,0].mean().item()) < 0.01 and abs(XY[:,0].var().item() - 1.0) < 0.02
-assert abs(sample_cov(XY)[0,1].item()) < 0.02   # 整体协方差近似为零，但结构是 X 形
-```
 
 ## 3. 对照实验设计
 
@@ -165,19 +119,12 @@ assert abs(sample_cov(XY)[0,1].item()) < 0.02   # 整体协方差近似为零，
 - 图 3（E3）：双 y 轴图：$\delta$（对数轴） vs 条件均值估计误差、带内样本数。预期 $\delta$ 小于 0.05 时误差主要由样本稀少的随机波动主导；$\delta$ 大于 0.2 时偏差系统性上升。
 - 图 4（E4）：三联图：$\rho = 0.8$ 高斯、$\rho = 0$ 高斯、混合 X 形。三者边缘直方图叠加在最后一行，肉眼不可分。
 
-## 5. 观测指标（metrics.json）
+## 5. 观测指标
 
-```json
-{
-  "E2_conditional_check": {
-    "x0_-1.5": {"emp_mean": ..., "theo_mean": ..., "emp_std": ..., "theo_std": ...},
-    "x0_0.0": {...}, "x0_1.5": {...}
-  },
-  "E3_band_tradeoff": {"delta_0.01": {"bias": ..., "n_in_band": ...}, ...},
-  "E4_cov": {"single_rho0.8": ..., "single_rho0": ..., "mixture": ...},
-  "T_all_passed": true
-}
-```
+以下指标在实验运行后写入 `output/metrics.json`（键名与 §3 对照实验表的因变量对应；写入逻辑见 `run_lab02.py`）：
+
+
+
 
 ## 6. 结果分析
 

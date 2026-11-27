@@ -1,0 +1,7 @@
+[project]
+name = "lab17-gan"
+version = "0.1.0"
+description = "实验 17: 见讲义 docs/stage3-generative-models/lab17-gan.md"
+requires-python = ">=3.11"
+dependencies = [
+]

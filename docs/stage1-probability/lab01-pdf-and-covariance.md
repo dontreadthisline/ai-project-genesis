@@ -99,70 +99,16 @@ $$
 
 创建 `distributions.py`：
 
-```python
-import mlx.core as mx
+实现清单（模块与接口见源码）：
 
-def univariate_gaussian_pdf(x, mu: float, sigma: float) -> mx.array:
-    """一维高斯密度。x: mx.array 或标量。禁止调用 scipy。"""
-    # TODO: 按公式 1.2 实现
-    ...
+- `univariate_gaussian_pdf` — 一维高斯密度。x: mx.array 或标量。禁止调用 scipy。
+- `multivariate_gaussian_pdf` — 多维高斯密度。xs: (N, d)，mu: (d,)，Sigma: (d, d)，返回 (N,)。
+- `sample_multivariate_gaussian` — 从 N(mu, Sigma) 采样 n 个点：先采样 z ~ N(0, I)（mx.random.normal），
 
-def multivariate_gaussian_pdf(xs, mu, Sigma) -> mx.array:
-    """多维高斯密度。xs: (N, d)，mu: (d,)，Sigma: (d, d)，返回 (N,)。
-    提示：用 mx.linalg.slogdet 计算行列式（数值稳定），用 mx.linalg.solve 解线性方程组，
-    禁止直接调用 mx.linalg.inv。注意：linalg 四件套不支持 GPU，
-    必须显式传 stream=mx.cpu（见前言实测局限）。"""
-    ...
+- 模块源码：[`code/lab01-pdf-and-covariance/`](../../code/lab01-pdf-and-covariance/)
+- 自测断言（红灯标准）：`run_lab01.py` 的 `check_implementation()`
+- 实验入口：`cd code/lab01-pdf-and-covariance && uv run run_lab01.py`
 
-def sample_multivariate_gaussian(mu, Sigma, n: int) -> mx.array:
-    """从 N(mu, Sigma) 采样 n 个点：先采样 z ~ N(0, I)（mx.random.normal），
-    再线性变换 x = mu + L z，其中 L 是 Sigma 的 Cholesky 分解
-    （mx.linalg.cholesky(Sigma, stream=mx.cpu)）。
-    说明为什么这样得到的协方差正好是 Sigma。"""
-    ...
-```
-
-自测（实现正确性的判定标准，放进 `run_lab01.py` 开头；MLX 无 trapezoid/cov，手写本身就是练习）：
-
-```python
-import math
-import mlx.core as mx
-
-mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
-mx.random.seed(0)
-
-def trapezoid(y, x):
-    """梯形积分（MLX 无 np.trapezoid 的对应物，手写）。"""
-    return mx.sum((x[1:] - x[:-1]) * (y[1:] + y[:-1]) / 2.0)
-
-def sample_cov(X):
-    """样本协方差（MLX 无 cov，手写，ddof=1）。"""
-    Xc = X - X.mean(axis=0)
-    return (Xc.T @ Xc) / (X.shape[0] - 1)
-
-# T1: 数值积分验证归一化（fp64，容差 1e-8）
-x = mx.linspace(-12, 12, 200_001, dtype=mx.float64)
-y = univariate_gaussian_pdf(x, 2.0, 3.0)
-assert abs(trapezoid(y, x).item() - 1.0) < 1e-8
-
-# T2: 二维密度在均值处取最大值
-Sigma = mx.array([[2.0, 0.6], [0.6, 1.0]])
-mu2 = mx.array([1.0, -1.0])
-pts = mx.random.normal((5000, 2)) @ mx.linalg.cholesky(Sigma, stream=mx.cpu) + mu2
-vals = multivariate_gaussian_pdf(pts, mu2, Sigma)
-mx.eval(vals)
-assert multivariate_gaussian_pdf(mu2[None, :], mu2, Sigma).item() >= vals.max().item() - 1e-12
-
-# T3: 采样协方差收敛于 Sigma（n=200_000，逐项容差 0.05）
-X = sample_multivariate_gaussian(mu2, Sigma, 200_000)
-mx.eval(X)
-assert mx.allclose(X.mean(axis=0), mu2, atol=0.03)
-assert mx.allclose(sample_cov(X), Sigma, atol=0.05)
-
-# T4: 与手算对照 —— 标准正态在 0 处密度 = 1/sqrt(2*pi)
-assert abs(univariate_gaussian_pdf(mx.array(0.0), 0.0, 1.0).item()
-           - 1 / math.sqrt(2 * math.pi)) < 1e-12
-```
 
 ## 3. 对照实验设计
 
@@ -183,18 +129,20 @@ assert abs(univariate_gaussian_pdf(mx.array(0.0), 0.0, 1.0).item()
 - 图 4（E5）：五行两列，左列二维直方图/散点云，右列等密度椭圆（用特征分解画 $c \in \{1, 2\}$ 的两层）。预期 $\rho$ 增大时椭圆逆时针变扁，$\rho = 0.9$ 时样本云近似沿 $y = x$ 直线分布。
 - 图 5（E6）：$\mathrm{diag}(9,1)$ 的椭圆长短轴比约 $3:1$，轴沿坐标轴；旋转版倾角 45 度，轴比不变。
 
-## 5. 观测指标（写入 metrics.json）
+## 5. 观测指标
 
-```json
-{
-  "E3_max_hist_pdf_deviation": {"n100": ..., "n1e3": ..., "n1e4": ..., "n1e5": ...},
-  "E5_ellipse_axis_ratio": {"rho_-0.9": ..., "rho_0": ..., "rho_0.9": ...},
-  "E5_sample_cov": {"rho_0.9": [[...], [...]]},
-  "T_all_passed": true
-}
-```
+以下指标在实验运行后写入 `output/metrics.json`（键名与 §3 对照实验表的因变量对应；写入逻辑见 `run_lab01.py`）：
 
-其中直方图偏差定义为 bin 中心处 $\max_b |\hat p_b - p(x_b)|$。
+- `E3_max_hist_pdf_deviation.n100`
+- `E3_max_hist_pdf_deviation.n1e3`
+- `E3_max_hist_pdf_deviation.n1e4`
+- `E3_max_hist_pdf_deviation.n1e5`
+- `E5_ellipse_axis_ratio.rho_-0.9`
+- `E5_ellipse_axis_ratio.rho_0`
+- `E5_ellipse_axis_ratio.rho_0.9`
+- `E5_sample_cov.rho_0.9`
+- `T_all_passed`
+
 
 ## 6. 结果分析
 

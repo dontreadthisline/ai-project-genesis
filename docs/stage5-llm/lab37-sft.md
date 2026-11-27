@@ -36,20 +36,16 @@ SFT 是对齐流水线第一级（SFT → RM → RLHF/DPO，本阶段 37 → 40 
 
 构造小指令集（自动生成、可验证）：算术问答（"3+4=?"）、格式转换（大小写、倒序）、单步推理（比大小）。约 2k 对，模板多样化（5 种问法）。
 
-```python
-def build_sft_dataset(tasks, n): ...       # (prompt_ids, completion_ids)
-def sft_collate(batch, pad_id): ...        # labels: prompt 部分全 -100
-def sft_train(model, loader, cfg): ...     # 与 pretrain 共用循环，换 loader
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `build_sft_dataset` — (prompt_ids, completion_ids)
+- `sft_collate` — labels: prompt 部分全 -100
+- `sft_train` — 与 pretrain 共用循环，换 loader
 
-```python
-# T1: 掩码正确性：labels 中 prompt 段全为 -100，completion 段正确 shift
-# T2: 损失归一化：分母 = completion token 数（不是序列总长）
-# T3: 泛化检查：模板 A 训练、模板 B 测试的准确率差（模板过拟合信号）
-# T4: 基线对照：未 SFT 的基座模型对指令的回答形态（续写而非作答）
-```
+- 接口骨架：[`../../code/lab37-sft/skeleton.py`](../../code/lab37-sft/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab37-sft/selftest.py`](../../code/lab37-sft/selftest.py)
+- 实验入口：`cd code/lab37-sft && uv sync && uv run run_lab37.py`
+
 
 ## 3. 对照实验
 

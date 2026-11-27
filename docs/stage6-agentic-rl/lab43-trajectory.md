@@ -47,23 +47,18 @@ meta 含：逐步 token 序列与对数概率（Lab 45 的 ratio 计算需要 $\
 
 ## 2. 实现任务
 
-```python
-def record_trajectory(env, model, task, cfg) -> dict: ...
-def batch_collect(tasks, n_rollouts, cfg) -> list[dict]: ...
-def traj_stats(trajs) -> dict: ...          # 1.2 全部指标
-def dump_jsonl(trajs, path): ...            # JSONL 落盘
-def classify_failure(traj) -> str: ...      # 1.3 分类树
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `record_trajectory` — 1.2 全部指标
+- `batch_collect` — 1.2 全部指标
+- `traj_stats` — 1.2 全部指标
+- `dump_jsonl` — JSONL 落盘
+- `classify_failure` — 1.3 分类树
 
-```python
-# T1: 自包含重放：从轨迹重放动作序列，重建的观测序列逐项一致
-# T2: 指标自洽：success_rate + failure 分类占比和 == 1
-# T3: 循环检测：构造重复动作轨迹被正确标记
-# T4: 成功率区间：n=200 时标准误 ≈ sqrt(0.25/200) ≈ 0.035，
-#     报告值应带 ±2se 区间
-```
+- 接口骨架：[`../../code/lab43-trajectory/skeleton.py`](../../code/lab43-trajectory/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab43-trajectory/selftest.py`](../../code/lab43-trajectory/selftest.py)
+- 实验入口：`cd code/lab43-trajectory && uv sync && uv run run_lab43.py`
+
 
 ## 3. 对照实验
 

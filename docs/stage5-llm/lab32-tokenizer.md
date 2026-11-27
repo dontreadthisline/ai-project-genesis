@@ -40,21 +40,17 @@ $$
 
 ## 2. 实现任务
 
-```python
-def train_bpe(text, vocab_size): ...      # 返回 merges（有序合并表）与 vocab
-def bpe_encode(text, merges): ...
-def bpe_decode(ids, vocab): ...
-def char_encode(text): ... def word_encode(text): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `train_bpe` — 返回 merges（有序合并表）与 vocab
+- `bpe_encode` — bpe_encode
+- `bpe_decode` — bpe_decode
+- `char_encode` — char_encode
 
-```python
-# T1: 往返恒等：decode(encode(x)) == x（100 段随机文本子串，含中文/数字/标点）
-# # T2: 合并确定性：同语料两次训练结果一致；打乱合并顺序编码则不同
-# T3: 词表单调性：vocab_size 增大时 token 数单调不增
-# T4: 频率正确性：第一次合并的 token 对是语料中最高频相邻对（手工小语料对照）
-```
+- 接口骨架：[`../../code/lab32-tokenizer/skeleton.py`](../../code/lab32-tokenizer/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab32-tokenizer/selftest.py`](../../code/lab32-tokenizer/selftest.py)
+- 实验入口：`cd code/lab32-tokenizer && uv sync && uv run run_lab32.py`
+
 
 ## 3. 对照实验
 

@@ -42,25 +42,14 @@ $d = 256$、$L = 4$、$|V| = 4k$：$12 \cdot 4 \cdot 65536 + 1M \approx 4.2M$。
 
 ## 2. 实现任务
 
-```python
-class GPT:
-    def __init__(self, vocab, d, n_head, n_layer, block): ...
-    def forward(self, idx): ...        # (B, T) -> logits (B, T, V)
-    def loss(self, idx, targets): ...  # 交叉熵均值
-    def generate(self, idx, max_new, temperature, top_k): ...
-    # MLX 默认不构建梯度图（仅 mx.grad 会），无需 no_grad 等价物；
-# 生成循环内对 logits 先 mx.eval() 再采样，避免惰性堆积
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `GPT` — (B, T) -> logits (B, T, V)
 
-```python
-# T1: 参数量手算对照：按 1.2 公式 vs 实现实际参数数（误差 < 1%）
-# # T2: 因果性：位置 t 的 logits 不受未来 token 影响（修改 x[t+1:] 后 logits[:, :t+1] 不变）
-# # T3: 形状链：emb (B,T,d) -> blocks -> logits (B,T,V) 逐层形状检查
-# # T4: 随机初始化生成 = 均匀采样分布（每 token 的边缘分布接近均匀）
-# # T5: 单步可训：随机小批上 loss 能从 ln(V) 下降（几步 SGD）
-```
+- 接口骨架：[`../../code/lab34-gpt/skeleton.py`](../../code/lab34-gpt/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab34-gpt/selftest.py`](../../code/lab34-gpt/selftest.py)
+- 实验入口：`cd code/lab34-gpt && uv sync && uv run run_lab34.py`
+
 
 ## 3. 对照实验
 

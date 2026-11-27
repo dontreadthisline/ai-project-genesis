@@ -51,21 +51,16 @@ L2 惩罚 $\frac\lambda2\|\theta\|^2$ 的梯度 $\lambda\theta$ 是持续向原�
 
 ## 2. 实现任务
 
-```python
-class BatchNorm:    # train/eval 模式，running stats
-class LayerNorm:    # 逐样本
-def dropout(x, p): ...   # inverted dropout
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `BatchNorm` — train/eval 模式，running stats
+- `LayerNorm` — 逐样本
+- `dropout` — inverted dropout
 
-```python
-# T1: BN train 模式：输出各列均值≈0、方差≈1；running stats 随 batch 更新
-#     （手算一步：0.9*0 + 0.1*mu_batch）
-# T2: BN eval 模式用 running stats：同一输入两次前向输出一致（train 模式则不同）
-# T3: LN：每行均值≈0 方差≈1（与 batch 无关，batch=1 也成立）
-# T4: dropout 期望保持：大样本下 mean(drop(x)) ≈ mean(x)（相对误差 < 2%）
-```
+- 接口骨架：[`../../code/lab12-norm-reg/skeleton.py`](../../code/lab12-norm-reg/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab12-norm-reg/selftest.py`](../../code/lab12-norm-reg/selftest.py)
+- 实验入口：`cd code/lab12-norm-reg && uv sync && uv run run_lab12.py`
+
 
 ## 3. 对照实验
 

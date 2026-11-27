@@ -1,0 +1,6 @@
+"""Lab 44 接口骨架。TODO 注释即实现要求，讲义见 docs 对应章节。"""
+
+class RewardConfig: ...     # w_outcome, w_process, w_step, w_format ...
+def compute_reward(traj, cfg) -> float: ...
+def make_hackable_rewards(): ...   # 故意设计有漏洞的两种奖励
+

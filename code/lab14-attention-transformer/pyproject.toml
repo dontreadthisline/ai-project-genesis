@@ -1,0 +1,7 @@
+[project]
+name = "lab14-attention-transformer"
+version = "0.1.0"
+description = "实验 14: 见讲义 docs/stage2-deep-learning/lab14-attention-transformer.md"
+requires-python = ">=3.11"
+dependencies = [
+]

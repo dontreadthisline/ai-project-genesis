@@ -1,0 +1,7 @@
+[project]
+name = "lab06-mlp-from-scratch"
+version = "0.1.0"
+description = "实验 6: 见讲义 docs/stage2-deep-learning/lab06-mlp-from-scratch.md"
+requires-python = ">=3.11"
+dependencies = [
+]

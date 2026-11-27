@@ -42,22 +42,18 @@ $$
 
 ## 2. 实现任务
 
-```python
-class DeterministicActor: ...   # -> tanh -> [-2, 2]
-class DoubleCritic: ...         # Q1, Q2
-def ddpg_td3_step(batch, nets, cfg): ...    # cfg 切换三处修复
-class SACActor: ...             # 高斯 + tanh 压缩（log_prob 的 tanh 修正项）
-def sac_step(batch, nets, alpha, cfg): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `DeterministicActor` — -> tanh -> [-2, 2]
+- `DoubleCritic` — Q1, Q2
+- `ddpg_td3_step` — cfg 切换三处修复
+- `SACActor` — 高斯 + tanh 压缩（log_prob 的 tanh 修正项）
+- `sac_step` — sac_step
 
-```python
-# T1: 确定性策略梯度与数值梯度一致（rel err < 1e-4，小网络）
-# T2: 双 Q min 的减偏：对照单 Q 目标，训练后 Q 估计 vs 实际回报偏差
-# T3: tanh 压缩 log_prob：包含 -Σ log(1 - tanh(u)^2) 修正项（无此项则概率不归一）
-# T4: 延迟更新计数：actor 参数在非更新步严格不变
-```
+- 接口骨架：[`../../code/lab31-continuous-control/skeleton.py`](../../code/lab31-continuous-control/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab31-continuous-control/selftest.py`](../../code/lab31-continuous-control/selftest.py)
+- 实验入口：`cd code/lab31-continuous-control && uv sync && uv run run_lab31.py`
+
 
 ## 3. 对照实验
 

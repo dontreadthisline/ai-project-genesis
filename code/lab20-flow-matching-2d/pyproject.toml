@@ -1,0 +1,10 @@
+[project]
+name = "lab20-flow-matching-2d"
+version = "0.1.0"
+description = "实验 20: 见讲义 docs/stage3-generative-models/lab20-flow-matching-2d.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

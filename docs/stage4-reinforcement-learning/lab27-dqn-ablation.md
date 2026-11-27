@@ -44,20 +44,15 @@ $$
 
 ## 2. 实现任务
 
-```python
-def ddqn_target(q_online, q_target, s_next, r, gamma, done): ...   # 1.2
-class DuelingQNet: ...   # 共享 trunk + V head + A head
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `ddqn_target` — 1.2
+- `DuelingQNet` — 共享 trunk + V head + A head
 
-```python
-# T1: 偏差数值实验：动作数 k ∈ {2, 4, 8, 16}，噪声 N(0,1)，
-#     E[max ε] 随 k 增大（MC 1e6 次），记录数值 vs 理论量级
-# T2: Double 目标手算：给定两网络的 Q 值张量，验证选/评分离的计算
-# T3: Dueling 恒等性：A 加常数 c、V 减 c 后 Q 不变
-# T4: Dueling 输出与普通 QNet 接口一致（形状与 argmax 语义）
-```
+- 接口骨架：[`../../code/lab27-dqn-ablation/skeleton.py`](../../code/lab27-dqn-ablation/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab27-dqn-ablation/selftest.py`](../../code/lab27-dqn-ablation/selftest.py)
+- 实验入口：`cd code/lab27-dqn-ablation && uv sync && uv run run_lab27.py`
+
 
 ## 3. 对照实验
 

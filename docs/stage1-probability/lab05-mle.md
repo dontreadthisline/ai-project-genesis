@@ -113,52 +113,16 @@ $$
 
 在 `estimators.py` 中：
 
-```python
-import mlx.core as mx
+实现清单（模块与接口见源码）：
 
-def gaussian_nll(theta: tuple[float, float], samples) -> float:
-    """负对数似然均值：-mean(log N(x | mu, sigma2))。sigma2 > 0。"""
-    ...
+- `gaussian_nll` — 负对数似然均值：-mean(log N(x | mu, sigma2))。sigma2 > 0。
+- `gaussian_mle` — 闭式解 (mu_hat, sigma2_hat)，sigma2 用 1/n。
+- `gaussian_map` — 已知 sigma2 时的 mu_MAP，用 1.6 的精度加权公式。
 
-def gaussian_mle(samples) -> tuple[float, float]:
-    """闭式解 (mu_hat, sigma2_hat)，sigma2 用 1/n。"""
-    ...
+- 模块源码：[`code/lab05-mle/`](../../code/lab05-mle/)
+- 自测断言（红灯标准）：`run_lab05.py` 的 `check_implementation()`
+- 实验入口：`cd code/lab05-mle && uv run run_lab05.py`
 
-def gaussian_map(samples, mu0: float, tau2: float, sigma2: float) -> float:
-    """已知 sigma2 时的 mu_MAP，用 1.6 的精度加权公式。"""
-    ...
-```
-
-自测（fp64；网格搜索向量化——MLX 惰性求值下，广播一次算完 (M,S) 网格比逐点循环快得多，这本身就是重要的 MLX 实践）：
-
-```python
-import math
-import mlx.core as mx
-
-mx.set_default_device(mx.cpu)   # 本阶段小规模统计计算：fp64 检验与 linalg 均需 CPU
-mx.random.seed(0)
-
-# T1: 闭式解确实是 NLL 最小值 —— 向量化网格搜索对照
-x = 1.5 + 2.0 * mx.random.normal((500,), dtype=mx.float64)   # mean=1.5, var=4
-mu_hat, s2_hat = gaussian_mle(x)
-ms = mx.linspace(1.2, 1.8, 81)[:, None, None]               # (81,1,1)
-ss = mx.linspace(3.4, 4.4, 101)[None, :, None]              # (1,101,1)
-xc = x[None, None, :]                                       # (1,1,500)
-nll = mx.mean(0.5 * (math.log(2*math.pi) + mx.log(ss) + (xc - ms)**2 / ss), axis=2)
-idx = int(mx.argmin(nll.reshape(-1)).item())
-i, j = divmod(idx, 101)
-assert abs(float(ms[i, 0, 0]) - mu_hat) < 0.01 and abs(float(ss[0, j, 0]) - s2_hat) < 0.01
-
-# T2: 精度对照 —— mu_hat == x.mean()，sigma2_hat == x.var()（ddof=0）
-assert abs(mu_hat - x.mean().item()) < 1e-12
-assert abs(s2_hat - x.var().item()) < 1e-12
-
-# T3: MAP 收敛检查：n 大时 MAP -> MLE；强先验(mu0=0, tau2=1e-6)时 MAP -> 0
-big = 5.0 + 1.0 * mx.random.normal((100_000,))
-mx.eval(big)
-assert abs(gaussian_map(big, mu0=0.0, tau2=1.0, sigma2=1.0) - big.mean().item()) < 1e-3
-assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
-```
 
 ## 3. 对照实验设计
 
@@ -178,18 +142,12 @@ assert abs(gaussian_map(x[:5], mu0=0.0, tau2=1e-6, sigma2=4.0)) < 1e-3
 - 图 4（E4）：$3 \times 3$ 热力图或折线族：MAP 随 $\tau^2$ 与 $n$ 的收缩行为。预期：强先验 + 小样本时 MAP 明显偏离 MLE 被拉向 0；$n = 500$ 时所有 $\tau^2$ 下 MAP 与 MLE 几乎重合。
 - 图 5（E5）：污染高斯数据上 $\hat\sigma^2$ 的抽样分布 vs 干净高斯数据上的对照。混合方差 $= 0.9 \times 4 + 0.1 \times 36 = 8.4$，预期 $\hat\sigma^2$ 稳定收敛到 8.4 附近而非 4，分布宽得多——说明 MLE 无偏性只在模型正确设定时成立，错设下它收敛到 KL 投影的参数。
 
-## 5. 观测指标（metrics.json）
+## 5. 观测指标
 
-```json
-{
-  "E1_mu_dist": {"n5": {"mean": ..., "sd": ...}, "n100": {...}, "n1e4": {...}},
-  "E1_sigma2_dist": {"n5": {"mean": ..., "true": 4.0, "bias": ...}, ...},
-  "E2_bias_curve": {"n": [5, 10, 30, 100, 1000, 10000], "bias_1_over_n": [...], "bias_1_over_n_minus_1": [...]},
-  "E3_sd_vs_theory": {"n10": {"emp": ..., "theo": ...}, ...},
-  "E5_misspec": {"gaussian_data_mean_s2hat": ..., "contaminated_data_mean_s2hat": ...},
-  "T_all_passed": true
-}
-```
+以下指标在实验运行后写入 `output/metrics.json`（键名与 §3 对照实验表的因变量对应；写入逻辑见 `run_lab05.py`）：
+
+
+
 
 ## 6. 结果分析
 

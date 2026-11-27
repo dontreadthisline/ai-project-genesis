@@ -52,22 +52,16 @@ $$
 
 LeNet 风格：`conv5x5(s=2) 1→6 → tanh → avgpool2 → conv5x5(s=1) 6→16 → tanh → pool → flatten → fc120 → fc84 → fc10`。手写卷积前向（im2col 或直接双循环）与反向（前向的转置）。
 
-```python
-class Conv2d:   # weight (C_out, C_in, K, K)
-    def forward(self, x): ...    # x (N, C_in, H, W)
-    def backward(self, grad): ...
-class Pool2d:   # 非重叠 max/avg，无参数
-class Flatten: ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `Conv2d` — weight (C_out, C_in, K, K)
+- `Pool2d` — 非重叠 max/avg，无参数
+- `Flatten` — Flatten
 
-```python
-# T1: 卷积前向与朴素双循环参考实现 allclose（随机 3x3 输入）
-# T2: Conv2d 反向与数值梯度一致（rel err < 1e-6）
-# T3: 输出尺寸公式：28x28, K=5, s=1, p=2 -> 28x28；s=2, p=0 -> 12x12
-# T4: 参数量手算与实现一致：conv5x5(6,1) = 156；fc(120, 16*4*4) = 30840
-```
+- 接口骨架：[`../../code/lab09-cnn-vs-mlp/skeleton.py`](../../code/lab09-cnn-vs-mlp/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab09-cnn-vs-mlp/selftest.py`](../../code/lab09-cnn-vs-mlp/selftest.py)
+- 实验入口：`cd code/lab09-cnn-vs-mlp && uv sync && uv run run_lab09.py`
+
 
 ## 3. 对照实验
 

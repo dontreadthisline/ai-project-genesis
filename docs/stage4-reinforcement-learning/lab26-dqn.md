@@ -51,22 +51,17 @@ $\theta^-$ 是目标网络参数（滞后副本），$\mathcal D$ 是 replay 分
 
 </div>
 
-```python
-class QNet: ...                        # 4 -> 128 -> 128 -> 4
-class ReplayBuffer: ...                # 环形缓冲：push / sample(batch)
-def dqn_train(env_fn, steps, cfg): ... # ε 衰减、目标网络同步、梯度步
-def eval_policy(qnet, env, episodes): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `QNet` — 4 -> 128 -> 128 -> 4
+- `ReplayBuffer` — 环形缓冲：push / sample(batch)
+- `dqn_train` — ε 衰减、目标网络同步、梯度步
+- `eval_policy` — eval_policy
 
-```python
-# T1: Buffer 环形覆盖：容量 N 填 2N 条后，内容为后 N 条（FIFO 语义）
-# T2: 目标网络滞后：软更新前后 ||θ-θ-|| 变化符合公式 τ(θ-θ-)
-# T3: Huber 梯度：|err|>δ 处梯度恒为 δ（数值验证）
-# T4: 训练后 Q 估计 vs 实际回报：对贪心策略，E[Q(s, a*)] 与
-#     实际折扣回报均值一致（容差放宽，同一量级且 Q ≥ 回报可解释 max 偏差）
-```
+- 接口骨架：[`../../code/lab26-dqn/skeleton.py`](../../code/lab26-dqn/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab26-dqn/selftest.py`](../../code/lab26-dqn/selftest.py)
+- 实验入口：`cd code/lab26-dqn && uv sync && uv run run_lab26.py`
+
 
 ## 3. 对照实验
 

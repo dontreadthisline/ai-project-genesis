@@ -1,0 +1,10 @@
+[project]
+name = "lab39-dpo"
+version = "0.1.0"
+description = "实验 39: 见讲义 docs/stage5-llm/lab39-dpo.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]

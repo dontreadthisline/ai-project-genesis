@@ -66,20 +66,16 @@ $\log\frac{\pi}{\pi_{ref}}$ 的期望正是 $-D_{KL}(\pi \| \pi_{ref})$ 的被�
 
 偏好数据构造（可验证）：算术任务中正确回答为 $y_w$、错误为 $y_l$（多种错误类型：算错/格式错/胡说）；一部分 $y_w$ 用 SFT 模型采样生成保证 on-distribution。
 
-```python
-def dpo_loss(pi_logpw, ref_logpw, pi_logpl, ref_logpl, beta): ...
-def get_logps(model, sequences, completion_mask): ...   # 逐 token logprob 求和（mask）
-def dpo_train(model, ref_model, pairs, cfg): ...
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `dpo_loss` — 逐 token logprob 求和（mask）
+- `get_logps` — 逐 token logprob 求和（mask）
+- `dpo_train` — dpo_train
 
-```python
-# T1: 平局退化：y_w == y_l 时 loss == ln 2 ≈ 0.693（ratio 差为 0 → σ(0)）
-# T2: 极限行为：π == ref 时 loss == ln 2；π(w)↑ π(l)↓ 时 loss → 0
-# T3: 隐式奖励公式：用 1.2 反解式数值验证训练中的 r̂ 单调性
-# T4: β 扫描的梯度范数：β 大则更新小（同一 batch）
-```
+- 接口骨架：[`../../code/lab39-dpo/skeleton.py`](../../code/lab39-dpo/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab39-dpo/selftest.py`](../../code/lab39-dpo/selftest.py)
+- 实验入口：`cd code/lab39-dpo && uv sync && uv run run_lab39.py`
+
 
 ## 3. 对照实验
 

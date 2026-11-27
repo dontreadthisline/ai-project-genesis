@@ -54,21 +54,17 @@ $z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon,\ \epsilon \sim \mathcal N(0, I
 
 encoder：$784 \to 256 \to (\mu, \log\sigma^2)$ 各 2 维；decoder：$2 \to 256 \to 784$ sigmoid。
 
-```python
-class Encoder: ...    # 输出 mu (B,2), logvar (B,2)
-class Decoder: ...
-def reparameterize(mu, logvar): ...
-def vae_loss(x, recon, mu, logvar, beta=1.0): ...   # 返回 (loss, recon_term, kl_term)
-```
+实现清单（签名与 TODO 见骨架源码）：
 
-自测：
+- `Encoder` — 输出 mu (B,2), logvar (B,2)
+- `Decoder` — 返回 (loss, recon_term, kl_term)
+- `reparameterize` — 返回 (loss, recon_term, kl_term)
+- `vae_loss` — 返回 (loss, recon_term, kl_term)
 
-```python
-# T1: KL 闭式对照：随机制 (mu, logvar) 手算 1.3 公式 == vae_loss 的 kl 项（1e-6）
-# T2: logvar 数值稳定：encoder 输出 clamp 到 [-10, 10]，exp 不上溢
-# T3: ELBO ≤ log p 的方向检查：训练后 ELBO 单调上升
-# T4: 重参数化梯度存在：对 mu 的数值梯度 == 解析梯度（单样本噪声固定时，rel err < 1e-5）
-```
+- 接口骨架：[`../../code/lab15-vae/skeleton.py`](../../code/lab15-vae/skeleton.py)
+- 自测断言（红灯标准，实现完成前应全部失败）：[`../../code/lab15-vae/selftest.py`](../../code/lab15-vae/selftest.py)
+- 实验入口：`cd code/lab15-vae && uv sync && uv run run_lab15.py`
+
 
 ## 3. 对照实验
 

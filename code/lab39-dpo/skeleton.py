@@ -1,0 +1,6 @@
+"""Lab 39 接口骨架。TODO 注释即实现要求，讲义见 docs 对应章节。"""
+
+def dpo_loss(pi_logpw, ref_logpw, pi_logpl, ref_logpl, beta): ...
+def get_logps(model, sequences, completion_mask): ...   # 逐 token logprob 求和（mask）
+def dpo_train(model, ref_model, pairs, cfg): ...
+

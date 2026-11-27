@@ -1,0 +1,10 @@
+[project]
+name = "lab29-actor-critic"
+version = "0.1.0"
+description = "实验 29: 见讲义 docs/stage4-reinforcement-learning/lab29-actor-critic.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlx",
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+]
