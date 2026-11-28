@@ -19,7 +19,7 @@ for (let r = 0; r < 4; r++) {
     x += w + 8;
   }
 }
-F.text(360, 300, '「最低」高频 → 先合并；token 数单调下降', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 300, '\\text{「最低」高频} \\to \\text{先合并；} token \\text{数单调下降}', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab32-tokenizer", "compression-curve", "1.3", 300, "词表大小的边际收益",
@@ -46,8 +46,8 @@ for (let i = 0; i < 6; i++) {
 F.text(40, 82, '输入', { size: 17, color: F.P.ink, anchor: 'end' });
 F.text(40, 172, '目标', { size: 17, color: F.P.green, anchor: 'end' });
 for (let i = 0; i < 5; i++) F.arrow(104 + i * 100, 104, 154 + i * 100, 150, { width: 1.1, color: F.P.dim });
-F.text(360, 240, '位置 t 的目标 = 位置 t+1 的输入（左移一位）', { size: 16, color: F.P.dim, anchor: 'middle' });
-F.text(654, 215, 'label = −100', { size: 13, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 240, '\\text{位置} t \\text{的目标} = \\text{位置} t+1 \\text{的输入（左移一位）}', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(654, 215, 'label = -100', { size: 13, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab33-data-pipeline", "packing-boundary", "1.4", 300, "Sequence Packing 的边界",
@@ -60,7 +60,7 @@ for (let i = 0; i < 12; i++) {
          fill: doc ? 'rgba(58,74,168,0.1)' : 'rgba(26,127,55,0.1)', size: 13 });
 }
 F.arrow(70 + 7 * 50 - 4, 160, 70 + 7 * 50 - 4, 96, { color: 'rgba(200,60,60,0.8)', width: 2, label: '边界：不可跨看', labelDy: 24 });
-F.text(360, 200, '利用率 > 95%（对照不打包的 ~65%）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 200, '\\text{利用率} > 95% \\text{（对照不打包的} ~65% \\text{）}', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab34-gpt", "gpt-stack", "1.1", 320, "GPT 的组件栈",
@@ -72,7 +72,7 @@ for (let i = 0; i < stack.length; i++) {
   F.box({ x: 150, y: 250 - i * 56, w: 380, h: 44, label: stack[i], fill: 'rgba(58,74,168,0.06)', size: 15 });
   if (i < stack.length - 1) F.arrow(340, 250 - i * 56, 340, 250 - i * 56 - 12, { width: 1.4 });
 }
-F.text(600, 130, 'logits (B,T,V)', { size: 15, color: F.P.deep, anchor: 'start' });
+F.mtex(600, 130, 'logits (B,T,V)', { size: 15, color: F.P.deep, anchor: 'start' });
 """)
 
 fig("lab34-gpt", "param-budget", "1.2", 310, "参数量：12Ld² 的分层账",
@@ -82,9 +82,9 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 3.2, y0: 0, y1: 9, labels: ['', 'd² 的倍数'] });
 F.vbar(0.6, 4, { w: 0.55, fill: 'rgba(58,74,168,0.25)' });
 F.vbar(1.6, 8, { w: 0.55, fill: 'rgba(26,127,55,0.25)' });
-F.text(0.6, 4.6, 'MHA 4d²', { size: 16, color: F.P.ink, anchor: 'middle' });
-F.text(1.6, 8.6, 'FFN 8d²', { size: 16, color: F.P.green, anchor: 'middle' });
-F.text(2.8, 4.2, '每 Block\\n12d²', { size: 16, color: F.P.deep, anchor: 'middle' });
+F.mtex(0.6, 4.6, 'MHA 4d^2', { size: 16, color: F.P.ink, anchor: 'middle' });
+F.mtex(1.6, 8.6, 'FFN 8d^2', { size: 16, color: F.P.green, anchor: 'middle' });
+F.mtex(2.8, 4.2, '\\text{每} Block\\n12d^2', { size: 16, color: F.P.deep, anchor: 'middle' });
 F.text(1.2, 1.4, 'FFN 占 2/3——宽比深便宜', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
@@ -105,7 +105,7 @@ fig("lab35-pretraining", "ppl-scale", "1.3", 300, "困惑度与规模",
 const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 64, x1: 512, y0: 4, y1: 20, labels: ['d', 'PPL'] });
 F.curve(d => 19 - 14 * Math.exp(-0.009 * (d - 64)), { t0: 64, t1: 512, color: F.P.ink, width: 2.3, label: '验证集', labelAt: 300 });
-F.text(150, 7, 'PPL=10：每个位置等效 10 选 1', { size: 15, color: F.P.dim });
+F.mtex(150, 7, 'PPL=10 \\text{：每个位置等效} 10 \\text{选} 1', { size: 15, color: F.P.dim });
 """)
 
 fig("lab36-inference", "kv-cache", "1.2", 330, "KV Cache：省掉重复劳动",
@@ -120,12 +120,12 @@ for (const [x0, tag, col] of [[60, '无 cache', F.P.dim], [400, '有 cache', F.P
   }
   if (tag === '无 cache') {
     for (let i = 0; i < 4; i++) { F.box({ x: x0 + i * 52, y: 70, w: 44, h: 40, fill: 'rgba(200,60,60,0.2)', label: '×', color: 'rgba(150,60,60,0.9)', size: 13 }); }
-    F.text(x0 + 104, 190, '每步全部重算（琥珀+红叉）', { size: 14, color: F.P.dim, anchor: 'middle' });
+    F.mtex(x0 + 104, 190, '\\text{每步全部重算（琥珀} + \\text{红叉）}', { size: 14, color: F.P.dim, anchor: 'middle' });
   } else {
-    F.text(x0 + 130, 190, '只算新 token（琥珀）', { size: 14, color: F.P.dim, anchor: 'middle' });
+    F.mtex(x0 + 130, 190, '\\text{只算新} token \\text{（琥珀）}', { size: 14, color: F.P.dim, anchor: 'middle' });
   }
 }
-F.text(360, 240, '延迟: 线性恶化 → 近乎平坦（512 长度差一个量级）', { size: 16, color: F.P.deep, anchor: 'middle' });
+F.mtex(360, 240, '\\text{延迟} : \\text{线性恶化} \\to \\text{近乎平坦（} 512 \\text{长度差一个量级）}', { size: 16, color: F.P.deep, anchor: 'middle' });
 """)
 
 fig("lab36-inference", "temperature-shapes", "1.1", 300, "温度与截断的分布形态",
@@ -152,10 +152,10 @@ const segs = [['<指令>', 'rgba(0,0,0,0.06)', 150], ['<回复>', 'rgba(26,127,5
 let x = 100;
 for (const [tag, fill, w] of segs) {
   F.box({ x, y: 80, w, h: 56, label: tag, fill, size: 16 });
-  F.text(x + w / 2, 170, 'label = ' + (tag.includes('指令') ? '−100（全掩）' : 'y_t（正常）'), { size: 15, color: tag.includes('指令') ? F.P.dim : F.P.green, anchor: 'middle' });
+  F.mtex(x + w / 2, 170, 'label =' + (tag.includes('指令') ? '−100（全掩）' : 'y_t（正常）'), { size: 15, color: tag.includes('指令') ? F.P.dim : F.P.green, anchor: 'middle' });
   x += w + 14;
 }
-F.text(360, 230, '分母 = |completion|（不是序列总长）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 230, '\\text{分母} = |completion| \\text{（不是序列总长）}', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab37-sft", "forgetting", "1.3", 290, "灾难性遗忘的量级",
@@ -165,10 +165,10 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 3, y0: 0, y1: 1.1, labels: ['', '归一值'] });
 F.vbar(0.7, 0.15, { w: 0.5, fill: 'rgba(58,74,168,0.2)' });
 F.vbar(1.3, 0.88, { w: 0.5, fill: 'rgba(58,74,168,0.35)' });
-F.text(1.0, 0.02, '任务准确率（SFT 前→后）', { size: 15, color: F.P.ink, anchor: 'middle' });
+F.mtex(1.0, 0.02, '\\text{任务准确率（} SFT \\text{前} \\to \\text{后）}', { size: 15, color: F.P.ink, anchor: 'middle' });
 F.vbar(2.2, 0.5, { w: 0.5, fill: 'rgba(26,127,55,0.2)' });
 F.vbar(2.8, 0.56, { w: 0.5, fill: 'rgba(26,127,55,0.35)' });
-F.text(2.5, 0.02, '通用 PPL（升 ~10%）', { size: 15, color: F.P.green, anchor: 'middle' });
+F.mtex(2.5, 0.02, '\\text{通用} PPL \\text{（升} ~10% \\text{）}', { size: 15, color: F.P.green, anchor: 'middle' });
 """)
 
 fig("lab38-lora", "lora-structure", "1.1", 300, "LoRA：冻结主干 + 低秩旁路",
@@ -181,9 +181,9 @@ F.box({ x: 170, y: 40, w: 64, h: 40, label: 'B (d×r), =0', fill: 'rgba(26,127,5
 F.arrow(128, 80, 172, 80, { color: F.P.green, width: 1.6, label: '×', labelDy: -10 });
 F.path('M 96 120 L 96 80', { color: F.P.green, width: 1.4 });
 F.path('M 202 80 L 202 120', { arrow: true, color: F.P.green, width: 1.4 });
-F.text(300, 150, '+', { size: 28, color: F.P.ink });
-F.text(340, 150, 'h = W₀x + (α/r)·BAx', { size: 16, color: F.P.deep, anchor: 'start' });
-F.text(360, 220, 'r=8, d=256：可训练参数 6.25%', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(300, 150, '+', { size: 28, color: F.P.ink });
+F.mtex(340, 150, 'h = W_0x + (\\alpha/r)\\cdotBAx', { size: 16, color: F.P.deep, anchor: 'start' });
+F.mtex(360, 220, 'r=8, d=256 \\text{：可训练参数} 6.25%', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab38-lora", "param-vs-quality", "1.3", 300, "低秩的饱和点",
@@ -193,7 +193,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 26, y0: 0.5, y1: 1.0, labels: ['可训练参数 %（r=2/8/32）', '相对全量的效果'] });
 for (const [r, xp] of [[2, 1.6], [8, 6.3], [32, 25]]) {
   F.vbar(xp, 0.72 + 0.012 * r, { w: 1.2, fill: 'rgba(58,74,168,0.25)' });
-  F.text(xp, 0.56, 'r=' + r, { size: 15, color: F.P.deep, anchor: 'middle' });
+  F.mtex(xp, 0.56, 'r=' + r, { size: 15, color: F.P.deep, anchor: 'middle' });
 }
 F.curve(t => 0.95 + 0.03 / (1 + 8 / t), { t0: 1, t1: 25, color: F.P.green, width: 1.8, rough: false, label: '全量对照', labelAt: 14 });
 """)
@@ -205,7 +205,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -5, x1: 5, y0: 0, y1: 1.05, labels: ['r_w − r_l', 'P(y_w ≻ y_l)'] });
 F.curve(t => 1 / (1 + Math.exp(-t)), { t0: -5, t1: 5, color: F.P.ink, width: 2.4, label: 'σ(Δr)', labelAt: -3.4 });
 F.vbar(0, 0.5, { w: 0.03, fill: 'rgba(0,0,0,0.3)', color: 'rgba(0,0,0,0)', width: 0 });
-F.text(0.3, 0.56, '平局: loss = ln2 ≈ 0.693', { size: 15, color: F.P.dim, anchor: 'start' });
+F.mtex(0.3, 0.56, '\\text{平局} : loss = ln2 \\approx 0.693', { size: 15, color: F.P.dim, anchor: 'start' });
 """)
 
 fig("lab39-dpo", "implicit-reward-shift", "1.3", 320, "DPO 的隐式奖励搬家",
@@ -228,7 +228,7 @@ F.axis({ x0: -4, x1: 4, y0: 0, y1: 0.55, labels: ['RM 分数', '密度'] });
 const gauss = (x, m, s) => Math.exp(-((x - m) ** 2) / (2 * s * s)) / (s * 2.51);
 F.curve(x => gauss(x, 1.3, 0.8), { t0: -4, t1: 4, color: F.P.green, width: 2.2, label: 'r(x, y_w)', labelAt: 2.6 });
 F.curve(x => gauss(x, -1.3, 0.8), { t0: -4, t1: 4, color: F.P.ink, width: 2.2, label: 'r(x, y_l)', labelAt: -2.6 });
-F.text(0, 0.5, '重叠区 = 难样本（梯度最大）', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(0, 0.5, '\\text{重叠区} = \\text{难样本（梯度最大）}', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab40-reward-model", "length-bias", "1.3", 290, "RM 的表面特征依赖",
@@ -238,7 +238,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 4, y0: 0, y1: 3, labels: ['log 长度', 'RM 分数'] });
 F.curve(t => 1.4 + 0.55 * t, { t0: 0.1, t1: 3.9, color: F.P.ink, width: 2.3, label: '实测漂移', labelAt: 1.0 });
 F.curve(t => 1.4, { t0: 0.1, t1: 3.9, color: F.P.green, width: 1.4, rough: false, label: '理想（应无关）', labelAt: 2.6 });
-F.text(1.8, 0.6, '偏倚 = 未来被策略利用的空间', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(1.8, 0.6, '\\text{偏倚} = \\text{未来被策略利用的空间}', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab41-grpo", "group-advantage", "1.1", 330, "组内相对优势",
@@ -253,9 +253,9 @@ for (let i = 0; i < 8; i++) {
   F.vbar(i + 0.72, (rs[i] - mean) / sd, { w: 0.3, fill: 'rgba(26,127,55,0.3)' });
 }
 F.curve(t => 0, { t0: 0, t1: 8, color: 'rgba(0,0,0,0.2)', width: 0.8, rough: false });
-F.text(0.55, 1.45, 'r（左蓝）', { size: 14, color: F.P.ink, anchor: 'middle' });
+F.mtex(0.55, 1.45, 'r \\text{（左蓝）}', { size: 14, color: F.P.ink, anchor: 'middle' });
 F.text(1.05, 1.45, 'Â（右绿）', { size: 14, color: F.P.green, anchor: 'middle' });
-F.text(4, -1.45, 'mean=0.5, std=0.53 → Â = ±0.94', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(4, -1.45, 'mean=0.5, std=0.53 \\to Â = \\pm0.94', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab41-grpo", "signal-band", "1.3", 310, "学习带：隐式课程",
@@ -325,7 +325,7 @@ for (const [i, m] of [[0.6, 0.38], [1.6, 0.62], [2.6, 0.55], [3.6, 0.30]]) {
   F.text(i, m + 0.07, (m * 100).toFixed(0) + '%', { size: 15, color: F.P.deep, anchor: 'middle' });
   F.vbar(i + 0.26, m + 0.07, { w: 0.02, fill: 'rgba(0,0,0,0.4)', color: 'rgba(0,0,0,0)', width: 0 });
 }
-F.text(2.1, 0.12, '±2se ≈ ±7%（n=200）', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(2.1, 0.12, '\\pm2se \\approx \\pm7% \\text{（} n=200 \\text{）}', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab44-reward-design", "proxy-vs-true", "1.2", 320, "Reward Hacking 的标准图式",
@@ -335,7 +335,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 100, y0: 0, y1: 1.05, labels: ['训练', '归一值'] });
 F.curve(t => 1 - Math.exp(-0.04 * t), { t0: 0, t1: 100, color: F.P.ink, width: 2.3, label: '代理奖励 R', labelAt: 62 });
 F.curve(t => 0.45 + 0.08 * Math.sin(t * 0.15) * Math.exp(-0.01 * t) - 0.12 / (1 + Math.exp(0.1 * (50 - t))), { t0: 0, t1: 100, color: F.P.green, width: 2.1, label: '真实成功率 R*', labelAt: 62 });
-F.text(35, 0.25, '差集 = hack 的空间', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(35, 0.25, '\\text{差集} = hack \\text{的空间}', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab44-reward-design", "weight-pareto", "1.3", 300, "成本惩罚的 Pareto 前沿",
@@ -348,7 +348,7 @@ for (const [s, acc] of [[3, 0.3], [4.2, 0.55], [5.5, 0.72], [7, 0.78], [9, 0.74]
   F.text(s, acc, '●', { size: 16, color: F.P.ink, anchor: 'middle' });
 }
 F.curve(t => 0.9 - 0.5 * Math.exp(-0.5 * (t - 3)), { t0: 3.2, t1: 8.8, color: F.P.amber, width: 1.8, rough: false, label: '前沿', labelAt: 6.5 });
-F.text(9.2, 0.68, 'w_c 过强：\\n跳步乱答', { size: 13, color: F.P.dim, anchor: 'start' });
+F.mtex(9.2, 0.68, 'w_c \\text{过强：} \\n \\text{跳步乱答}', { size: 13, color: F.P.dim, anchor: 'start' });
 """)
 
 fig("lab45-agent-rl", "seven-steps", "1.3", 300, "训练闭环的七步",
@@ -361,7 +361,7 @@ for (let i = 0; i < steps.length; i++) {
   if (i < 6) F.arrow(118 + i * 92, 120, 130 + i * 92, 120, { width: 1.6 });
 }
 F.path('M 40 120 C 10 120, 10 190, 120 190 L 600 190 C 670 190, 670 120, 640 145', { arrow: true, color: F.P.amber, width: 1.6, opacity: 0.6 });
-F.text(360, 218, 'on-policy：数据用完即弃（多步下 off-policy 偏差被复合放大）', { size: 14, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 218, 'on-policy \\text{：数据用完即弃（多步下} off-policy \\text{偏差被复合放大）}', { size: 14, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab45-agent-rl", "before-after", "1.4", 300, "训练改变的是什么",

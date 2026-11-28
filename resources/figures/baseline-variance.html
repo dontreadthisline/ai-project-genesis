@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">$\mathbb E[b\nabla\log\pi] = 0$（与动作无关的 $b$ 不动期望）；$G_t - b(s)$ 去中心化后，恒正回报环境里梯度不再一律推高所有动作。</div>
 <script>
 
@@ -30,7 +34,7 @@ F.vbar(2.0, 3.1, { w: 0.55, fill: 'rgba(58,74,168,0.25)' });
 F.vbar(3.2, 1.2, { w: 0.55, fill: 'rgba(26,127,55,0.25)' });
 F.text(0.8, 9.8, '无 b', { size: 17, color: F.P.deep, anchor: 'middle' });
 F.text(2.0, 3.7, '常数 b', { size: 17, color: F.P.ink, anchor: 'middle' });
-F.text(3.2, 1.8, 'V(s) 基线', { size: 17, color: F.P.green, anchor: 'middle' });
+F.mtex(3.2, 1.8, 'V(s) \text{基线}', { size: 17, color: F.P.green, anchor: 'middle' });
 F.text(2, 0.6, '期望不变、方差逐级下降', { size: 16, color: F.P.dim, anchor: 'middle' });
 
 </script>

@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">$\hat\sigma^2_{1/n}$ 系统性低估（$-\sigma^2/n$），$1/(n-1)$ 版本无偏：小样本下两者差异显著，随 $n$ 消失。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 2, x1: 60, y0: 0.5, y1: 1.05, labels: ['n', 'E[σ̂²]/σ²'] });
 F.curve(n => 1 - 1 / n, { t0: 2, t1: 60, color: F.P.ink, width: 2.2, label: '1/n 版', labelAt: 8 });
 F.curve(n => 1, { t0: 2, t1: 60, color: F.P.green, width: 1.8, rough: false, label: '1/(n−1) 版', labelAt: 20 });
-F.text(6, 0.62, 'n=5 时低估 20%', { size: 16, color: F.P.dim });
+F.mtex(6, 0.62, 'n=5 \text{时低估} 20%', { size: 16, color: F.P.dim });
 
 </script>
 </body>

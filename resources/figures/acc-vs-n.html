@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">小数据时 CNN 的先验值钱（百级样本仍可用）；数据增大后先验被数据替代、差距收窄——偏置-方差互换的直接观测。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 2, x1: 5, y0: 0.3, y1: 1.0, labels: ['log n', 'acc'] });
 F.curve(t => 0.34 + 0.6 / (1 + Math.exp(-2.6 * (t - 3.4))), { t0: 2, t1: 5, color: F.P.ink, width: 2.3, label: 'CNN', labelAt: 2.6 });
 F.curve(t => 0.25 + 0.68 / (1 + Math.exp(-3.4 * (t - 4.4))), { t0: 2, t1: 5, color: F.P.dim, width: 1.8, label: 'MLP', labelAt: 2.6 });
-F.text(2.05, 0.9, 'n=100：差距最大', { size: 15, color: F.P.dim, anchor: 'start' });
+F.mtex(2.05, 0.9, 'n=100 \text{：差距最大}', { size: 15, color: F.P.dim, anchor: 'start' });
 
 </script>
 </body>

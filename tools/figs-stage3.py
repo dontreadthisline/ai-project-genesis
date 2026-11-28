@@ -6,7 +6,7 @@ fig("lab15-vae", "vae-latent", "1.2", 340, "VAE 的二维潜空间",
 const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -3.4, x1: 3.4, y0: -2.8, y1: 2.8, labels: ['z₁', 'z₂'] });
 F.ellipse({ rx: 2.3, ry: 2.3, color: F.P.dim, opacity: 0.5, width: 1.4 });
-F.text(1.7, 2.4, '先验 N(0, I)', { size: 16, color: F.P.dim });
+F.mtex(1.7, 2.4, '\\text{先验} N(0, I)', { size: 16, color: F.P.dim });
 for (const [c, col] of [[-1.6, F.P.ink], [1.6, F.P.green], [0, F.P.amber]]) {
   for (let i = 0; i < 45; i++) {
     const a = F.rnd() * 6.28, r = Math.abs(F.gauss()) * 0.55;
@@ -29,7 +29,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 20, y0: 0, y1: 1.05, labels: ['epoch', '值（归一）'] });
 F.curve(t => 1 / (1 + Math.exp(-0.7 * (t - 7))), { t0: 0, t1: 20, color: F.P.ink, width: 2.3, label: '重构项 ↑', labelAt: 4 });
 F.curve(t => 1 / (1 + Math.exp(0.7 * (t - 4.5))), { t0: 0, t1: 20, color: F.P.amber, width: 2.1, label: 'KL 项 ↓', labelAt: 6 });
-F.text(12.5, 0.35, 'β 大 → KL 压得更低、重构更糊', { size: 15, color: F.P.dim });
+F.mtex(12.5, 0.35, '\\beta \\text{大} \\to KL \\text{压得更低、重构更糊}', { size: 15, color: F.P.dim });
 """)
 
 fig("lab16-reparameterization", "two-gradients", "1.1", 310, "两条梯度路径",
@@ -44,7 +44,7 @@ F.arrow(124, 143, 190, 143, { width: 2, label: '梯度可传', labelDy: -12 });
 F.arrow(300, 143, 360, 143, { width: 2 });
 F.arrow(450, 143, 530, 143, { width: 2 });
 F.text(360, 230, 'pathwise：∇f · ∇z —— 局部、低方差', { size: 16, color: F.P.ink, anchor: 'middle' });
-F.text(360, 262, 'score：f(z) ∇log q(z|θ) —— 幅度进方差', { size: 16, color: F.P.amber, anchor: 'middle' });
+F.mtex(360, 262, 'score \\text{：} f(z) ∇log q(z|\\theta) —— \\text{幅度进方差}', { size: 16, color: F.P.amber, anchor: 'middle' });
 """)
 
 fig("lab16-reparameterization", "variance-ratio", "1.2", 300, "两种估计的方差差",
@@ -67,7 +67,7 @@ F.curve(t => {
   const a = Math.exp(-t * t / 2) / 2.5066, b = Math.exp(-(((t - 1.8) ** 2)) / 1.4) / 2.107;
   return a / (a + b) * 0.5;
 }, { t0: -4, t1: 4, color: F.P.amber, width: 2.1, rough: false, label: 'D*(x)/2', labelAt: 0.6 });
-F.text(-2.6, 0.44, '重叠区 D* ≈ 0.5', { size: 15, color: F.P.dim });
+F.mtex(-2.6, 0.44, '\\text{重叠区} D* \\approx 0.5', { size: 15, color: F.P.dim });
 """)
 
 fig("lab17-gan", "loss-oscillation", "1.4", 310, "GAN 训练的拉锯",
@@ -77,7 +77,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 50, y0: 0, y1: 2.2, labels: ['step', 'loss'] });
 F.curve(t => 1.1 + 0.35 * Math.sin(t * 0.7) * Math.exp(-0.01 * t), { t0: 0, t1: 50, color: F.P.ink, width: 2.1, label: 'D loss', labelAt: 38 });
 F.curve(t => 1.05 - 0.3 * Math.sin(t * 0.7 + 0.5) * Math.exp(-0.01 * t), { t0: 0, t1: 50, color: F.P.green, width: 2.1, label: 'G loss', labelAt: 38 });
-F.text(9, 2.0, '围绕均衡水平震荡 = 健康', { size: 16, color: F.P.dim });
+F.mtex(9, 2.0, '\\text{围绕均衡水平震荡} = \\text{健康}', { size: 16, color: F.P.dim });
 """)
 
 fig("lab18-flow", "flow-transform", "1.1", 330, "可逆变换的密度传输",
@@ -87,14 +87,14 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -3.6, x1: 6.2, y0: -2.8, y1: 2.8, labels: ['', ''] });
 for (let i = 0; i < 120; i++) F.text(-2 + F.gauss() * 0.8, F.gauss() * 0.8, '·', { size: 19, color: F.P.dim });
 F.ellipse({ cx: -2, rx: 1.7, ry: 1.7, color: F.P.dim, opacity: 0.5, width: 1.4 });
-F.text(-2, -2.3, 'z ~ N(0, I)', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(-2, -2.3, 'z ~ N(0, I)', { size: 17, color: F.P.dim, anchor: 'middle' });
 F.arrow(-0.1, 0, 2.2, 0, { label: 'f（可逆）', width: 2.2, labelDy: -14 });
 for (let i = 0; i < 130; i++) {
   const b = F.rnd() < 0.5;
   F.text((b ? -1.9 : 1.9) + F.gauss() * 0.55, F.gauss() * 1.15, '·', { size: 19, color: F.P.ink });
 }
 F.ellipse({ cx: 4.5, rx: 1.9, ry: 1.35, color: F.P.ink, opacity: 0.6, width: 1.5 });
-F.text(4.5, -2.3, 'x = f(z)', { size: 17, color: F.P.deep, anchor: 'middle' });
+F.mtex(4.5, -2.3, 'x = f(z)', { size: 17, color: F.P.deep, anchor: 'middle' });
 """)
 
 fig("lab18-flow", "logdet-compensation", "1.2", 300, "Jacobian 行列式的补偿",
@@ -103,8 +103,8 @@ fig("lab18-flow", "logdet-compensation", "1.2", 300, "Jacobian 行列式的补�
 const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -2, x1: 2, y0: -4, y1: 4, labels: ['Σs', 'log|det J|'] });
 F.curve(t => t, { t0: -2, t1: 2, color: F.P.ink, width: 2.3, label: 'log det = Σs', labelAt: 1.1 });
-F.text(-1.2, 2.6, 's < 0：压缩\\n密度增大', { size: 15, color: F.P.green, anchor: 'start' });
-F.text(0.9, -2.9, 's > 0：拉伸\\n密度稀释', { size: 15, color: F.P.dim, anchor: 'start' });
+F.mtex(-1.2, 2.6, 's < 0 \\text{：压缩} \\n \\text{密度增大}', { size: 15, color: F.P.green, anchor: 'start' });
+F.mtex(0.9, -2.9, 's > 0 \\text{：拉伸} \\n \\text{密度稀释}', { size: 15, color: F.P.dim, anchor: 'start' });
 """)
 
 fig("lab19-ddpm", "noise-chain", "1.1", 300, "前向加噪链",
@@ -117,10 +117,10 @@ for (let i = 0; i < 5; i++) {
   F.box({ x: bx, y: 90, w: 96, h: 96, label: '', fill: 'rgba(58,74,168,' + (0.05 + 0.55 * a).toFixed(2) + ')' });
   for (let k = 0; k < 22; k++)
     F.text(bx + 10 + F.rnd() * 76, 100 + F.rnd() * 76, '·', { size: 13, color: 'rgba(0,0,0,' + (0.5 * a + 0.08).toFixed(2) + ')' });
-  F.text(bx + 48, 210, 't=' + (i * 75 || '0'), { size: 16, color: F.P.dim, anchor: 'middle' });
+  F.mtex(bx + 48, 210, 't=' + (i * 75 || '0'), { size: 16, color: F.P.dim, anchor: 'middle' });
   if (i < 4) F.arrow(bx + 98, 138, bx + 132, 138, { width: 1.5 });
 }
-F.text(360, 250, 'ᾱt: 1 → 0（信号 → 噪声）', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 250, 'ᾱt: 1 \\to 0 \\text{（信号} \\to \\text{噪声）}', { size: 17, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab19-ddpm", "loss-by-t", "1.2", 310, "按噪声水平的损失分布",
@@ -156,7 +156,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 6, y0: 0, y1: 1, labels: ['ODE 步数', '生成质量'] });
 F.curve(t => 1 - Math.exp(-0.9 * t), { t0: 0.2, t1: 6, color: F.P.ink, width: 2.3, label: '1 − e^{−0.9·NFE}', labelAt: 2.2 });
 F.curve(t => 0.9, { t0: 0.2, t1: 6, color: F.P.green, width: 1.3, rough: false, label: '实用阈', labelAt: 4.4 });
-F.text(0.6, 0.42, '5-8 步即可用', { size: 16, color: F.P.dim });
+F.mtex(0.6, 0.42, '5-8 \\text{步即可用}', { size: 16, color: F.P.dim });
 """)
 
 fig("lab21-flow-matching-mnist", "time-embedding", "1.2", 300, "时间条件化",

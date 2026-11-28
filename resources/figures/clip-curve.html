@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+</div>
 <div class="caption">$J = \min(\rho A, \mathrm{clip}(\rho, 1 \pm \epsilon) A)$：$A > 0$ 时上限 $1+\epsilon$（好动作别提过头）、$A < 0$ 时下限 $1-\epsilon$——越界即梯度归零。</div>
 <script>
 
@@ -30,9 +34,9 @@ F.curve(t => Math.max(t, 0.8) * -0.9, { t0: 0.4, t1: 1.6, color: F.P.green, widt
 F.curve(t => 0, { t0: 0.4, t1: 1.6, color: 'rgba(0,0,0,0.25)', width: 0.8, rough: false });
 F.vbar(0.8, 1.28, { w: 0.006, fill: 'rgba(0,0,0,0.3)', color: 'rgba(0,0,0,0)', width: 0 });
 F.vbar(1.2, 1.28, { w: 0.006, fill: 'rgba(0,0,0,0.3)', color: 'rgba(0,0,0,0)', width: 0 });
-F.text(0.66, -1.15, '1−ε', { size: 15, color: F.P.dim, anchor: 'middle' });
-F.text(1.34, -1.15, '1+ε', { size: 15, color: F.P.dim, anchor: 'middle' });
-F.text(1.42, 0.7, 'ρ > 1+ε：\nA>0 梯度归零', { size: 14, color: F.P.dim, anchor: 'start' });
+F.mtex(0.66, -1.15, '1-\epsilon', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(1.34, -1.15, '1+\epsilon', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(1.42, 0.7, '\rho > 1+\epsilon \text{：} \nA>0 \text{梯度归零}', { size: 14, color: F.P.dim, anchor: 'start' });
 
 </script>
 </body>

@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+</div>
 <div class="caption">$\hat A^{(n)}$ 是 TD 误差的加权和：$n=1$ 低方差高偏差（critic 主导），$n \to T$ 匹配 MC——$\lambda$ 是这条光谱的连续插值（GAE）。</div>
 <script>
 
@@ -29,7 +33,7 @@ for (const [n, col] of [[1, F.P.ink], [5, F.P.amber], [20, F.P.dim]]) {
   F.curve(t => (n === 1 ? 1.0 - 0.05 * t / 20 : n === 5 ? 1.04 - 0.12 * Math.abs(t - 6) / 14 : 1.08 - 0.3 * t / 20),
            { t0: 1, t1: 20, color: col, width: 2.0, label: 'n=' + n, labelAt: 13 });
 }
-F.text(4, 0.55, 'n 大 → MC 化 → 震荡', { size: 15, color: F.P.dim });
+F.mtex(4, 0.55, 'n \text{大} \to MC \text{化} \to \text{震荡}', { size: 15, color: F.P.dim });
 
 </script>
 </body>

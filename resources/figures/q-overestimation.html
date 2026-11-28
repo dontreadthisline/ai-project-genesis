@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">$\max$ 是凸算子：$\mathbb E[\max_i \epsilon_i] > 0$ 且随动作数与噪声增大——Q-Learning 的 Q 值系统性高于真实回报，自举逐轮放大。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 1, x1: 16, y0: 0, y1: 2.2, labels: ['动作数 k', 'E[max ε]（σ=1）'] });
 F.curve(k => Math.sqrt(2 * Math.log(k)), { t0: 1, t1: 16, color: F.P.ink, width: 2.3, label: '≈ √(2 ln k)', labelAt: 5 });
 for (let k = 1; k <= 16; k++) F.vbar(k, Math.sqrt(2 * Math.log(Math.max(k, 1.0001))), { w: 0.25, fill: 'rgba(58,74,168,0.22)' });
-F.text(6.5, 1.0, '4 动作时 ≈ 1.03σ', { size: 15, color: F.P.dim });
+F.mtex(6.5, 1.0, '4 \text{动作时} \approx 1.03\sigma', { size: 15, color: F.P.dim });
 
 </script>
 </body>

@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+</div>
 <div class="caption">prompt 段 label 全 $-100$（不学「生成指令」），损失归一化只除以 completion token 数——指令模板高度重复时不掩码会过拟合模板而非映射。</div>
 <script>
 
@@ -28,10 +32,10 @@ const segs = [['<指令>', 'rgba(0,0,0,0.06)', 150], ['<回复>', 'rgba(26,127,5
 let x = 100;
 for (const [tag, fill, w] of segs) {
   F.box({ x, y: 80, w, h: 56, label: tag, fill, size: 16 });
-  F.text(x + w / 2, 170, 'label = ' + (tag.includes('指令') ? '−100（全掩）' : 'y_t（正常）'), { size: 15, color: tag.includes('指令') ? F.P.dim : F.P.green, anchor: 'middle' });
+  F.mtex(x + w / 2, 170, 'label =' + (tag.includes('指令') ? '−100（全掩）' : 'y_t（正常）'), { size: 15, color: tag.includes('指令') ? F.P.dim : F.P.green, anchor: 'middle' });
   x += w + 14;
 }
-F.text(360, 230, '分母 = |completion|（不是序列总长）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 230, '\text{分母} = |completion| \text{（不是序列总长）}', { size: 16, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

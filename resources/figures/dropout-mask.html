@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="290" viewBox="0 0 720 290"></svg>
+</div>
 <div class="caption">训练时以概率 $p$ 置零并除以 $1-p$：期望不变、推理无需缩放——$2^n$ 个子网共享参数的隐式集成。</div>
 <script>
 
@@ -31,7 +35,7 @@ for (let i = 0; i < 2; i++) for (let j = 0; j < n; j++) {
          fill: drop ? 'rgba(0,0,0,0.03)' : 'rgba(26,127,55,0.1)',
          color: drop ? F.P.dim : F.P.green, width: 1.1, size: 14 });
 }
-F.text(x0 + 3.5 * cw, y0 + 2.7 * ch, '两次前向 = 两个子网（共享参数）', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(x0 + 3.5 * cw, y0 + 2.7 * ch, '\text{两次前向} = \text{两个子网（共享参数）}', { size: 17, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

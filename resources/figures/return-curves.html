@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">Q-Learning 训练期回报更低（探索时掉崖）但最终策略更优；SARSA 反之——学什么（最优 vs 当前策略的值）与学得稳不稳是两回事。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 100, y0: -110, y1: -5, labels: ['episode', '回报'] });
 F.curve(t => -95 + 82 / (1 + Math.exp(-0.08 * (t - 40))), { t0: 0, t1: 100, color: F.P.ink, width: 2.2, label: 'Q（训练期）', labelAt: 15 });
 F.curve(t => -80 + 60 / (1 + Math.exp(-0.08 * (t - 30))), { t0: 0, t1: 100, color: F.P.green, width: 2.1, label: 'SARSA', labelAt: 15 });
-F.text(45, -30, 'Q 终态 −13 > SARSA −20\n（策略本身 Q 更优）', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(45, -30, 'Q \text{终态} -13 > SARSA -20\n \text{（策略本身} Q \text{更优）}', { size: 15, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

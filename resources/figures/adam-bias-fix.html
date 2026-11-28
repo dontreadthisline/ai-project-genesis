@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+</div>
 <div class="caption">前几步 $m_t$ 是 $g(1 - \beta_1^t)$ 的有偏估计；$\hat m = m/(1-\beta_1^t)$ 修正后，常数梯度下有效步长立即达到 $\eta$。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 1, x1: 40, y0: 0, y1: 1.15, labels: ['t', 'm / g'] });
 F.curve(t => 1 - Math.pow(0.9, t), { t0: 1, t1: 40, color: F.P.ink, width: 2.2, label: 'm_t（有偏）', labelAt: 14 });
 F.curve(t => 1, { t0: 1, t1: 40, color: F.P.amber, width: 1.8, rough: false, label: 'm̂ 修正后', labelAt: 24 });
-F.text(3.5, 0.42, 't=1 时 m 只有 0.1·g', { size: 15, color: F.P.dim });
+F.mtex(3.5, 0.42, 't=1 \text{时} m \text{只有} 0.1\cdotg', { size: 15, color: F.P.dim });
 
 </script>
 </body>

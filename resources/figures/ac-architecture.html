@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">共享骨干、两个头：策略头输出 logits、价值头输出标量 $V(s)$——优势 $\delta = r + \gamma V(s') - V(s)$ 同时喂两头。</div>
 <script>
 
@@ -31,8 +35,8 @@ F.box({ x: 400, y: 192, w: 150, h: 48, label: '价值头 V(s)', fill: 'rgba(26,1
 F.arrow(130, 150, 190, 150, { width: 2 });
 F.path('M 300 150 C 350 150, 350 84, 400 84', { arrow: true, color: F.P.ink, width: 1.8 });
 F.path('M 300 150 C 350 150, 350 216, 400 216', { arrow: true, color: F.P.green, width: 1.8 });
-F.text(590, 90, '→ logits', { size: 15, color: F.P.ink, anchor: 'start' });
-F.text(590, 222, '→ 标量', { size: 15, color: F.P.green, anchor: 'start' });
+F.mtex(590, 90, '\to logits', { size: 15, color: F.P.ink, anchor: 'start' });
+F.mtex(590, 222, '\to \text{标量}', { size: 15, color: F.P.green, anchor: 'start' });
 
 </script>
 </body>

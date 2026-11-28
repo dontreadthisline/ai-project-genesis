@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,15 +21,17 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">耦合层 $\det J = \exp(\sum s)$：$s > 0$ 拉伸（密度稀释）、$s < 0$ 压缩（密度增浓）——对数似然里以 $-\log|\det|$ 记账。</div>
 <script>
 
 const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -2, x1: 2, y0: -4, y1: 4, labels: ['Σs', 'log|det J|'] });
 F.curve(t => t, { t0: -2, t1: 2, color: F.P.ink, width: 2.3, label: 'log det = Σs', labelAt: 1.1 });
-F.text(-1.2, 2.6, 's < 0：压缩\n密度增大', { size: 15, color: F.P.green, anchor: 'start' });
-F.text(0.9, -2.9, 's > 0：拉伸\n密度稀释', { size: 15, color: F.P.dim, anchor: 'start' });
+F.mtex(-1.2, 2.6, 's < 0 \text{：压缩} \n \text{密度增大}', { size: 15, color: F.P.green, anchor: 'start' });
+F.mtex(0.9, -2.9, 's > 0 \text{：拉伸} \n \text{密度稀释}', { size: 15, color: F.P.dim, anchor: 'start' });
 
 </script>
 </body>

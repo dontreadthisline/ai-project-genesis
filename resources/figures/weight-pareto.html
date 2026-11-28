@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">$w_c$ 扫描：步数与成功率的交换曲线——过强的 $w_c$ 诱发「跳步瞎答」，过弱封不住空转刷分；前沿上的点才是可用配置。</div>
 <script>
 
@@ -30,7 +34,7 @@ for (const [s, acc] of [[3, 0.3], [4.2, 0.55], [5.5, 0.72], [7, 0.78], [9, 0.74]
   F.text(s, acc, '●', { size: 16, color: F.P.ink, anchor: 'middle' });
 }
 F.curve(t => 0.9 - 0.5 * Math.exp(-0.5 * (t - 3)), { t0: 3.2, t1: 8.8, color: F.P.amber, width: 1.8, rough: false, label: '前沿', labelAt: 6.5 });
-F.text(9.2, 0.68, 'w_c 过强：\n跳步乱答', { size: 13, color: F.P.dim, anchor: 'start' });
+F.mtex(9.2, 0.68, 'w_c \text{过强：} \n \text{跳步乱答}', { size: 13, color: F.P.dim, anchor: 'start' });
 
 </script>
 </body>

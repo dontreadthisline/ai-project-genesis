@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+</div>
 <div class="caption">$D^*(x) = p_{data}/(p_{data} + p_g)$（橙）在两分布重叠处取中间值；博弈均衡 $p_g = p_{data}$ 时 $D^* \equiv 1/2$，$C(G) = -\log 4$。</div>
 <script>
 
@@ -31,7 +35,7 @@ F.curve(t => {
   const a = Math.exp(-t * t / 2) / 2.5066, b = Math.exp(-(((t - 1.8) ** 2)) / 1.4) / 2.107;
   return a / (a + b) * 0.5;
 }, { t0: -4, t1: 4, color: F.P.amber, width: 2.1, rough: false, label: 'D*(x)/2', labelAt: 0.6 });
-F.text(-2.6, 0.44, '重叠区 D* ≈ 0.5', { size: 15, color: F.P.dim });
+F.mtex(-2.6, 0.44, '\text{重叠区} D* \approx 0.5', { size: 15, color: F.P.dim });
 
 </script>
 </body>

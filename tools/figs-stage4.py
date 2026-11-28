@@ -24,7 +24,7 @@ F.arrow(cx, cy + 52, cx, cy + 118, { label: '意图: 下', width: 2.4, labelDy: 
 F.arrow(cx + 60, cy + 30, cx + 60, cy + 96, { label: '下 1/3', width: 1.6, color: F.P.dim, labelDy: 16 });
 F.arrow(cx + 130, cy - 10, cx + 130, cy - 74, { label: '左 1/3', width: 1.6, color: F.P.dim, labelDy: -10 });
 F.arrow(cx + 200, cy - 10, cx + 200, cy - 74, { label: '右 1/3', width: 1.6, color: F.P.dim, labelDy: -10 });
-F.text(cx + 230, cy + 60, 'P(s\\'|s,a)：环境说了算', { size: 16, color: F.P.deep, anchor: 'start' });
+F.mtex(cx + 230, cy + 60, 'P(s\\'|s,a)：环境说了算', { size: 16, color: F.P.deep, anchor: 'start' });
 """)
 
 
@@ -35,9 +35,9 @@ const F = Fig(document.getElementById('fig'));
 const g = [[0.1,0.16,0.24,0.36],[0.07,0,0.33,0],[0.11,0.2,0.45,0],[0,0.7,0.85,1.0]];
 F.axis({ x0: 0, x1: 5.4, y0: 0, y1: 4.4, labels: ['', ''], pad: [24, 24, 24, 24], bare: true });
 F.heat(g, { x: 0.25, y: 0.25, cw: 1.2, ch: 1.02 });
-F.text(4.85, 3.95, 'G', { size: 20, color: F.P.green });
-F.text(0.6, 0.6, 'S', { size: 20, color: F.P.deep });
-F.text(2.7, 4.15, 'v* ≈ γ^d（距目标步数 d）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(4.85, 3.95, 'G', { size: 17, color: '#1a7f37' });
+F.mtex(0.6, 0.6, 'S', { size: 17, color: '#2c3a8c' });
+F.mtex(2.7, 4.15, 'v* \\approx \\gamma^d \\text{（距目标步数} d \\text{）}', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab24-dynamic-programming", "vi-convergence", "1.3", 300, "值迭代的几何收敛",
@@ -49,7 +49,7 @@ for (const [g, col] of [[0.5, F.P.dim], [0.9, F.P.ink]]) {
   F.curve(t => -2 + t * Math.log(g), { t0: 0, t1: Math.min(30, 46 * Math.abs(Math.log(0.9) / Math.log(g)) * 0.6),
              color: col, width: 2.2, label: 'γ=' + g, labelAt: 4 });
 }
-F.text(16, -4.5, 'γ=0.5 每步误差减半', { size: 15, color: F.P.dim });
+F.mtex(16, -4.5, '\\gamma=0.5 \\text{每步误差减半}', { size: 15, color: F.P.dim });
 """)
 
 fig("lab25-sarsa-qlearning", "cliff-path", "1.2", 320, "悬崖行走：两种理性",
@@ -63,7 +63,7 @@ F.box({ x: x0, y: y0, w: cw - 5, h: ch - 5, label: 'S', fill: 'rgba(58,74,168,0.
 F.box({ x: x0 + (n - 1) * cw, y: y0, w: cw - 5, h: ch - 5, label: 'G', fill: 'rgba(26,127,55,0.25)' });
 // Q 路径: 贴崖
 for (let j = 0; j < n - 1; j++) F.text(x0 + j * cw + 24, y0 + 1.6 * ch, '·', { size: 24, color: F.P.ink });
-F.text(300, 45, 'Q-Learning：贴崖（−13，探索时坠落）', { size: 15, color: F.P.ink, anchor: 'middle' });
+F.mtex(300, 45, 'Q-Learning \\text{：贴崖（} -13 \\text{，探索时坠落）}', { size: 15, color: F.P.ink, anchor: 'middle' });
 // SARSA 路径: 绕一层
 for (let j = 0; j < n - 1; j++) F.text(x0 + j * cw + 24, y0 + 2.6 * ch, '·', { size: 24, color: F.P.green });
 F.text(300, 235, 'SARSA：绕行（−20，探索下稳）', { size: 15, color: F.P.green, anchor: 'middle' });
@@ -77,7 +77,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 100, y0: -110, y1: -5, labels: ['episode', '回报'] });
 F.curve(t => -95 + 82 / (1 + Math.exp(-0.08 * (t - 40))), { t0: 0, t1: 100, color: F.P.ink, width: 2.2, label: 'Q（训练期）', labelAt: 15 });
 F.curve(t => -80 + 60 / (1 + Math.exp(-0.08 * (t - 30))), { t0: 0, t1: 100, color: F.P.green, width: 2.1, label: 'SARSA', labelAt: 15 });
-F.text(45, -30, 'Q 终态 −13 > SARSA −20\\n（策略本身 Q 更优）', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(45, -30, 'Q \\text{终态} -13 > SARSA -20\\n \\text{（策略本身} Q \\text{更优）}', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab26-dqn", "replay-target", "1.2", 300, "两个解药各治一病",
@@ -90,7 +90,7 @@ F.box({ x: 320, y: 60, w: 150, h: 52, label: 'Replay Buffer', fill: 'rgba(58,74,
 F.box({ x: 320, y: 150, w: 150, h: 52, label: 'Target Network θ⁻', fill: 'rgba(58,74,168,0.08)' });
 F.arrow(170, 86, 320, 86, { label: '打散相关性', width: 2, labelDy: -12 });
 F.arrow(170, 176, 320, 176, { label: '冻结 y', width: 2, labelDy: -12 });
-F.text(360, 240, '致命三要素：函数近似 + 自举 + off-policy', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 240, '\\text{致命三要素：函数近似} + \\text{自举} + off-policy', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab26-dqn", "component-ablation", "1.3", 310, "组件的阶梯",
@@ -110,7 +110,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 1, x1: 16, y0: 0, y1: 2.2, labels: ['动作数 k', 'E[max ε]（σ=1）'] });
 F.curve(k => Math.sqrt(2 * Math.log(k)), { t0: 1, t1: 16, color: F.P.ink, width: 2.3, label: '≈ √(2 ln k)', labelAt: 5 });
 for (let k = 1; k <= 16; k++) F.vbar(k, Math.sqrt(2 * Math.log(Math.max(k, 1.0001))), { w: 0.25, fill: 'rgba(58,74,168,0.22)' });
-F.text(6.5, 1.0, '4 动作时 ≈ 1.03σ', { size: 15, color: F.P.dim });
+F.mtex(6.5, 1.0, '4 \\text{动作时} \\approx 1.03\\sigma', { size: 15, color: F.P.dim });
 """)
 
 fig("lab27-dqn-ablation", "q-vs-return", "1.2", 310, "高估的可视证据",
@@ -133,7 +133,7 @@ F.vbar(2.0, 3.1, { w: 0.55, fill: 'rgba(58,74,168,0.25)' });
 F.vbar(3.2, 1.2, { w: 0.55, fill: 'rgba(26,127,55,0.25)' });
 F.text(0.8, 9.8, '无 b', { size: 17, color: F.P.deep, anchor: 'middle' });
 F.text(2.0, 3.7, '常数 b', { size: 17, color: F.P.ink, anchor: 'middle' });
-F.text(3.2, 1.8, 'V(s) 基线', { size: 17, color: F.P.green, anchor: 'middle' });
+F.mtex(3.2, 1.8, 'V(s) \\text{基线}', { size: 17, color: F.P.green, anchor: 'middle' });
 F.text(2, 0.6, '期望不变、方差逐级下降', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)
 
@@ -144,7 +144,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 100, y0: 0, y1: 1.5, labels: ['episode', '熵 (nats)'] });
 F.curve(t => 0.25 + 1.1 * Math.exp(-0.06 * t), { t0: 0, t1: 100, color: F.P.ink, width: 2.3, label: 'H(π)', labelAt: 30 });
 F.curve(t => Math.log(4), { t0: 0, t1: 100, color: F.P.dim, width: 1.3, rough: false, label: 'ln 4（均匀）', labelAt: 60 });
-F.text(50, 0.5, '熵 < 0.3：接近确定策略', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(50, 0.5, '\\text{熵} < 0.3 \\text{：接近确定策略}', { size: 15, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab29-actor-critic", "ac-architecture", "1.1", 300, "Actor-Critic 双头",
@@ -158,8 +158,8 @@ F.box({ x: 400, y: 192, w: 150, h: 48, label: '价值头 V(s)', fill: 'rgba(26,1
 F.arrow(130, 150, 190, 150, { width: 2 });
 F.path('M 300 150 C 350 150, 350 84, 400 84', { arrow: true, color: F.P.ink, width: 1.8 });
 F.path('M 300 150 C 350 150, 350 216, 400 216', { arrow: true, color: F.P.green, width: 1.8 });
-F.text(590, 90, '→ logits', { size: 15, color: F.P.ink, anchor: 'start' });
-F.text(590, 222, '→ 标量', { size: 15, color: F.P.green, anchor: 'start' });
+F.mtex(590, 90, '\\to logits', { size: 15, color: F.P.ink, anchor: 'start' });
+F.mtex(590, 222, '\\to \\text{标量}', { size: 15, color: F.P.green, anchor: 'start' });
 """)
 
 fig("lab29-actor-critic", "nstep-spectrum", "1.3", 310, "n-step：偏差-方差光谱",
@@ -171,7 +171,7 @@ for (const [n, col] of [[1, F.P.ink], [5, F.P.amber], [20, F.P.dim]]) {
   F.curve(t => (n === 1 ? 1.0 - 0.05 * t / 20 : n === 5 ? 1.04 - 0.12 * Math.abs(t - 6) / 14 : 1.08 - 0.3 * t / 20),
            { t0: 1, t1: 20, color: col, width: 2.0, label: 'n=' + n, labelAt: 13 });
 }
-F.text(4, 0.55, 'n 大 → MC 化 → 震荡', { size: 15, color: F.P.dim });
+F.mtex(4, 0.55, 'n \\text{大} \\to MC \\text{化} \\to \\text{震荡}', { size: 15, color: F.P.dim });
 """)
 
 fig("lab30-ppo", "clip-curve", "1.2", 330, "Clipped 目标的分段语义",
@@ -184,9 +184,9 @@ F.curve(t => Math.max(t, 0.8) * -0.9, { t0: 0.4, t1: 1.6, color: F.P.green, widt
 F.curve(t => 0, { t0: 0.4, t1: 1.6, color: 'rgba(0,0,0,0.25)', width: 0.8, rough: false });
 F.vbar(0.8, 1.28, { w: 0.006, fill: 'rgba(0,0,0,0.3)', color: 'rgba(0,0,0,0)', width: 0 });
 F.vbar(1.2, 1.28, { w: 0.006, fill: 'rgba(0,0,0,0.3)', color: 'rgba(0,0,0,0)', width: 0 });
-F.text(0.66, -1.15, '1−ε', { size: 15, color: F.P.dim, anchor: 'middle' });
-F.text(1.34, -1.15, '1+ε', { size: 15, color: F.P.dim, anchor: 'middle' });
-F.text(1.42, 0.7, 'ρ > 1+ε：\\nA>0 梯度归零', { size: 14, color: F.P.dim, anchor: 'start' });
+F.mtex(0.66, -1.15, '1-\\epsilon', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(1.34, -1.15, '1+\\epsilon', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(1.42, 0.7, '\\rho > 1+\\epsilon \\text{：} \\nA>0 \\text{梯度归零}', { size: 14, color: F.P.dim, anchor: 'start' });
 """)
 
 fig("lab30-ppo", "kl-earlystop", "1.4", 300, "信任域的守门员",

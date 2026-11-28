@@ -21,6 +21,8 @@ TPL = """<!DOCTYPE html>
     src: url(../fonts/caveat-500.woff2) format('woff2'); }}
   body {{ margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }}
   .fig {{ display: block; margin: 0 auto; }}
+  .figwrap {{ position: relative; width: 720px; margin: 0 auto; }}
+  .mtx {{ font-family: -apple-system, "PingFang SC", sans-serif; }}
   .caption {{ text-align: center; padding: 4px 24px 10px; color: #5a6078; }}
 </style>
 <script src="../js/sketch.js"></script>
@@ -32,7 +34,9 @@ TPL = """<!DOCTYPE html>
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="{height}" viewBox="0 0 720 {height}"></svg>
+</div>
 <div class="caption">{caption}</div>
 <script>
 {js}
@@ -71,8 +75,8 @@ for (let i = 0; i < 600; i++) {
   const x = z1 * 0.95, y = 0.8 * x + 0.57 * z2;   // rho=0.8
   if (Math.abs(x - 1.2) < 0.35) F.text(x, y, '·', { size: 19, color: F.P.amber });
 }
-F.text(1.35, 2.3, 'x = x₀ 窄带', { size: 17, color: F.P.amber });
-F.text(2.7, 1.55, 'p(y | x₀)', { size: 16, color: F.P.deep, anchor: 'start' });
+F.mtex(1.35, 2.3, 'x = x_0 \\text{窄带}', { size: 17, color: F.P.amber });
+F.mtex(2.7, 1.55, 'p(y | x_0)', { size: 16, color: F.P.deep, anchor: 'start' });
 // 右缘内嵌条件密度(钟形点列, 均值0.96 方差0.36)
 for (let i = 0; i <= 26; i++) {
   const t = -1.9 + 3.4 * i / 26;
@@ -95,7 +99,7 @@ for (const sg of [1, -1]) {
   }, { color: sg > 0 ? F.P.ink : F.P.green, r: 2.1 });
   F.ellipse({ rx: 1.85, ry: 0.75, rot, color: sg > 0 ? F.P.ink : F.P.green, opacity: 0.6 });
 }
-F.text(0, -2.5, '整体协方差 ≈ 0，但结构全在相关性里', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(0, -2.5, '\\text{整体协方差} \\approx 0 \\text{，但结构全在相关性里}', { size: 17, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab03-monte-carlo", "convergence", "1.2", 330, "Monte Carlo 收敛速率",
@@ -145,7 +149,7 @@ F.curve(t => H(0.7, 0.3) + (0.7 * Math.log(0.7 / t) + 0.3 * Math.log(0.3 / (1 - 
 F.curve(t => 0.7 * Math.log(0.7 / t) + 0.3 * Math.log(0.3 / (1 - t)),
         { t0: 0.02, t1: 0.98, color: F.P.amber, width: 1.8, label: 'D_KL', labelAt: 0.3 });
 F.vbar(0.7, 1.35, { w: 0.012, fill: 'rgba(0,0,0,0.25)', color: 'rgba(0,0,0,0)', width: 0 });
-F.text(0.72, 0.12, 't = 0.7 = P(1)', { size: 16, color: F.P.deep, anchor: 'start' });
+F.mtex(0.72, 0.12, 't = 0.7 = P(1)', { size: 16, color: F.P.deep, anchor: 'start' });
 """)
 
 fig("lab04-entropy-kl", "kl-asymmetry", "1.3", 300, "KL 的不对称",
@@ -161,10 +165,10 @@ const pairs = [
 for (const p of pairs) {
   F.vbar(p.x, p.fwd, { w: 0.5, fill: 'rgba(58,74,168,0.25)' });
   F.vbar(p.x + 0.9, p.rev, { w: 0.5, fill: 'rgba(26,127,55,0.25)' });
-  F.text(p.x + 0.7, -0.32, p.tag, { size: 15, color: F.P.dim, anchor: 'middle' });
+  F.mtex(p.x + 0.7, -0.32, p.tag.replace('（相等）', '\\text{（相等）}'), { size: 13, color: '#9aa1b9' });
 }
-F.text(0.75, 1.7, 'D(P‖Q)', { size: 17, color: F.P.deep });
-F.text(4.3, 1.7, 'D(Q‖P)', { size: 17, color: F.P.green });
+F.mtex(0.75, 1.7, 'D(P\\|Q)', { size: 17, color: F.P.deep });
+F.mtex(4.3, 1.7, 'D(Q\\|P)', { size: 17, color: F.P.green });
 """)
 
 fig("lab05-mle", "likelihood-contour", "1.2", 360, "对数似然的地形",
@@ -175,7 +179,7 @@ F.axis({ x0: 2.3, x1: 3.7, y0: 1.6, y1: 6.4, labels: ['μ', 'σ²'] });
 const lvls = [{ r: 1, op: 0.75 }, { r: 2, op: 0.5 }, { r: 3.2, op: 0.32 }];
 for (const l of lvls)
   F.ellipse({ cx: 3, cy: 4, rx: 0.13 * l.r, ry: 0.42 * l.r, opacity: l.op, width: 1.6 });
-F.text(3.02, 4.1, 'μ̂ = x̄', { size: 17, color: F.P.deep, anchor: 'start' });
+F.mtex(3.02, 4.1, '\\mû = x̄', { size: 17, color: F.P.deep, anchor: 'start' });
 // 真值标记
 F.node(0, 0, {}); // noop
 F.text(2.52, 5.6, '真值 (3, 4)', { size: 15, color: F.P.dim, anchor: 'start' });
@@ -189,7 +193,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 2, x1: 60, y0: 0.5, y1: 1.05, labels: ['n', 'E[σ̂²]/σ²'] });
 F.curve(n => 1 - 1 / n, { t0: 2, t1: 60, color: F.P.ink, width: 2.2, label: '1/n 版', labelAt: 8 });
 F.curve(n => 1, { t0: 2, t1: 60, color: F.P.green, width: 1.8, rough: false, label: '1/(n−1) 版', labelAt: 20 });
-F.text(6, 0.62, 'n=5 时低估 20%', { size: 16, color: F.P.dim });
+F.mtex(6, 0.62, 'n=5 \\text{时低估} 20%', { size: 16, color: F.P.dim });
 """)
 
 

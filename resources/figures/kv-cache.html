@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+</div>
 <div class="caption">因果注意力下位置 $t$ 只看 $\le t$：历史 K/V 不变，缓存后每步只算新 token 的 $q, k, v$——$O(T^2 d) \to O(Td)$。</div>
 <script>
 
@@ -32,12 +36,12 @@ for (const [x0, tag, col] of [[60, '无 cache', F.P.dim], [400, '有 cache', F.P
   }
   if (tag === '无 cache') {
     for (let i = 0; i < 4; i++) { F.box({ x: x0 + i * 52, y: 70, w: 44, h: 40, fill: 'rgba(200,60,60,0.2)', label: '×', color: 'rgba(150,60,60,0.9)', size: 13 }); }
-    F.text(x0 + 104, 190, '每步全部重算（琥珀+红叉）', { size: 14, color: F.P.dim, anchor: 'middle' });
+    F.mtex(x0 + 104, 190, '\text{每步全部重算（琥珀} + \text{红叉）}', { size: 14, color: F.P.dim, anchor: 'middle' });
   } else {
-    F.text(x0 + 130, 190, '只算新 token（琥珀）', { size: 14, color: F.P.dim, anchor: 'middle' });
+    F.mtex(x0 + 130, 190, '\text{只算新} token \text{（琥珀）}', { size: 14, color: F.P.dim, anchor: 'middle' });
   }
 }
-F.text(360, 240, '延迟: 线性恶化 → 近乎平坦（512 长度差一个量级）', { size: 16, color: F.P.deep, anchor: 'middle' });
+F.mtex(360, 240, '\text{延迟} : \text{线性恶化} \to \text{近乎平坦（} 512 \text{长度差一个量级）}', { size: 16, color: F.P.deep, anchor: 'middle' });
 
 </script>
 </body>

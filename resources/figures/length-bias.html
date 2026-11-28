@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="290" viewBox="0 0 720 290"></svg>
+</div>
 <div class="caption">同一回答 padding 加长后分数系统性漂移：RM 容易学到长度等表面特征——用 RM 当奖励的策略会学会刷这些特征（reward hacking 的入口）。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 4, y0: 0, y1: 3, labels: ['log 长度', 'RM 分数'] });
 F.curve(t => 1.4 + 0.55 * t, { t0: 0.1, t1: 3.9, color: F.P.ink, width: 2.3, label: '实测漂移', labelAt: 1.0 });
 F.curve(t => 1.4, { t0: 0.1, t1: 3.9, color: F.P.green, width: 1.4, rough: false, label: '理想（应无关）', labelAt: 2.6 });
-F.text(1.8, 0.6, '偏倚 = 未来被策略利用的空间', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(1.8, 0.6, '\text{偏倚} = \text{未来被策略利用的空间}', { size: 15, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

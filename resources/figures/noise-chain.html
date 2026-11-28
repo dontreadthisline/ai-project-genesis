@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">$x_t = \sqrt{\bar\alpha_t}\, x_0 + \sqrt{1 - \bar\alpha_t}\, \epsilon$：$\bar\alpha_t$ 从 1 衰减到 0，结构被噪声逐步淹没，$t = T$ 时是纯噪声。</div>
 <script>
 
@@ -30,10 +34,10 @@ for (let i = 0; i < 5; i++) {
   F.box({ x: bx, y: 90, w: 96, h: 96, label: '', fill: 'rgba(58,74,168,' + (0.05 + 0.55 * a).toFixed(2) + ')' });
   for (let k = 0; k < 22; k++)
     F.text(bx + 10 + F.rnd() * 76, 100 + F.rnd() * 76, '·', { size: 13, color: 'rgba(0,0,0,' + (0.5 * a + 0.08).toFixed(2) + ')' });
-  F.text(bx + 48, 210, 't=' + (i * 75 || '0'), { size: 16, color: F.P.dim, anchor: 'middle' });
+  F.mtex(bx + 48, 210, 't=' + (i * 75 || '0'), { size: 16, color: F.P.dim, anchor: 'middle' });
   if (i < 4) F.arrow(bx + 98, 138, bx + 132, 138, { width: 1.5 });
 }
-F.text(360, 250, 'ᾱt: 1 → 0（信号 → 噪声）', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 250, 'ᾱt: 1 \to 0 \text{（信号} \to \text{噪声）}', { size: 17, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

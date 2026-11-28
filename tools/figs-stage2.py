@@ -29,7 +29,7 @@ F.axis({ x0: 0, x1: 50, y0: 0, y1: 2.4, labels: ['epoch', 'loss'] });
 F.curve(t => 2.3 / (1 + 0.28 * t) + 0.12, { t0: 0, t1: 50, color: F.P.dim, label: 'SGD', labelAt: 32 });
 F.curve(t => 2.3 / (1 + 0.65 * t) + 0.05, { t0: 0, t1: 50, color: F.P.ink, width: 2.3, label: 'Momentum', labelAt: 24 });
 F.curve(t => 2.3 / (1 + 1.5 * t) + 0.03, { t0: 0, t1: 50, color: F.P.amber, width: 2.3, label: 'Adam', labelAt: 9 });
-F.text(2, 0.35, '初始 ≈ ln 10 ≈ 2.30（随机预测）', { size: 15, color: F.P.dim });
+F.mtex(2, 0.35, '\\text{初始} \\approx ln 10 \\approx 2.30 \\text{（随机预测）}', { size: 15, color: F.P.dim });
 """)
 
 fig("lab07-optimizers", "adam-bias-fix", "1.2", 310, "Adam 偏差修正",
@@ -39,7 +39,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 1, x1: 40, y0: 0, y1: 1.15, labels: ['t', 'm / g'] });
 F.curve(t => 1 - Math.pow(0.9, t), { t0: 1, t1: 40, color: F.P.ink, width: 2.2, label: 'm_t（有偏）', labelAt: 14 });
 F.curve(t => 1, { t0: 1, t1: 40, color: F.P.amber, width: 1.8, rough: false, label: 'm̂ 修正后', labelAt: 24 });
-F.text(3.5, 0.42, 't=1 时 m 只有 0.1·g', { size: 15, color: F.P.dim });
+F.mtex(3.5, 0.42, 't=1 \\text{时} m \\text{只有} 0.1\\cdotg', { size: 15, color: F.P.dim });
 """)
 
 fig("lab08-batch-size", "variance-scaling", "1.1", 320, "梯度噪声随 batch 的缩放",
@@ -75,7 +75,7 @@ F.heat([[0.2,0.5,0.9,0.6,0.3,0.1],[0.3,0.8,1.0,0.7,0.4,0.2],[0.1,0.6,0.9,0.8,0.5
 const bx = t => 56 + (t + 0.0) * 86;
 F.box({ x: bx(1.95), y: 92, w: 84, h: 84, color: F.P.amber, fill: 'rgba(0,0,0,0)', width: 2.2 });
 F.arrow(bx(2.9) + 50, 134, bx(3.5) + 10, 134, { label: '滑动', width: 1.8, labelDy: -12 });
-F.text(360, 66, '同一个 3×3 kernel', { size: 18, color: F.P.deep, anchor: 'start' });
+F.mtex(360, 66, '\\text{同一个} 3\\times3 kernel', { size: 18, color: F.P.deep, anchor: 'start' });
 F.text(360, 96, '在所有位置复用', { size: 18, color: F.P.deep, anchor: 'start' });
 F.box({ x: 360, y: 124, w: 76, h: 76, color: F.P.ink });
 """)
@@ -87,7 +87,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 1, x1: 6, y0: 0, y1: 14, labels: ['层数 L', '感受野'] });
 F.curve(t => 1 + 2 * t, { t0: 1, t1: 6, color: F.P.ink, width: 2.2, label: '3×3 堆叠', labelAt: 1.7 });
 for (let l = 1; l <= 6; l++) F.vbar(l, 1 + 2 * l, { w: 0.18, fill: 'rgba(58,74,168,0.2)' });
-F.text(2.3, 11.8, 'L=4 → RF=9（覆盖笔画结构）', { size: 16, color: F.P.dim });
+F.mtex(2.3, 11.8, 'L=4 \\to RF=9 \\text{（覆盖笔画结构）}', { size: 16, color: F.P.dim });
 """)
 
 fig("lab10-inductive-bias", "pixel-permute", "1.1", 300, "像素打乱：先验的证据",
@@ -109,7 +109,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 2, x1: 5, y0: 0.3, y1: 1.0, labels: ['log n', 'acc'] });
 F.curve(t => 0.34 + 0.6 / (1 + Math.exp(-2.6 * (t - 3.4))), { t0: 2, t1: 5, color: F.P.ink, width: 2.3, label: 'CNN', labelAt: 2.6 });
 F.curve(t => 0.25 + 0.68 / (1 + Math.exp(-3.4 * (t - 4.4))), { t0: 2, t1: 5, color: F.P.dim, width: 1.8, label: 'MLP', labelAt: 2.6 });
-F.text(2.05, 0.9, 'n=100：差距最大', { size: 15, color: F.P.dim, anchor: 'start' });
+F.mtex(2.05, 0.9, 'n=100 \\text{：差距最大}', { size: 15, color: F.P.dim, anchor: 'start' });
 """)
 
 fig("lab11-residual", "grad-highway", "1.2", 320, "残差连接的梯度高速公路",
@@ -119,7 +119,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 2, x1: 32, y0: 0.02, y1: 1, labels: ['深度 L', '||∂L/∂h₀||'] });
 F.curve(t => Math.pow(0.93, t), { t0: 2, t1: 32, color: F.P.dim, width: 1.9, label: 'plain：0.93^L', labelAt: 12 });
 F.curve(t => 0.9 / (1 + 0.02 * t), { t0: 2, t1: 32, color: F.P.ink, width: 2.3, label: 'res：恒等项保底', labelAt: 14 });
-F.text(6.5, 0.42, 'L=32 时 plain 只剩 10%', { size: 16, color: F.P.dim });
+F.mtex(6.5, 0.42, 'L=32 \\text{时} plain \\text{只剩} 10%', { size: 16, color: F.P.dim });
 """)
 
 fig("lab11-residual", "residual-block", "1.2", 300, "残差块：学习对恒等的修正",
@@ -131,7 +131,7 @@ F.arrow(150, 143, 250, 143, { width: 1.8 });
 F.box({ x: 250, y: 106, w: 150, h: 74, label: 'F(x)  末层零初始化', fill: 'rgba(26,127,55,0.07)', color: F.P.green, size: 15 });
 F.path('M 150 143 C 200 55, 340 55, 430 132', { arrow: true, color: F.P.amber, width: 2 });
 F.text(290, 60, '恒等捷径', { size: 17, color: F.P.amber });
-F.text(214, 130, '+', { size: 26, color: F.P.ink });
+F.mtex(214, 130, '+', { size: 26, color: F.P.ink });
 F.box({ x: 430, y: 120, w: 120, h: 46, label: 'y = x + F(x)', size: 15 });
 """)
 
@@ -163,7 +163,7 @@ for (let i = 0; i < 2; i++) for (let j = 0; j < n; j++) {
          fill: drop ? 'rgba(0,0,0,0.03)' : 'rgba(26,127,55,0.1)',
          color: drop ? F.P.dim : F.P.green, width: 1.1, size: 14 });
 }
-F.text(x0 + 3.5 * cw, y0 + 2.7 * ch, '两次前向 = 两个子网（共享参数）', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(x0 + 3.5 * cw, y0 + 2.7 * ch, '\\text{两次前向} = \\text{两个子网（共享参数）}', { size: 17, color: F.P.dim, anchor: 'middle' });
 """)
 
 fig("lab13-rnn-lstm", "bptt-decay", "1.1", 320, "BPTT 的指数衰减",
@@ -190,7 +190,7 @@ F.box({ x: 170, y: 58, w: 112, h: 44, label: 'i_t ⊙ c̃_t', fill: 'rgba(26,127
 F.arrow(226, 102, 226, 130, { color: F.P.green, width: 1.8, label: '+', labelDy: -10 });
 F.box({ x: 170, y: 212, w: 112, h: 44, label: 'f_t = σ(·)', fill: 'rgba(191,135,0,0.08)', color: F.P.amber });
 F.arrow(226, 212, 226, 182, { color: F.P.amber, width: 1.6 });
-F.text(400, 153, 'h_t = o_t ⊙ tanh(c_t) →', { size: 16, color: F.P.deep, anchor: 'start' });
+F.mtex(400, 153, 'h_t = o_t \\odot tanh(c_t) \\to', { size: 16, color: F.P.deep, anchor: 'start' });
 """)
 
 fig("lab14-attention-transformer", "causal-mask", "1.1", 310, "因果掩码：时间箭头",
@@ -203,8 +203,8 @@ for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
   F.box({ x: x0 + j * cw, y: y0 + i * ch, w: cw - 4, h: ch - 4, label: '',
          fill: 'rgba(58,74,168,' + (0.06 + 0.75 * v).toFixed(2) + ')', width: 0.6 });
 }
-F.text(x0 + n * cw / 2, y0 + n * ch + 26, '列 j = 键（被看）；行 i = 查询（看谁）', { size: 16, color: F.P.dim, anchor: 'middle' });
-F.text(x0 - 110, y0 + n * ch / 2, '上三角 = 0：未来不可见', { size: 15, color: F.P.dim });
+F.mtex(x0 + n * cw / 2, y0 + n * ch + 26, '\\text{列} j = \\text{键（被看）；行} i = \\text{查询（看谁）}', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(x0 - 110, y0 + n * ch / 2, '\\text{上三角} = 0 \\text{：未来不可见}', { size: 15, color: F.P.dim });
 """)
 
 fig("lab14-attention-transformer", "mha-flow", "1.2", 300, "多头注意力的数据流",
@@ -222,5 +222,5 @@ F.box({ x: 410, y: 130, w: 100, h: 44, label: 'concat' });
 F.box({ x: 570, y: 130, w: 76, h: 44, label: 'W^O' });
 F.arrow(326, 152, 410, 152, { width: 1.8 });
 F.arrow(510, 152, 570, 152, { width: 1.8 });
-F.text(360, 262, '√d_k 缩放 + softmax = 各自的加权平均', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 262, '\\sqrtd_k \\text{缩放} + softmax = \\text{各自的加权平均}', { size: 16, color: F.P.dim, anchor: 'middle' });
 """)

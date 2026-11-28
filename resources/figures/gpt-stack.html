@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">Embedding + 位置 → $L$ 个 pre-norm Block（因果 MHA + FFN）→ 最终 LN → 权重共享 LM Head——$12Ld^2$ 参数预算的分层账。</div>
 <script>
 
@@ -29,7 +33,7 @@ for (let i = 0; i < stack.length; i++) {
   F.box({ x: 150, y: 250 - i * 56, w: 380, h: 44, label: stack[i], fill: 'rgba(58,74,168,0.06)', size: 15 });
   if (i < stack.length - 1) F.arrow(340, 250 - i * 56, 340, 250 - i * 56 - 12, { width: 1.4 });
 }
-F.text(600, 130, 'logits (B,T,V)', { size: 15, color: F.P.deep, anchor: 'start' });
+F.mtex(600, 130, 'logits (B,T,V)', { size: 15, color: F.P.deep, anchor: 'start' });
 
 </script>
 </body>

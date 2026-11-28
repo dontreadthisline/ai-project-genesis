@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">普通深网梯度 $\prod_l J_l$ 指数衰减；残差块 $I + J_F$ 展开后恒等项永存——梯度下界不再乘性塌缩。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 2, x1: 32, y0: 0.02, y1: 1, labels: ['深度 L', '||∂L/∂h₀||'] });
 F.curve(t => Math.pow(0.93, t), { t0: 2, t1: 32, color: F.P.dim, width: 1.9, label: 'plain：0.93^L', labelAt: 12 });
 F.curve(t => 0.9 / (1 + 0.02 * t), { t0: 2, t1: 32, color: F.P.ink, width: 2.3, label: 'res：恒等项保底', labelAt: 14 });
-F.text(6.5, 0.42, 'L=32 时 plain 只剩 10%', { size: 16, color: F.P.dim });
+F.mtex(6.5, 0.42, 'L=32 \text{时} plain \text{只剩} 10%', { size: 16, color: F.P.dim });
 
 </script>
 </body>

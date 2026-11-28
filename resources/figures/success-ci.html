@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="290" viewBox="0 0 720 290"></svg>
+</div>
 <div class="caption">$n=200$ 时标准误 $\approx \sqrt{0.25/200} \approx 0.035$：报告必须带 $\pm 2\mathrm{se}$——Lab 03 的区间规范在 Agentic 阶段的延续。</div>
 <script>
 
@@ -30,7 +34,7 @@ for (const [i, m] of [[0.6, 0.38], [1.6, 0.62], [2.6, 0.55], [3.6, 0.30]]) {
   F.text(i, m + 0.07, (m * 100).toFixed(0) + '%', { size: 15, color: F.P.deep, anchor: 'middle' });
   F.vbar(i + 0.26, m + 0.07, { w: 0.02, fill: 'rgba(0,0,0,0.4)', color: 'rgba(0,0,0,0)', width: 0 });
 }
-F.text(2.1, 0.12, '±2se ≈ ±7%（n=200）', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(2.1, 0.12, '\pm2se \approx \pm7% \text{（} n=200 \text{）}', { size: 15, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

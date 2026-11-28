@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">两层 $3\times3$（$RF=5$，参数 $18C^2$）等价一层 $5\times5$（$25C^2$）的感受野——小核堆叠以更少参数换更多非线性。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 1, x1: 6, y0: 0, y1: 14, labels: ['层数 L', '感受野'] });
 F.curve(t => 1 + 2 * t, { t0: 1, t1: 6, color: F.P.ink, width: 2.2, label: '3×3 堆叠', labelAt: 1.7 });
 for (let l = 1; l <= 6; l++) F.vbar(l, 1 + 2 * l, { w: 0.18, fill: 'rgba(58,74,168,0.2)' });
-F.text(2.3, 11.8, 'L=4 → RF=9（覆盖笔画结构）', { size: 16, color: F.P.dim });
+F.mtex(2.3, 11.8, 'L=4 \to RF=9 \text{（覆盖笔画结构）}', { size: 16, color: F.P.dim });
 
 </script>
 </body>

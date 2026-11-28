@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">$Q, K, V$ 各自投影到 $h$ 个子空间并行计算，concat 后经 $W^O$ 融合——单头只能强调一种模式，多头各看各的。</div>
 <script>
 
@@ -35,7 +39,7 @@ F.box({ x: 410, y: 130, w: 100, h: 44, label: 'concat' });
 F.box({ x: 570, y: 130, w: 76, h: 44, label: 'W^O' });
 F.arrow(326, 152, 410, 152, { width: 1.8 });
 F.arrow(510, 152, 570, 152, { width: 1.8 });
-F.text(360, 262, '√d_k 缩放 + softmax = 各自的加权平均', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 262, '\sqrtd_k \text{缩放} + softmax = \text{各自的加权平均}', { size: 16, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

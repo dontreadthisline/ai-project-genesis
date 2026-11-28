@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">两个分布的边缘都是 $\mathcal N(0,1)$，联合却是 $+$ 形与 $-$ 形——边缘对联合的信息为零（讲义反例 B）。</div>
 <script>
 
@@ -34,7 +38,7 @@ for (const sg of [1, -1]) {
   }, { color: sg > 0 ? F.P.ink : F.P.green, r: 2.1 });
   F.ellipse({ rx: 1.85, ry: 0.75, rot, color: sg > 0 ? F.P.ink : F.P.green, opacity: 0.6 });
 }
-F.text(0, -2.5, '整体协方差 ≈ 0，但结构全在相关性里', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(0, -2.5, '\text{整体协方差} \approx 0 \text{，但结构全在相关性里}', { size: 17, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

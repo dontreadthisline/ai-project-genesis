@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+</div>
 <div class="caption">ELBO = 重构项 − KL 项：训练初期 KL 先被压低（$q$ 贴近先验），重构随后上升；$\beta$ 加权改变平衡点（重构模糊 ↔ 潜空间规整）。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 0, x1: 20, y0: 0, y1: 1.05, labels: ['epoch', '值（归一）'] });
 F.curve(t => 1 / (1 + Math.exp(-0.7 * (t - 7))), { t0: 0, t1: 20, color: F.P.ink, width: 2.3, label: '重构项 ↑', labelAt: 4 });
 F.curve(t => 1 / (1 + Math.exp(0.7 * (t - 4.5))), { t0: 0, t1: 20, color: F.P.amber, width: 2.1, label: 'KL 项 ↓', labelAt: 6 });
-F.text(12.5, 0.35, 'β 大 → KL 压得更低、重构更糊', { size: 15, color: F.P.dim });
+F.mtex(12.5, 0.35, '\beta \text{大} \to KL \text{压得更低、重构更糊}', { size: 15, color: F.P.dim });
 
 </script>
 </body>

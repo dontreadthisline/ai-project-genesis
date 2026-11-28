@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="310" viewBox="0 0 720 310"></svg>
+</div>
 <div class="caption">logits 加 $M_{ij}$（$j > i$ 取 $-\infty$）：softmax 后未来权重严格为 0，一条序列同时提供 $T$ 个训练样本而无泄漏。</div>
 <script>
 
@@ -30,8 +34,8 @@ for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
   F.box({ x: x0 + j * cw, y: y0 + i * ch, w: cw - 4, h: ch - 4, label: '',
          fill: 'rgba(58,74,168,' + (0.06 + 0.75 * v).toFixed(2) + ')', width: 0.6 });
 }
-F.text(x0 + n * cw / 2, y0 + n * ch + 26, '列 j = 键（被看）；行 i = 查询（看谁）', { size: 16, color: F.P.dim, anchor: 'middle' });
-F.text(x0 - 110, y0 + n * ch / 2, '上三角 = 0：未来不可见', { size: 15, color: F.P.dim });
+F.mtex(x0 + n * cw / 2, y0 + n * ch + 26, '\text{列} j = \text{键（被看）；行} i = \text{查询（看谁）}', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(x0 - 110, y0 + n * ch / 2, '\text{上三角} = 0 \text{：未来不可见}', { size: 15, color: F.P.dim });
 
 </script>
 </body>

@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">短样本拼进 block 提高利用率（pad 浪费 → 近 0），但文档边界必须加掩码——否则上个文档的结尾在「预测」下个文档的开头。</div>
 <script>
 
@@ -30,7 +34,7 @@ for (let i = 0; i < 12; i++) {
          fill: doc ? 'rgba(58,74,168,0.1)' : 'rgba(26,127,55,0.1)', size: 13 });
 }
 F.arrow(70 + 7 * 50 - 4, 160, 70 + 7 * 50 - 4, 96, { color: 'rgba(200,60,60,0.8)', width: 2, label: '边界：不可跨看', labelDy: 24 });
-F.text(360, 200, '利用率 > 95%（对照不打包的 ~65%）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(360, 200, '\text{利用率} > 95% \text{（对照不打包的} ~65% \text{）}', { size: 16, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

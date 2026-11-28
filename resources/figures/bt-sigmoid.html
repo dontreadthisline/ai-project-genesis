@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">$p(y_w \succ y_l) = \sigma(r_w - r_l)$：偏好数据只有相对好坏，BT 把相对判断映射到标量差——平局（$r_w = r_l$）时损失 $\ln 2$。</div>
 <script>
 
@@ -27,7 +31,7 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -5, x1: 5, y0: 0, y1: 1.05, labels: ['r_w − r_l', 'P(y_w ≻ y_l)'] });
 F.curve(t => 1 / (1 + Math.exp(-t)), { t0: -5, t1: 5, color: F.P.ink, width: 2.4, label: 'σ(Δr)', labelAt: -3.4 });
 F.vbar(0, 0.5, { w: 0.03, fill: 'rgba(0,0,0,0.3)', color: 'rgba(0,0,0,0)', width: 0 });
-F.text(0.3, 0.56, '平局: loss = ln2 ≈ 0.693', { size: 15, color: F.P.dim, anchor: 'start' });
+F.mtex(0.3, 0.56, '\text{平局} : loss = ln2 \approx 0.693', { size: 15, color: F.P.dim, anchor: 'start' });
 
 </script>
 </body>

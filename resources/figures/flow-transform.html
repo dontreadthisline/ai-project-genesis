@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+</div>
 <div class="caption">$z$ 空间标准正态圆云经可逆 $f$ 弯折成目标双峰；密度按 $|\det J|$ 体积补偿——某方向压缩、密度必增大。</div>
 <script>
 
@@ -27,14 +31,14 @@ const F = Fig(document.getElementById('fig'));
 F.axis({ x0: -3.6, x1: 6.2, y0: -2.8, y1: 2.8, labels: ['', ''] });
 for (let i = 0; i < 120; i++) F.text(-2 + F.gauss() * 0.8, F.gauss() * 0.8, '·', { size: 19, color: F.P.dim });
 F.ellipse({ cx: -2, rx: 1.7, ry: 1.7, color: F.P.dim, opacity: 0.5, width: 1.4 });
-F.text(-2, -2.3, 'z ~ N(0, I)', { size: 17, color: F.P.dim, anchor: 'middle' });
+F.mtex(-2, -2.3, 'z ~ N(0, I)', { size: 17, color: F.P.dim, anchor: 'middle' });
 F.arrow(-0.1, 0, 2.2, 0, { label: 'f（可逆）', width: 2.2, labelDy: -14 });
 for (let i = 0; i < 130; i++) {
   const b = F.rnd() < 0.5;
   F.text((b ? -1.9 : 1.9) + F.gauss() * 0.55, F.gauss() * 1.15, '·', { size: 19, color: F.P.ink });
 }
 F.ellipse({ cx: 4.5, rx: 1.9, ry: 1.35, color: F.P.ink, opacity: 0.6, width: 1.5 });
-F.text(4.5, -2.3, 'x = f(z)', { size: 17, color: F.P.deep, anchor: 'middle' });
+F.mtex(4.5, -2.3, 'x = f(z)', { size: 17, color: F.P.deep, anchor: 'middle' });
 
 </script>
 </body>

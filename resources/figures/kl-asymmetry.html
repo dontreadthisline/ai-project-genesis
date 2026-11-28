@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">$D_{KL}(P \| Q) \ne D_{KL}(Q \| P)$：前向惩罚 $Q$ 遗漏 $P$ 的支撑（mode-covering），反向允许 $Q$ 集中（mode-seeking）——DPO 与 VAE 各取其一。</div>
 <script>
 
@@ -33,10 +37,10 @@ const pairs = [
 for (const p of pairs) {
   F.vbar(p.x, p.fwd, { w: 0.5, fill: 'rgba(58,74,168,0.25)' });
   F.vbar(p.x + 0.9, p.rev, { w: 0.5, fill: 'rgba(26,127,55,0.25)' });
-  F.text(p.x + 0.7, -0.32, p.tag, { size: 15, color: F.P.dim, anchor: 'middle' });
+  F.mtex(p.x + 0.7, -0.32, p.tag.replace('（相等）', '\text{（相等）}'), { size: 13, color: '#9aa1b9' });
 }
-F.text(0.75, 1.7, 'D(P‖Q)', { size: 17, color: F.P.deep });
-F.text(4.3, 1.7, 'D(Q‖P)', { size: 17, color: F.P.green });
+F.mtex(0.75, 1.7, 'D(P\|Q)', { size: 17, color: F.P.deep });
+F.mtex(4.3, 1.7, 'D(Q\|P)', { size: 17, color: F.P.green });
 
 </script>
 </body>

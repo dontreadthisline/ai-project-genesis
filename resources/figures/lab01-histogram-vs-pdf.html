@@ -8,9 +8,12 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, 'PingFang SC', sans-serif; }
   .caption { text-align: center; padding: 6px 24px 12px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
 <script>
   window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
                      svg: { fontCache: 'global' } };
@@ -18,13 +21,16 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+</div>
 <div class="caption">
   $\hat p = \text{频数}/(nh)$（即 <code>density=True</code>）。左：$n=100$ 每格仅数个样本，随机波动大；
   右：$n = 10^5$ 直方图贴合 PDF。bin 宽两难：大 $h$ 抹平结构（偏差），小 $h$ 波动剧烈（方差）。
 </div>
 <script>
 const s = Sketch(document.getElementById('fig'));
+const F = Fig(document.getElementById('fig'));
 const P = s.PALETTE;
 
 let seed = 11;
@@ -62,9 +68,9 @@ for (const [cx, n, nb, tag] of [[170, 100, 12, 'n = 100'], [540, 50000, 28, 'n =
     d += (i ? 'L' : 'M') + ` ${xr(t).toFixed(1)} ${yr(pdf(t)).toFixed(1)} `;
   }
   s.path(d, { width: 2.2, color: P.amber, rough: false });
-  s.label(cx, Y0 + 34, `${tag}（${nb} bins）`, { size: 19, color: P.deep });
+  F.mtex(cx, Y0 + 34, 'n = ' + tag.replace('n = ', '') + '\\;\\text{（}' + nb + '\\text{bins）}', { size: 15 });
 }
-s.label(360, 312, '琥珀色曲线 = 真实 $p(x)$；淡靛柱 = 估计 $\\hat p$', { size: 16, color: P.dim });
+F.mtex(360, 312, '\\text{琥珀色} = p(x)\\;\\;\\text{淡靛} = \\hat p', { size: 14, color: '#9aa1b9' });
 </script>
 </body>
 </html>

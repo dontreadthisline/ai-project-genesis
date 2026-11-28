@@ -8,9 +8,12 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, 'PingFang SC', sans-serif; }
   .caption { text-align: center; padding: 6px 24px 12px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
+<script src="_lib.js"></script>
 <script>
   window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
                      svg: { fontCache: 'global' } };
@@ -18,13 +21,16 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="360" viewBox="0 0 720 360"></svg>
+</div>
 <div class="caption">
   等密度集合是椭圆：主轴沿特征向量 $u_i$，半轴长 $c\sqrt{\lambda_i}$（$\Sigma = U\Lambda U^T$）。
   $\rho \to 1$ 椭圆压扁成线；$\rho = 0$ 轴与坐标轴对齐。
 </div>
 <script>
 const s = Sketch(document.getElementById('fig'));
+const F = Fig(document.getElementById('fig'));
 const P = s.PALETTE;
 function ellipsePath(cx, cy, rx, ry, rot, n = 56) {
   let d = '';
@@ -56,10 +62,9 @@ for (const p of panels) {
   s.path(`M ${p.cx - ax * 60} ${CY - ay * 30} L ${p.cx + ax * 60} ${CY + ay * 30}`,
          { arrow: true, color: P.amber, width: 1.8 });
   s.dot(p.cx, CY, P.deep, 4);
-  s.label(p.cx, CY + 132, p.tag, { size: 19, color: P.deep });
+  F.mtex(p.cx, CY + 132, p.tag, { size: 15 });
 }
-s.label(360, 335, '虚线椭圆 = 2σ 层；琥珀色箭头 = 长轴方向 $u_1$（特征向量）',
-        { size: 16, color: P.dim });
+F.mtex(360, 335, '\\text{虚线} = 2\\sigma\\text{层；箭头} = \\text{长轴方向（特征向量）}', { size: 14, color: '#9aa1b9' });
 </script>
 </body>
 </html>

@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,14 +21,16 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="300" viewBox="0 0 720 300"></svg>
+</div>
 <div class="caption">PPL $= e^{\mathcal L}$：交叉熵的指数——「等效均匀候选数」。模型规模的收益递减；上下文长度的收益在小语料上先饱和。</div>
 <script>
 
 const F = Fig(document.getElementById('fig'));
 F.axis({ x0: 64, x1: 512, y0: 4, y1: 20, labels: ['d', 'PPL'] });
 F.curve(d => 19 - 14 * Math.exp(-0.009 * (d - 64)), { t0: 64, t1: 512, color: F.P.ink, width: 2.3, label: '验证集', labelAt: 300 });
-F.text(150, 7, 'PPL=10：每个位置等效 10 选 1', { size: 15, color: F.P.dim });
+F.mtex(150, 7, 'PPL=10 \text{：每个位置等效} 10 \text{选} 1', { size: 15, color: F.P.dim });
 
 </script>
 </body>

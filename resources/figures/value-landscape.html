@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="320" viewBox="0 0 720 320"></svg>
+</div>
 <div class="caption">$v^*(s) \approx \gamma^{d(s)}$：离目标越远值越低（折扣的几何衰减），洞附近的梯度被 slippery 摊平——DP 迭代收敛后的地图。</div>
 <script>
 
@@ -27,9 +31,9 @@ const F = Fig(document.getElementById('fig'));
 const g = [[0.1,0.16,0.24,0.36],[0.07,0,0.33,0],[0.11,0.2,0.45,0],[0,0.7,0.85,1.0]];
 F.axis({ x0: 0, x1: 5.4, y0: 0, y1: 4.4, labels: ['', ''], pad: [24, 24, 24, 24], bare: true });
 F.heat(g, { x: 0.25, y: 0.25, cw: 1.2, ch: 1.02 });
-F.text(4.85, 3.95, 'G', { size: 20, color: F.P.green });
-F.text(0.6, 0.6, 'S', { size: 20, color: F.P.deep });
-F.text(2.7, 4.15, 'v* ≈ γ^d（距目标步数 d）', { size: 16, color: F.P.dim, anchor: 'middle' });
+F.mtex(4.85, 3.95, 'G', { size: 17, color: '#1a7f37' });
+F.mtex(0.6, 0.6, 'S', { size: 17, color: '#2c3a8c' });
+F.mtex(2.7, 4.15, 'v* \approx \gamma^d \text{（距目标步数} d \text{）}', { size: 16, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>

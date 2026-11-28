@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="340" viewBox="0 0 720 340"></svg>
+</div>
 <div class="caption">固定 $x = x_0$ 的窄带内的 $y$ 分布即 $p(y \mid x)$：均值随 $\rho x_0$ 平移、方差收窄为 $1 - \rho^2$（$\rho = 0.8$）。</div>
 <script>
 
@@ -34,8 +38,8 @@ for (let i = 0; i < 600; i++) {
   const x = z1 * 0.95, y = 0.8 * x + 0.57 * z2;   // rho=0.8
   if (Math.abs(x - 1.2) < 0.35) F.text(x, y, '·', { size: 19, color: F.P.amber });
 }
-F.text(1.35, 2.3, 'x = x₀ 窄带', { size: 17, color: F.P.amber });
-F.text(2.7, 1.55, 'p(y | x₀)', { size: 16, color: F.P.deep, anchor: 'start' });
+F.mtex(1.35, 2.3, 'x = x_0 \text{窄带}', { size: 17, color: F.P.amber });
+F.mtex(2.7, 1.55, 'p(y | x_0)', { size: 16, color: F.P.deep, anchor: 'start' });
 // 右缘内嵌条件密度(钟形点列, 均值0.96 方差0.36)
 for (let i = 0; i <= 26; i++) {
   const t = -1.9 + 3.4 * i / 26;

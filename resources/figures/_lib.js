@@ -29,8 +29,8 @@ const Fig = (() => {
         if (bare) return self;
         s.path(`M ${pt - 10} ${H - pb} L ${W - pr + 6} ${H - pb}`, { arrow: true, opacity: 0.65, rough: false });
         s.path(`M ${pt} ${H - pb + 8} L ${pt} ${pt - 8}`, { arrow: true, opacity: 0.65, rough: false });
-        if (labels[0]) s.label(pt - 22, H - pb + 16, labels[0], { mono: true, size: 15, color: P.ink });
-        if (labels[1]) s.label(pt - 10, pt - 16, labels[1], { mono: true, size: 15, color: P.ink });
+        if (labels[0]) self.mtex(pt - 22, H - pb + 16, labels[0], { size: 14, color: '#2c3a8c' });
+        if (labels[1]) self.mtex(pt - 10, pt - 16, labels[1], { size: 14, color: '#2c3a8c' });
         return self;
       },
 
@@ -44,7 +44,9 @@ const Fig = (() => {
         s.path(d, { color, width, rough, opacity });
         if (label) {
           const lt = labelAt === undefined ? t0 + 0.7 * (t1 - t0) : labelAt;
-          s.label(px(lt), py(f(lt)) - 12, label, { size: 18, color });
+          if (window.isMathLabel && window.isMathLabel(label))
+            self.mtex(px(lt), py(f(lt)) - 12, window.latexifyLabel(label), { size: 15, color: '#3a4aa8' });
+          else s.label(px(lt), py(f(lt)) - 12, label, { size: 18, color });
         }
         return self;
       },
@@ -98,7 +100,11 @@ const Fig = (() => {
       // ---- 像素坐标（架构/流程图） ----
       box({ x, y, w = 120, h = 44, label, color = P.ink, fill = 'rgba(58,74,168,0.07)', width = 1.8, size = 17, rough = true } = {}) {
         s.path(`M ${x} ${y} L ${x + w} ${y} L ${x + w} ${y + h} L ${x} ${y + h} Z`, { color, fill, width, rough });
-        if (label) s.label(x + w / 2, y + h / 2 + 6, label, { size, color: P.deep, anchor: 'middle' });
+        if (label) {
+          if (window.isMathLabel && window.isMathLabel(label))
+            self.mtex(x + w / 2, y + h / 2 + 6, window.latexifyLabel(label), { size: Math.min(size, 15), color: '#2c3a8c' });
+          else s.label(x + w / 2, y + h / 2 + 6, label, { size, color: P.deep, anchor: 'middle' });
+        }
         return self;
       },
 
@@ -106,7 +112,11 @@ const Fig = (() => {
         const d = `M ${x1} ${y1} L ${x2} ${y2}`;
         s.path(d, { color, width, arrow: true });
         if (useFlow) s.flow(d, { color, dur });
-        if (label) s.label((x1 + x2) / 2, (y1 + y2) / 2 + labelDy, label, { size: 17, color });
+        if (label) {
+          if (window.isMathLabel && window.isMathLabel(label))
+            self.mtex((x1 + x2) / 2, (y1 + y2) / 2 + labelDy, window.latexifyLabel(label), { size: 15, color: '#bf8700' });
+          else s.label((x1 + x2) / 2, (y1 + y2) / 2 + labelDy, label, { size: 17, color });
+        }
         return self;
       },
 
@@ -157,3 +167,20 @@ const Fig = (() => {
   }
   return Fig;
 })();
+
+// ---- label 自动分流: 数学内容走 mtex(LaTeX), 纯中文走手写 ----
+const SYMJS = { "\u2016": "\\|", "\u00d7": "\\times", "\u00b7": "\\cdot",
+  "\u2208": "\\in", "\u2299": "\\odot", "\u2192": "\\to",
+  "\u2264": "\\le", "\u2265": "\\ge", "\u00b1": "\\pm", "\u2248": "\\approx",
+  "\u03c1": "\\rho", "\u03c3": "\\sigma", "\u03bc": "\\mu", "\u03a3": "\\Sigma",
+  "\u03c0": "\\pi", "\u03b3": "\\gamma", "\u03b5": "\\epsilon", "\u03b1": "\\alpha",
+  "\u03b2": "\\beta", "\u03b8": "\\theta", "\u03bb": "\\lambda" };
+const CJKRE = /[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/;
+window.isMathLabel = (t) => /^[A-Za-z]$/.test(t.trim()) || /[=<>\u2248\u00b1\u00d7\u2299\u2208\u2192\u2264\u2265\u221a]|[\u03c1\u03c3\u03bc\u03a3\u03c0\u03b3\u03b5\u03b1\u03b2\u03b8\u03bb]|[A-Za-z]\s*[(]|\d+\.\d/.test(t);
+window.latexifyLabel = (t) => t.split(/([\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]+)/)
+  .map(seg => CJKRE.test(seg) ? "\\text{" + seg + "}"
+    : seg.replace(/[\u2016\u00d7\u00b7\u2208\u2299\u2192\u2264\u2265\u00b1\u2248\u03c1\u03c3\u03bc\u03a3\u03c0\u03b3\u03b5\u03b1\u03b2\u03b8\u03bb]/g,
+      c => SYMJS[c] || c))
+  .join(" ");
+
+// box/arrow/curve 的 label 自动分流

@@ -8,6 +8,8 @@
     src: url(../fonts/caveat-500.woff2) format('woff2'); }
   body { margin: 0; font: 15px/1.6 -apple-system, "PingFang SC", sans-serif; color: #2c3a8c; }
   .fig { display: block; margin: 0 auto; }
+  .figwrap { position: relative; width: 720px; margin: 0 auto; }
+  .mtx { font-family: -apple-system, "PingFang SC", sans-serif; }
   .caption { text-align: center; padding: 4px 24px 10px; color: #5a6078; }
 </style>
 <script src="../js/sketch.js"></script>
@@ -19,7 +21,9 @@
 <script defer src="../../site_libs/mathjax/tex-svg-full.js"></script>
 </head>
 <body>
+<div class="figwrap">
 <svg id="fig" class="fig" width="720" height="330" viewBox="0 0 720 330"></svg>
+</div>
 <div class="caption">同 prompt 采 $G$ 个回答、按可验证判分：$\hat A_i = (r_i - \mathrm{mean})/\mathrm{std}$——全对/全错组 $\hat A \equiv 0$（无信号，弃用）。</div>
 <script>
 
@@ -32,9 +36,9 @@ for (let i = 0; i < 8; i++) {
   F.vbar(i + 0.72, (rs[i] - mean) / sd, { w: 0.3, fill: 'rgba(26,127,55,0.3)' });
 }
 F.curve(t => 0, { t0: 0, t1: 8, color: 'rgba(0,0,0,0.2)', width: 0.8, rough: false });
-F.text(0.55, 1.45, 'r（左蓝）', { size: 14, color: F.P.ink, anchor: 'middle' });
+F.mtex(0.55, 1.45, 'r \text{（左蓝）}', { size: 14, color: F.P.ink, anchor: 'middle' });
 F.text(1.05, 1.45, 'Â（右绿）', { size: 14, color: F.P.green, anchor: 'middle' });
-F.text(4, -1.45, 'mean=0.5, std=0.53 → Â = ±0.94', { size: 15, color: F.P.dim, anchor: 'middle' });
+F.mtex(4, -1.45, 'mean=0.5, std=0.53 \to Â = \pm0.94', { size: 15, color: F.P.dim, anchor: 'middle' });
 
 </script>
 </body>
