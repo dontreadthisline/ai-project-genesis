@@ -112,6 +112,22 @@ const Fig = (() => {
 
       text(x, y, str, opt = {}) { s.label(x, y, str, opt); return self; },
 
+      // 图内文字一律 LaTeX 渲染（规范：公式与文字不使用手写字体/unicode 拼接）
+      mtex(x, y, latex, { size = 17, color = '#2c3a8c', anchor = 'middle' } = {}) {
+        const wrap = svg.parentElement;
+        if (!wrap || !wrap.classList.contains('figwrap')) return self;
+        const span = document.createElement('span');
+        span.className = 'mtx';
+        span.style.cssText = `position:absolute; left:${x}px; top:${y}px; font-size:${size}px; color:${color}; white-space:nowrap;`;
+        span.textContent = '$' + latex + '$';
+        wrap.appendChild(span);
+        if (anchor === 'middle') span.style.transform = 'translate(-50%, -50%)';
+        else if (anchor === 'start') span.style.transform = 'translate(0, -50%)';
+        else if (anchor === 'end') span.style.transform = 'translate(-100%, -50%)';
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([span]);
+        return self;
+      },
+
       path(d, opt = {}) { s.path(d, opt); return self; },
       dot(x, y, color, r, opacity) { s.dot(x, y, color, r, opacity); return self; },
 
